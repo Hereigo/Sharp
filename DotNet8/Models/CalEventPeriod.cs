@@ -1,6 +1,6 @@
 ﻿namespace DotNet8.Models
 {
-    public enum PeriodsEnum
+    public enum CalEventPeriod
     {
         yearly,
         monthly,
