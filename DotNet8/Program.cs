@@ -43,6 +43,8 @@ namespace DotNet8
             app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
+            Database.CreateDbIfNotExists(app);
+
             app.Run();
         }
     }
