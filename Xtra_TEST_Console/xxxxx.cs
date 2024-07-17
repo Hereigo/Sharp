@@ -1,6 +1,6 @@
 ﻿namespace Xtra_TEST_Console
 {
-    internal class Program
+    internal class xxxxx
     {
         static void Main(string[] args)
         {
