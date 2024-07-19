@@ -1,0 +1,7 @@
+﻿[*.cs]
+
+# LR0002: Prefix is incorrect
+dotnet_diagnostic.LR0002.severity = silent
+
+# LR0005: The method has no documentation comment
+dotnet_diagnostic.LR0005.severity = silent
