@@ -2,11 +2,11 @@
 {
     public enum CalEventPeriod
     {
-        yearly,
-        monthly,
-        weekly,
-        everyXmons,
-        everyXdays,
-        once
+        YEARLY,
+        MONTHLY,
+        WEEKLY,
+        EVERYXMONS,
+        EVERYXDAYS,
+        ONCE
     }
 }

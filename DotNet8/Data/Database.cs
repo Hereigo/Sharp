@@ -20,19 +20,26 @@ namespace DotNet8.Data
                         return; // DB has been seeded already.
                     }
 
-                    foreach (CalEvent p in new CalEvent[] {
+                    var dtaToday = DateTime.Now;
+
+                    foreach (CalEvent evt in new CalEvent[] {
                         new() {
                             Category = new CalEventCategory() { Name = "default" },
                             Description = "aaa aaa aaa ...",
-                            Modified = DateTime.Now,
-                            Period = CalEventPeriod.yearly,
-                            PeriodSize = 0,
-                            Started = DateTime.Now,
-                            Status = CalEventStatus.Active
-                        }
+                            Modified = dtaToday,
+                            Period = CalEventPeriod.YEARLY,
+                            Started = dtaToday
+                        },
+                        new() {
+                            Category = new CalEventCategory() { Name = "default" },
+                            Description = "O.M.G.!",
+                            Modified = dtaToday,
+                            Period = CalEventPeriod.MONTHLY,
+                            Started = new DateTime(dtaToday.Year, dtaToday.Month, 13)
+                        },
                     })
                     {
-                        context.CalEvents.Add(p);
+                        context.CalEvents.Add(evt);
                     }
 
                     context.SaveChanges();
