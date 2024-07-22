@@ -1,0 +1,22 @@
+﻿@model DotNet8.Models.CalEventVM
+
+@*
+    TODO:
+    - MULTI-Events in the day possibility!
+    - Should handle to Create NEW!
+*@
+
+<div>
+    <span style="background-color:azure;float:right">
+        @Model?.DayOfMonth
+    </span>
+
+    <span style="float:left">
+        @Model?.Time
+        @Model?.Description
+    </span>
+
+    <a asp-action="Edit" asp-route-id="@Model?.Id">
+        &copy;
+    </a>
+</div>

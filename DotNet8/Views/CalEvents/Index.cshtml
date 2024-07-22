@@ -1,65 +1,47 @@
-﻿@model IEnumerable<DotNet8.Models.CalEvent>
-
+﻿@using DotNet8.Utils
+@model IEnumerable<DotNet8.Models.CalEventVM>
 @{
     ViewData["Title"] = "Index";
+
+    var daysCount = 0;
+    var daysInMonth = Utils.GetMaxDayOfTheMonth(DateTime.Now);
+    CalEventVM eventVm;
 }
 
-<h1>Index</h1>
+<h2>Index</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
+
+<h2>ABCDE</h2>
+
+<style>
+    .calend td {
+        border: solid 1px grey;
+        padding: 1rem;
+        min-width: 13%;
+        width: 13%;
+    }
+</style>
+
+<table class="calend">
+
+    @for (int r = 0; r < 5; r++)
+    {
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PeriodSize)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Period)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Modified)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Started)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th></th>
+            @for (int d = 0; d < 7; d++)
+            {
+                if (daysCount < daysInMonth)
+                {
+                    daysCount++;
+                }
+                var modelItem = Model.FirstOrDefault(m => m.DayOfMonth == daysCount);
+
+                <td>
+                    @await Html.PartialAsync("~/Views/CalEvents/EventCalendView.cshtml", Utils.GetCalEventVm(modelItem, daysCount))
+                </td>
+            }
         </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PeriodSize)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Period)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Modified)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Started)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
+    }
 </table>

@@ -17,7 +17,15 @@ namespace DotNet8.Controllers
         // GET: CalEvents
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CalEvents.ToListAsync());
+            var events = await _context.CalEvents.ToListAsync();
+
+            var eventsVm = new List<CalEventVM>();
+
+            foreach (var evt in events)
+            {
+                eventsVm.Add(new CalEventVM(evt));
+            }
+            return View(eventsVm);
         }
 
         // GET: CalEvents/Details/5
