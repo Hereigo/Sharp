@@ -9,15 +9,17 @@ namespace DotNet8.Utils
             return new DateTime(now.Year, now.Month, 1).AddMonths(1).AddDays(-1).Day;
         }
 
-        public static CalEventVM GetCalEventVm(CalEventVM? calEvent, int day)
+        public static List<CalEventVM> GetCalEventVm(List<CalEventVM>? calEvent, int day)
         {
-            if (calEvent != null)
+            if (calEvent?.Count > 0)
             {
                 return calEvent;
             }
             else
             {
-                return new CalEventVM(new CalEvent() { Started = new DateTime(2024, 07, day) });
+                return new List<CalEventVM> {
+                    new CalEventVM(new CalEvent() { Started = new DateTime(2024, 07, day) })
+                };
             }
         }
     }

@@ -2,10 +2,8 @@
 @model IEnumerable<DotNet8.Models.CalEventVM>
 @{
     ViewData["Title"] = "Index";
-
     var daysCount = 0;
     var daysInMonth = Utils.GetMaxDayOfTheMonth(DateTime.Now);
-    CalEventVM eventVm;
 }
 
 <h2>Index</h2>
@@ -36,7 +34,7 @@
                 {
                     daysCount++;
                 }
-                var modelItem = Model.FirstOrDefault(m => m.DayOfMonth == daysCount);
+                var modelItem = Model.Where(m => m.DayOfMonth == daysCount).ToList();
 
                 <td>
                     @await Html.PartialAsync("~/Views/CalEvents/EventCalendView.cshtml", Utils.GetCalEventVm(modelItem, daysCount))

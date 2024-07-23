@@ -8,28 +8,28 @@ namespace AAA_TEST_Console
         public string Field1 { get; set; }
     }
 
-    public class ApplicationDbContext : IdentityDbContext
+    public class FirstDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
-        public DbSet<DBEntity> CalEvents { get; set; } = null!;
+        public FirstDbContext(DbContextOptions<FirstDbContext> options) : base(options) { }
+        public DbSet<DBEntity> SomeDBEntities { get; set; } = null!;
     }
 
     internal class Database
     {
         internal void CreateDbIfNotExists()
         {
-            var context = new ApplicationDbContext(null);
+            var context = new FirstDbContext(null);
 
             context.Database.EnsureCreated();
 
-            if (context.CalEvents.Any())
+            if (context.SomeDBEntities.Any())
             {
                 return; // DB has been seeded already.
             }
 
             foreach (DBEntity en in new DBEntity[] { new() { Field1 = "aaa aaa aaa ..." } })
             {
-                context.CalEvents.Add(en);
+                context.SomeDBEntities.Add(en);
             }
 
             context.SaveChanges();

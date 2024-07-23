@@ -1,31 +1,28 @@
-﻿@model DotNet8.Models.CalEventVM
+﻿@model IEnumerable<DotNet8.Models.CalEventVM>
 
-@*
-    TODO:
-    - MULTI-Events in the day possibility!
-    - Should handle to Create NEW!
-*@
+@foreach (var item in Model)
+{
+    <div>
+        <span style="background-color:azure;float:right">
+            @item?.DayOfMonth
+        </span>
 
-<div>
-    <span style="background-color:azure;float:right">
-        @Model?.DayOfMonth
-    </span>
+        <span style="float:left">
+            @item?.Time
+            @item?.Description
+        </span>
 
-    <span style="float:left">
-        @Model?.Time
-        @Model?.Description
-    </span>
-
-    @if (Model?.Id != 0)
-    {
-        <a asp-action="Edit" asp-route-id="@Model?.Id">
-            &copy;
-        </a>
-    }
-    else
-    {
-        <a asp-action="Create" asp-route-id="@Model?.DayOfMonth">
-            <b>+</b>
-        </a>
-    }
-</div>
+        @if (item?.Id != 0)
+        {
+            <a asp-action="Edit" asp-route-id="@item?.Id">
+                &copy;
+            </a>
+        }
+        else
+        {
+            <a asp-action="Create" asp-route-id="@item?.DayOfMonth">
+                <b>+</b>
+            </a>
+        }
+    </div>
+}
