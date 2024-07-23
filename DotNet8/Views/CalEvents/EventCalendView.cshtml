@@ -16,7 +16,16 @@
         @Model?.Description
     </span>
 
-    <a asp-action="Edit" asp-route-id="@Model?.Id">
-        &copy;
-    </a>
+    @if (Model?.Id != 0)
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id">
+            &copy;
+        </a>
+    }
+    else
+    {
+        <a asp-action="Create" asp-route-id="@Model?.DayOfMonth">
+            <b>+</b>
+        </a>
+    }
 </div>
