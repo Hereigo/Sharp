@@ -1,28 +1,34 @@
 ﻿@model IEnumerable<DotNet8.Models.CalEventVM>
 
-@foreach (var item in Model)
-{
-    <div>
-        <span style="background-color:azure;float:right">
-            @item?.DayOfMonth
-        </span>
+<div class="aDay">
 
-        <span style="float:left">
-            @item?.Time
-            @item?.Description
-        </span>
-
-        @if (item?.Id != 0)
-        {
-            <a asp-action="Edit" asp-route-id="@item?.Id">
-                &copy;
-            </a>
-        }
-        else
-        {
-            <a asp-action="Create" asp-route-id="@item?.DayOfMonth">
-                <b>+</b>
-            </a>
-        }
+    <div class="aDayDate">
+        @Model?.FirstOrDefault()?.DayOfMonth;
     </div>
-}
+
+    @foreach (var dayItem in Model)
+    {
+        <div class="aDayItemLine">
+            <div>
+                @dayItem?.Time
+                @dayItem?.Description
+            </div>
+
+            <div>
+                @if (dayItem?.Id != 0)
+                {
+                    <a asp-action="Edit" asp-route-id="@dayItem?.Id">
+                        &copy;
+                    </a>
+                }
+                else
+                {
+                    <a asp-action="Create" asp-route-id="@dayItem?.DayOfMonth">
+                        <b>+</b>
+                    </a>
+                }
+            </div>
+        </div>
+    }
+
+</div>

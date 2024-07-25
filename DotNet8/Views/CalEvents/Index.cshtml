@@ -12,19 +12,34 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-<h2>ABCDE</h2>
-
 <style>
     .calend td {
-        border: solid 1px grey;
-        padding: 1rem;
+        height: 100%;
+        min-height: 100%;
         min-width: 13%;
+        padding: .1rem;
         width: 13%;
     }
+
+    .calend .aDay {
+        background-color: aliceblue;
+        border: solid 1px grey;
+        height: 130px;
+        margin:0;
+        padding:0;
+        width: 100%;
+    }
+
+        .calend .aDay .aDayDate {
+            background-color: antiquewhite;
+        }
+
+        .calend .aDay .aDayItemLine {
+            border: solid 1px red;
+        }
 </style>
 
-<table class="calend">
-
+<table class="calend" cellspacing="2">
     @for (int r = 0; r < 5; r++)
     {
         <tr>
@@ -35,7 +50,6 @@
                     daysCount++;
                 }
                 var modelItem = Model.Where(m => m.DayOfMonth == daysCount).ToList();
-
                 <td>
                     @await Html.PartialAsync("~/Views/CalEvents/EventCalendView.cshtml", Utils.GetCalEventVm(modelItem, daysCount))
                 </td>
