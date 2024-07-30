@@ -6,11 +6,9 @@
     var daysInMonth = Utils.GetMaxDayOfTheMonth(DateTime.Now);
 }
 
-<h2>Index</h2>
-
-<p>
+<div class="create-act">
     <a asp-action="Create">Create New</a>
-</p>
+</div>
 
 <table class="calend" cellspacing="2">
     @for (int r = 0; r < 5; r++)
