@@ -12,33 +12,6 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-<style>
-    .calend td {
-        height: 100%;
-        min-height: 100%;
-        min-width: 13%;
-        padding: .1rem;
-        width: 13%;
-    }
-
-    .calend .aDay {
-        background-color: aliceblue;
-        border: solid 1px grey;
-        height: 130px;
-        margin:0;
-        padding:0;
-        width: 100%;
-    }
-
-        .calend .aDay .aDayDate {
-            background-color: antiquewhite;
-        }
-
-        .calend .aDay .aDayItemLine {
-            border: solid 1px red;
-        }
-</style>
-
 <table class="calend" cellspacing="2">
     @for (int r = 0; r < 5; r++)
     {

@@ -34,10 +34,55 @@
             </div>
         </nav>
     </header>
+
+    
+    @* *** TEST *** !!! *** *@
+    <style>
+        .container{
+            /* border:1px solid red; */
+            background-color:aquamarine;
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+
+        .calend td {
+            text-overflow: clip;
+            height: 100%;
+            min-height: 100%;
+            padding: .1rem;
+            min-width: 5%;
+            max-width: 5%;
+                width: 5%;
+        }
+
+        .calend .aDay {
+            background-color: aliceblue;
+            border: solid 1px grey;
+            height: 130px;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+            .calend .aDay .aDayDate {
+                background-color: antiquewhite;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+
+            .calend .aDay .aDayItemLine {
+                border: solid 1px red;
+            }
+    </style>
+    @* *** TEST *** !!! *** *@
+
+
     <div class="container">
         <main role="main" class="pb-3">
 
+
             @RenderBody()
+
 
         </main>
     </div>
