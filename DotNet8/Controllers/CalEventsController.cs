@@ -19,6 +19,13 @@ namespace DotNet8.Controllers
         {
             var events = await _context.CalEvents.ToListAsync();
 
+            // TEST !!!!!!!!!!
+            // TEST !!!!!!!!!!
+            //events.Add(new CalEvent { Id=111, Started=new DateTime(2024,7,15), Description="Bla-Bla-Bla Bla-Bla-Bla Bla-Bla-Bla." });
+            //events.Add(new CalEvent { Id=111, Started=new DateTime(2024,7,15), Description="Bla-Bla-Bla Bla-Bla-Bla Bla-Bla-Bla." });
+            //events.Add(new CalEvent { Id=111, Started=new DateTime(2024,7,15), Description="Bla-Bla-Bla Bla-Bla-Bla Bla-Bla-Bla." });
+            // TEST !!!!!!!!!!
+
             var eventsVm = new List<CalEventVM>();
 
             foreach (var evt in events)

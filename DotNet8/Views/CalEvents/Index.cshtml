@@ -16,11 +16,10 @@
         <tr>
             @for (int d = 0; d < 7; d++)
             {
-                if (daysCount < daysInMonth)
-                {
-                    daysCount++;
-                }
+                if (daysCount == daysInMonth) daysCount = 0; // next mon.
+                daysCount++;
                 var modelItem = Model.Where(m => m.DayOfMonth == daysCount).ToList();
+
                 <td>
                     @await Html.PartialAsync("~/Views/CalEvents/EventCalendView.cshtml", Utils.GetCalEventVm(modelItem, daysCount))
                 </td>
