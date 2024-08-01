@@ -4,8 +4,11 @@
     {
         static void Main(string[] args)
         {
+            // Shift.Test();
 
-            Delegates.TestDelegates();
+            // Delegates.TestDelegates();           
+
+            Delegate_min.Test();
 
 
             Console.WriteLine("\r\n Done.");
