@@ -11,6 +11,11 @@
             Delegate_min.Test();
 
 
+            if(false || true) { 
+                Console.WriteLine("Norm");
+                }
+
+
             Console.WriteLine("\r\n Done.");
         }
     }

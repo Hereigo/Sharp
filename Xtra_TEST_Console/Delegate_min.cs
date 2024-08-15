@@ -8,10 +8,9 @@
 
         public delegate string Delegate_func();
 
-        internal string StrModifier()
-        {
-
-        }
+        // internal string StrModifier()
+        // {
+        // }
 
         internal static void Test()
         {

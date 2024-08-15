@@ -6,33 +6,83 @@
     var daysInMonth = Utils.GetMaxDayOfTheMonth(DateTime.Now);
 }
 
-<style>
+<div class="container-fluid">
+    <div class="row">
 
-</style>
+        <main class="col-md-9">
+            <table class="calendar">
+                <thead>
+                    <tr>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                        <th>Sun</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                    </tr>
+                    <tr>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                    </tr>
+                    <tr>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                    </tr>
+                    <tr>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                    </tr>
+                    <tr>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
 
-<div class="create-act">
-    <a asp-action="Create">Create New</a>
+        @* *** SIDEBAR *** *@
+
+        <aside class="col-md-3 sidebar">
+            <ul>
+                <li>Aaaaaaa</li>
+                <li>Aaaaaaa</li>
+                <li>Aaaaaaa</li>
+                <li>Aaaaaaa</li>
+                <li>Aaaaaaa</li>
+            </ul>
+        </aside>
+
+    </div>
 </div>
-
-@* 
-REPLACE TABLE WITH GRID !!!!!!!!!
-
-
-
-<table class="calend" cellspacing="2">
-    @for (int r = 0; r < 5; r++)
-    {
-        <tr>
-            @for (int d = 0; d < 7; d++)
-            {
-                if (daysCount == daysInMonth) daysCount = 0; // next mon.
-                daysCount++;
-                var modelItem = Model.Where(m => m.DayOfMonth == daysCount).ToList();
-
-                <td>
-                    @await Html.PartialAsync("~/Views/CalEvents/EventCalendView.cshtml", Utils.GetCalEventVm(modelItem, daysCount))
-                </td>
-            }
-        </tr>
-    }
-</table> *@
