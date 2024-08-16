@@ -18,7 +18,7 @@ namespace DotNet8.Utils
             else
             {
                 return new List<CalEventVM> {
-                    new CalEventVM(new CalEvent() { Started = new DateTime(2024, 07, day) })
+                    // new CalEventVM(new CalEvent() { Started = new DateTime(2024, 07, day) })
                 };
             }
         }

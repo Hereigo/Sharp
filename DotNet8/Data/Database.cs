@@ -21,22 +21,13 @@ namespace DotNet8.Data
                     }
 
                     var dtaToday = DateTime.Now;
+                    var defaultCategory = new CalEventCategory { Name = "default" };
+
+                    context.CalEventCategories.Add(defaultCategory);
+                    context.SaveChanges();
 
                     foreach (CalEvent evt in new CalEvent[] {
-                        new() {
-                            Category = new CalEventCategory() { Name = "default" },
-                            Description = "aaa aaa aaa ...",
-                            Modified = dtaToday,
-                            Period = CalEventPeriod.YEARLY,
-                            Started = dtaToday
-                        },
-                        new() {
-                            Category = new CalEventCategory() { Name = "default" },
-                            Description = "O.M.G.!",
-                            Modified = dtaToday,
-                            Period = CalEventPeriod.MONTHLY,
-                            Started = new DateTime(dtaToday.Year, dtaToday.Month, 13)
-                        },
+                        new("Test aaa aaa ...", defaultCategory){},
                     })
                     {
                         context.CalEvents.Add(evt);

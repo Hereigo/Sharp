@@ -13,7 +13,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
+@*             <div class="form-group">
                 <label asp-for="PeriodSize" class="control-label"></label>
                 <input asp-for="PeriodSize" class="form-control" />
                 <span asp-validation-for="PeriodSize" class="text-danger"></span>
@@ -22,7 +22,7 @@
                 <label asp-for="Period" class="control-label"></label>
                 <select asp-for="Period" class="form-control"></select>
                 <span asp-validation-for="Period" class="text-danger"></span>
-            </div>
+            </div> *@
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
                 <select asp-for="Status" class="form-control"></select>

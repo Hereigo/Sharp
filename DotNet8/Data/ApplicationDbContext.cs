@@ -12,5 +12,7 @@ namespace DotNet8.Data
         }
 
         public DbSet<CalEvent> CalEvents { get; set; } = null!;
+
+        public DbSet<CalEventCategory> CalEventCategories { get; set; } = null!;
     }
 }

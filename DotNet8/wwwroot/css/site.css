@@ -23,8 +23,11 @@ header .navbar {
     margin-top: -15px;
 }
 
-/* ======== SIDEBAR ======== */
+.row-item-act{
+    margin:2rem;
+}
 
+/* ======== SIDEBAR ======== */
 .sidebar > ul {
     background-color: antiquewhite;
     padding-left: 0;
@@ -96,9 +99,6 @@ div.number {
     font-weight: 200;
     line-height: 17px;
     margin-bottom: .8rem;
-
-    /*display: table;*/
-    /*white-space: pre-wrap;*/
     word-wrap: break-word;
 }
 

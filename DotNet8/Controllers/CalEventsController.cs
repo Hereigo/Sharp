@@ -14,23 +14,10 @@ namespace DotNet8.Controllers
             _context = context;
         }
 
-        // GET: CalEvents
         public async Task<IActionResult> Index()
         {
             var events = await _context.CalEvents.ToListAsync();
-
-            // TEST !!!!!!!!!!
-            // TEST !!!!!!!!!!
-            events.Add(new CalEvent { Id=111, Started=new DateTime(2024,8,7), Description="Test." });
-            events.Add(new CalEvent { Id=111, Started=new DateTime(2024,8,23), Description="Test." });
-            events.Add(new CalEvent { Id=111, Started=new DateTime(2024,8,31), Description="Test." });
-            events.Add(new CalEvent { Id=111, Started=new DateTime(2024,8,15), Description="Bla-Bla-Bla Bla-Bla-Bla Bla-Bla-Bla." });
-            events.Add(new CalEvent { Id=111, Started=new DateTime(2024,8,15, 18, 55, 00), Description="Bla-Bla-Bla Bla-Bla-Bla Bla-Bla-Bla." });
-            events.Add(new CalEvent { Id=111, Started=new DateTime(2024,8,15), Description="BlaBlaBlaBlaBla BlaBlaBla-Bla." });
-            // TEST !!!!!!!!!!
-
             var eventsVm = new List<CalEventVM>();
-
             foreach (var evt in events)
             {
                 eventsVm.Add(new CalEventVM(evt));
@@ -38,24 +25,20 @@ namespace DotNet8.Controllers
             return View(eventsVm);
         }
 
-        // GET: CalEvents/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
             var calEvent = await _context.CalEvents.FirstOrDefaultAsync(m => m.Id == id);
             if (calEvent == null)
             {
                 return NotFound();
             }
-
             return View(calEvent);
         }
 
-        // GET: CalEvents/Create
         public IActionResult Create()
         {
             return View();
@@ -77,14 +60,12 @@ namespace DotNet8.Controllers
             return View(calEvent);
         }
 
-        // GET: CalEvents/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
             var calEvent = await _context.CalEvents.FindAsync(id);
             if (calEvent == null)
             {
