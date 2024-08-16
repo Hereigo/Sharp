@@ -7,7 +7,7 @@
 }
 
 <div class="container-fluid">
-    <div class="row">
+    <div class="row row-calend">
 
         <main class="col-md-10">
             <table class="calendar">
@@ -29,12 +29,13 @@
                             @for (int d = 0; d < 7; d++)
                             {
                                 if (daysCount == daysInMonth) daysCount = 0; // next mon.
+
                                 daysCount++;
                                 var modelItem = Model.Where(m => m.DayOfMonth == daysCount).ToList();
 
-                                <td class="day">
+                                @* <td class="day"> *@
                                     @await Html.PartialAsync("~/Views/CalEvents/EventCalendView.cshtml", Utils.GetCalEventVm(modelItem, daysCount))
-                                </td>
+                                @* </td> *@
                             }
                         </tr>
                     }

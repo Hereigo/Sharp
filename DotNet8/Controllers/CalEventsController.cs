@@ -21,9 +21,12 @@ namespace DotNet8.Controllers
 
             // TEST !!!!!!!!!!
             // TEST !!!!!!!!!!
-            events.Add(new CalEvent { Id=111, Started=new DateTime(2024,7,15), Description="Bla-Bla-Bla Bla-Bla-Bla Bla-Bla-Bla." });
-            events.Add(new CalEvent { Id=111, Started=new DateTime(2024,7,15), Description="Bla-Bla-Bla Bla-Bla-Bla Bla-Bla-Bla." });
-            events.Add(new CalEvent { Id=111, Started=new DateTime(2024,7,15), Description="Bla-Bla-Bla Bla-Bla-Bla Bla-Bla-Bla." });
+            events.Add(new CalEvent { Id=111, Started=new DateTime(2024,8,7), Description="Test." });
+            events.Add(new CalEvent { Id=111, Started=new DateTime(2024,8,23), Description="Test." });
+            events.Add(new CalEvent { Id=111, Started=new DateTime(2024,8,31), Description="Test." });
+            events.Add(new CalEvent { Id=111, Started=new DateTime(2024,8,15), Description="Bla-Bla-Bla Bla-Bla-Bla Bla-Bla-Bla." });
+            events.Add(new CalEvent { Id=111, Started=new DateTime(2024,8,15, 18, 55, 00), Description="Bla-Bla-Bla Bla-Bla-Bla Bla-Bla-Bla." });
+            events.Add(new CalEvent { Id=111, Started=new DateTime(2024,8,15), Description="BlaBlaBlaBlaBla BlaBlaBla-Bla." });
             // TEST !!!!!!!!!!
 
             var eventsVm = new List<CalEventVM>();

@@ -9,7 +9,7 @@
             Id = calEvent.Id;
             DayOfMonth = calEvent.Started.Day;
             Description = calEvent.Description;
-            Time = time == "00:00" ? string.Empty : (time + " - ");
+            Time = time == "00:00" ? string.Empty : time;
         }
         public readonly int? Id;
         public readonly int DayOfMonth;
