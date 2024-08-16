@@ -1,17 +1,28 @@
-﻿namespace DotNet8.Models
+﻿using System.ComponentModel;
+
+namespace DotNet8.Models
 {
     public enum CalEventStatus
     {
+        [Description("Active")]
         Active,
+        [Description("Disabled")]
         Disabled,
+        [Description("Deleted")]
         Deleted
     }
 
+    // Description = Enumerations.GetEnumDescription((MyEnum)value);
+
     public enum CalEventRepeat
     {
+        [Description("Once")]
         ONCE,
+        [Description("Yearly")]
         YEARLY,
+        [Description("Monthly")]
         MONTHLY,
+        [Description("Every X days")]
         EVERYXDAYS,
     }
 
