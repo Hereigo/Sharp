@@ -15,8 +15,15 @@ body {
 }
 
 .col-md-9 {
-    background-color: aquamarine;
+    background-color: red;
     padding-left: 2rem;
+}
+
+/* ======== SIDEBAR ======== */
+
+.sidebar > ul {
+    background-color:antiquewhite;
+    padding-left:0;
 }
 
 /* ======== CALENDAR ======== */
@@ -71,10 +78,10 @@ body {
     position: relative;
 }
 
-    .day:hover {
+/*    .day:hover {
         background-color: rgb(255, 224, 185);
         cursor: pointer;
-    }
+    }*/
 
 div.number {
     color: rgb(0, 0, 166);
@@ -88,11 +95,11 @@ div.number {
     top: 2px;
 }
 
-.aToday {
+.today {
     background-color: rgb(255, 240, 155) !important;
 }
 
-    .aToday .number {
+    .today .number {
         border-radius: 3px;
         border: 1px solid red;
         color: red;
@@ -132,6 +139,10 @@ div.event {
 
     .col-md-9 {
         padding-left: .2rem;
+    }
+
+    .sidebar > ul {
+        padding-left: 1rem;
     }
 
     .main-content {

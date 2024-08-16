@@ -9,7 +9,7 @@
 <div class="container-fluid">
     <div class="row">
 
-        <main class="col-md-9">
+        <main class="col-md-10">
             <table class="calendar">
                 <thead>
                     <tr>
@@ -23,58 +23,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                    </tr>
-                    <tr>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                    </tr>
-                    <tr>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                    </tr>
-                    <tr>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                    </tr>
-                    <tr>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li></ul></div></td>
-                    </tr>
+                    @for (int r = 0; r < 5; r++)
+                    {
+                        <tr>
+                            @for (int d = 0; d < 7; d++)
+                            {
+                                if (daysCount == daysInMonth) daysCount = 0; // next mon.
+                                daysCount++;
+                                var modelItem = Model.Where(m => m.DayOfMonth == daysCount).ToList();
+
+                                <td class="day">
+                                    @await Html.PartialAsync("~/Views/CalEvents/EventCalendView.cshtml", Utils.GetCalEventVm(modelItem, daysCount))
+                                </td>
+                            }
+                        </tr>
+                    }
                 </tbody>
             </table>
         </main>
 
         @* *** SIDEBAR *** *@
 
-        <aside class="col-md-3 sidebar">
+        <aside class="col-md-2 sidebar">
             <ul>
                 <li>Aaaaaaa</li>
                 <li>Aaaaaaa</li>

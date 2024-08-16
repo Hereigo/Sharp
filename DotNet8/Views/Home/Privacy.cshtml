@@ -1,6 +1,89 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
+﻿@using DotNet8.Utils
+@model IEnumerable<DotNet8.Models.CalEventVM>
+@{
+    ViewData["Title"] = "Index";
+    var daysCount = 0;
+    var daysInMonth = Utils.GetMaxDayOfTheMonth(DateTime.Now);
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="container-fluid">
+    <div class="row">
+
+        <main class="col-md-10">
+            <table class="calendar">
+                <thead>
+                    <tr>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                        <th>Sun</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                    </tr>
+                    <tr>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                    </tr>
+                    <tr>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        
+                        <td class="day aToday"><div class="number">16</div><div class="event"><ul><li>160 (4w) ZTE</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                    </tr>
+                    <tr>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                    </tr>
+                    <tr>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                        <td class="day"><div class="number">20</div><div class="event"><ul><li>14:00 ENG</li><li>Bla-Bla-Bla ...</li></ul></div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+
+        @* *** SIDEBAR *** *@
+
+        <aside class="col-md-2 sidebar">
+            <ul>
+                <li>Aaaaaaa</li>
+                <li>Aaaaaaa</li>
+                <li>Aaaaaaa</li>
+                <li>Aaaaaaa</li>
+                <li>Aaaaaaa</li>
+            </ul>
+        </aside>
+
+    </div>
+</div>
