@@ -44,9 +44,7 @@ namespace DotNet8.Models
 
         public CalEvent(DateTime date)
         {
-            // Category = category;
             Day = date.Day;
-            //Description = null;
             EveryXDays = null;
             Modified = date;
             Month = date.Month;

@@ -1,4 +1,6 @@
-﻿namespace DotNet8.Models
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace DotNet8.Models
 {
     public class CalEventVM
     {
@@ -13,9 +15,25 @@
             Description = calEvent.Description;
             Time = time == "00:00" ? string.Empty : time;
         }
-        public readonly int? Id;
-        public readonly int DayOfMonth;
-        public readonly string Description;
-        public readonly string Time;
+
+        public CalEventCategory Category { get; set; }
+        public CalEventRepeat Repeat { get; set; }
+        public CalEventStatus Status { get; set; }
+
+        public DateTime Modified { get; set; }
+        public DateTime Started { get; set; }
+
+        public IEnumerable<SelectListItem> RepeatList { get; set; }
+        public IEnumerable<SelectListItem> StatusList { get; set; }
+
+        public int Day { get; set; }
+        public int DayOfMonth;
+        public int Month { get; set; }
+        public int Year { get; set; }
+        public int? EveryXDays { get; set; }
+        public int? Id;
+
+        public string Description;
+        public string Time;
     }
 }

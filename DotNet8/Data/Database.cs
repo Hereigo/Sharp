@@ -15,9 +15,9 @@ namespace DotNet8.Data
 
                     context.Database.EnsureCreated();
 
-                    if (context.CalEvents.Any()) // DB has been seeded already.
+                    if (context.CalEvents.Any())
                     {
-                        return;
+                        return; // DB has been seeded already.
                     }
 
                     var dtaToday = DateTime.Now;
