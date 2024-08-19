@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DotNet8.Models
 {
@@ -9,26 +8,22 @@ namespace DotNet8.Models
 
         public CalEventVM(CalEvent calEvent)
         {
-            var time = calEvent.Started.ToString("HH:mm");
-
             Id = calEvent.Id;
             DayOfMonth = calEvent.Started.Day;
             Description = calEvent.Description;
-            Time = time == "00:00" ? string.Empty : time;
+            Started = calEvent.Started;
+            Time = calEvent.Time;
         }
 
         public CalEventCategory Category { get; set; }
         public CalEventRepeat Repeat { get; set; }
         public CalEventStatus Status { get; set; }
 
-        public DateTime Modified { get; set; }
-
         //[DisplayFormat(DataFormatString="{0:D}")]
         //[DisplayFormat(ApplyFormatInEditMode=true, DataFormatString = "{0:yyyy.MM.dd}")]
         public DateTime Started { get; set; }
-
-        // public DateTime? Time { get; set; }
-        // public DateTime? Time { get; set; }
+        public DateTime Time { get; set; }
+        public DateTime Modified { get; set; }
 
         public IEnumerable<SelectListItem> RepeatList { get; set; }
         public IEnumerable<SelectListItem> StatusList { get; set; }
@@ -41,6 +36,6 @@ namespace DotNet8.Models
         public int? Id;
 
         public string Description;
-        public string Time;
+        
     }
 }

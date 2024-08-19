@@ -18,11 +18,11 @@
 
             <a asp-action="Edit" asp-route-id="@dayItem?.Id">
 
-                <span class="day-item-time">
-                    @dayItem?.Time
-                </span>
-                @if (!string.IsNullOrEmpty(dayItem?.Time))
+                @if (dayItem?.Time.Hour != 0)
                 {
+                    <span class="day-item-time">
+                        @dayItem?.Time
+                    </span>
                     <span> - </span>
                 }
                 @dayItem?.Description

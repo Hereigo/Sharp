@@ -24,6 +24,7 @@ namespace DotNet8.Controllers
             var TEST = new CalEventVM()
             {
                 Started = DateTime.Now,
+                Time = new DateTime(2000, 1, 1, 0, 0, 0), // ??
                 EveryXDays = 0,
                 Description = string.Empty,
                 Repeat = CalEventRepeat.ONCE,
