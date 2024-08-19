@@ -42,6 +42,20 @@ namespace DotNet8.Models
 
         public CalEvent() { }
 
+        public CalEvent(DateTime date)
+        {
+            // Category = category;
+            Day = date.Day;
+            //Description = null;
+            EveryXDays = null;
+            Modified = date;
+            Month = date.Month;
+            Repeat = CalEventRepeat.ONCE;
+            Started = date;
+            Status = CalEventStatus.Active;
+            Year = date.Year;
+        }
+
         public CalEvent(string description, CalEventCategory category)
         {
             var now = DateTime.Now;

@@ -22,6 +22,15 @@ namespace DotNet8.Controllers
             {
                 eventsVm.Add(new CalEventVM(evt));
             }
+
+            var today = DateTime.Now;
+            var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(today);
+
+            for (var i = 1; i <= monthMaxDay; i++)
+            {
+                eventsVm.Add(new CalEventVM(new CalEvent(new DateTime(today.Year, today.Month, i))));
+            }
+
             return View(eventsVm);
         }
 

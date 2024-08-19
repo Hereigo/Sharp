@@ -4,9 +4,9 @@ namespace DotNet8.Utils
 {
     public static class Utils
     {
-        public static int GetMaxDayOfTheMonth(DateTime now)
+        public static int GetMaxDayOfTheMonth(DateTime date)
         {
-            return new DateTime(now.Year, now.Month, 1).AddMonths(1).AddDays(-1).Day;
+            return new DateTime(date.Year, date.Month, 1).AddMonths(1).AddDays(-1).Day;
         }
 
         public static List<CalEventVM> GetCalEventVm(List<CalEventVM>? calEvent, int day)
@@ -17,9 +17,7 @@ namespace DotNet8.Utils
             }
             else
             {
-                return new List<CalEventVM> {
-                    // new CalEventVM(new CalEvent() { Started = new DateTime(2024, 07, day) })
-                };
+                return new List<CalEventVM> { };
             }
         }
     }

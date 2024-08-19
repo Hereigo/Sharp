@@ -38,7 +38,7 @@ header .navbar {
 /* ======== CALENDAR ======== */
 
 .row > main {
-    margin-top: -10px;
+    margin-top: -7px;
 }
 
 .calendar {
@@ -51,7 +51,6 @@ header .navbar {
         font-weight: 600;
         font-size: 11px;
         letter-spacing: 2px;
-        padding: 0px;
         text-align: center;
         text-transform: uppercase;
     }

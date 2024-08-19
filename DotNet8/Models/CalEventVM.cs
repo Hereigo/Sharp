@@ -2,6 +2,8 @@
 {
     public class CalEventVM
     {
+        public CalEventVM() { }
+
         public CalEventVM(CalEvent calEvent)
         {
             var time = calEvent.Started.ToString("HH:mm");
