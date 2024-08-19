@@ -19,24 +19,28 @@ header .navbar {
     padding-top: 0;
 }
 
-.row > main {
-    margin-top: -15px;
-}
-
-.row-item-act{
-    margin:2rem;
-}
-
 /* ======== SIDEBAR ======== */
+
 .sidebar > ul {
     background-color: antiquewhite;
     padding-left: 0;
 }
 
+/* ======== CRUD PAGES ======== */
+
+.row-crud-page {
+    margin: 2rem;
+}
+
 /* ======== CALENDAR ======== */
+
+.row > main {
+    margin-top: -10px;
+}
 
 .calendar {
     border-collapse: separate;
+    margin:0 auto;
 }
 
     .calendar th {
@@ -49,14 +53,9 @@ header .navbar {
         text-transform: uppercase;
     }
 
-    .calendar td {
-        text-align: left;
-    }
-
     .calendar th, .calendar td {
-        border-radius: 5px;
         border: 1px solid var(--borders-color);
-        box-sizing: border-box;
+        border-radius: 5px;
         padding: 5px;
     }
 
@@ -72,9 +71,10 @@ header .navbar {
         background-color: white;
         font-weight: 400;
         height: 120px;
+        text-align: left;
         transition: all 0.3s;
         vertical-align: initial;
-        width: 14.285%;
+        width: 1%;
     }
 
 .day {
@@ -95,7 +95,6 @@ div.number {
 }
 
 .day-item-line {
-    /*    background-color: antiquewhite;*/
     font-weight: 200;
     line-height: 17px;
     margin-bottom: .8rem;
@@ -140,12 +139,12 @@ div.number {
 @media screen and (max-width: 768px) {
 
     .row > main {
-        padding-left: .2rem;
+        padding-left: .1rem;
         padding-right: .1rem;
     }
 
     .sidebar > ul {
-        padding-left: 1rem;
+        padding-left: .7rem;
     }
 
     .main-content {
