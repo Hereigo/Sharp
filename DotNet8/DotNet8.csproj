@@ -20,13 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\CalEvents\Index_OLD.cshtml">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Data\Migrations\" />
   </ItemGroup>
 

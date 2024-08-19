@@ -1,7 +1,10 @@
 :root {
-    --color-blue: #007ACC;
-    --color-blue-dark: #0062A3;
     --borders-color: darkgray;
+    --calend-another-month: rgb(223, 230, 230);
+    --calend-today: rgb(255, 240, 155) !important;
+    --calend-week: #ffe0b4;
+    --calend-weekend: rgb(255, 204, 204);
+    --calend-weekend-days: rgb(251, 228, 228);
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -44,7 +47,7 @@ header .navbar {
 }
 
     .calendar th {
-        background-color: #ffe0b4;
+        background-color: var(--calend-week);
         font-weight: 600;
         font-size: 11px;
         letter-spacing: 2px;
@@ -60,11 +63,11 @@ header .navbar {
     }
 
         .calendar th:nth-child(n+6) {
-            background-color: rgb(255, 204, 204);
+            background-color: var(--calend-weekend);
         }
 
         .calendar td:nth-child(n+6) {
-            background-color: rgb(251, 228, 228);
+            background-color: var(--calend-weekend-days);
         }
 
     .calendar td {
@@ -111,12 +114,12 @@ div.number {
 }
 
 .today {
-    background-color: rgb(255, 240, 155) !important;
+    background-color: var(--calend-today);
 }
 
     .today .number {
-        border-radius: 3px;
         border: 1px solid red;
+        border-radius: 3px;
         color: red;
         font-weight: 900;
     }
@@ -127,12 +130,8 @@ div.number {
 }
 
 .day.nextMon {
-    background-color: rgb(223, 230, 230);
+    background-color: var(--calend-another-month);
 }
-
-    .day.nextMon:hover {
-        background-color: rgb(255, 224, 185);
-    }
 
 /* ======== MEDIA-QUERIES ======== */
 
