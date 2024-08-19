@@ -27,6 +27,9 @@ namespace DotNet8.Models
         //[DisplayFormat(ApplyFormatInEditMode=true, DataFormatString = "{0:yyyy.MM.dd}")]
         public DateTime Started { get; set; }
 
+        // public DateTime? Time { get; set; }
+        // public DateTime? Time { get; set; }
+
         public IEnumerable<SelectListItem> RepeatList { get; set; }
         public IEnumerable<SelectListItem> StatusList { get; set; }
 
