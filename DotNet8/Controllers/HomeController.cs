@@ -23,15 +23,18 @@ namespace DotNet8.Controllers
         {
             var TEST = new CalEventVM()
             {
+                Started = DateTime.Now,
+                EveryXDays = 0,
+                Description = string.Empty,
                 Repeat = CalEventRepeat.ONCE,
                 RepeatList = Enum.GetValues(typeof(CalEventRepeat))
-                    .Cast<CalEventRepeat>()
-                    .Select(e => new SelectListItem
-                    {
-                        Value = e.ToString(),
-                        Text = e.ToString()
-                    })
-                    .ToList()
+                                .Cast<CalEventRepeat>()
+                                .Select(e => new SelectListItem
+                                {
+                                    Value = e.ToString(),
+                                    Text = e.ToString()
+                                })
+                                .ToList()
             };
 
             return View(TEST);

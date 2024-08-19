@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DotNet8.Models
 {
@@ -21,6 +22,9 @@ namespace DotNet8.Models
         public CalEventStatus Status { get; set; }
 
         public DateTime Modified { get; set; }
+
+        //[DisplayFormat(DataFormatString="{0:D}")]
+        //[DisplayFormat(ApplyFormatInEditMode=true, DataFormatString = "{0:yyyy.MM.dd}")]
         public DateTime Started { get; set; }
 
         public IEnumerable<SelectListItem> RepeatList { get; set; }
