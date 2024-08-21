@@ -1,5 +1,6 @@
 ﻿@using DotNet8.Utils
 @model IEnumerable<DotNet8.Models.CalEventVM>
+
 @{
     ViewData["Title"] = "Index";
     var daysCount = 0;
@@ -29,12 +30,13 @@
                             @for (int d = 0; d < 7; d++)
                             {
                                 if (daysCount == daysInMonth) daysCount = 0; // next mon.
-
                                 daysCount++;
-                                var modelItem = Model.Where(m => m.DayOfMonth == daysCount).ToList();
+                                var modelItem = Model.Where(m => m.Started.Day == daysCount).ToList();
 
                                 @* <td class="day"> *@
+
                                     @await Html.PartialAsync("~/Views/CalEvents/EventCalendView.cshtml", Utils.GetCalEventVm(modelItem, daysCount))
+
                                 @* </td> *@
                             }
                         </tr>

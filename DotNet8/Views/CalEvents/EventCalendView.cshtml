@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<DotNet8.Models.CalEventVM>
 
+@{
+    var day = Model?.FirstOrDefault()?.Started.Day;
+}
+
+
 <td class="day">
 
     <div class="number">
-
-        <a asp-action="Create" asp-route-id="@Model?.FirstOrDefault()?.DayOfMonth">
-            @Model?.FirstOrDefault()?.DayOfMonth
-        </a>
-
+        <a asp-action="Create" asp-route-id="@day"> @day </a>
     </div>
 
     <div>&nbsp;</div>

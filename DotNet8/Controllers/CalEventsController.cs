@@ -1,6 +1,7 @@
 ﻿using DotNet8.Data;
 using DotNet8.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace DotNet8.Controllers
@@ -49,25 +50,63 @@ namespace DotNet8.Controllers
             return View(calEvent);
         }
 
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
-            return View();
+            var now = DateTime.Now;
+
+            var newEvent = new CalEventVM()
+            {
+                EveryXDays = 0,
+                Started = new DateTime(now.Year, now.Month, id ?? 1),
+                Time = new TimeSpan(0, 0, 0),
+                Repeat = CalEventRepeat.Once,
+                RepeatList = Enum.GetValues(typeof(CalEventRepeat))
+                    .Cast<CalEventRepeat>()
+                    .Select(e => new SelectListItem { Value = e.ToString(), Text = e.ToString() }).ToList()
+            };
+
+            return View(newEvent);
         }
 
         // POST: CalEvents/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PeriodSize,Period,Status,Modified,Started,Description")] CalEvent calEvent)
+        public async Task<IActionResult> Create([Bind("Description,Started,Time,EveryXDays,Repeat")] CalEventVM evnt)
         {
+            if (evnt is null)
+            {
+                throw new ArgumentNullException(nameof(evnt));
+            }
             if (ModelState.IsValid)
             {
+                // TODO:
+                // Process this !!!
+                // if (evnt.Repeat == CalEventRepeat.EveryXdays)
+
+                var calEvent = new CalEvent()
+                {
+                    // TODO:
+                    // Category = CalEventCategory...
+                    Day = evnt.Started.Day,
+                    Description = evnt.Description,
+                    EveryXDays = evnt.EveryXDays,
+                    Modified = DateTime.Now,
+                    Month = (evnt.Repeat == CalEventRepeat.Monthly) ? 0 : evnt.Started.Month,
+                    Repeat = evnt.Repeat,
+                    Started = evnt.Started,
+                    Status = CalEventStatus.Active,
+                    Time = evnt.Time,
+                    Year = (evnt.Repeat == CalEventRepeat.Yearly) ? 0 : evnt.Started.Year,
+                };
+
                 _context.Add(calEvent);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(calEvent);
+            return View(evnt);
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -84,9 +123,6 @@ namespace DotNet8.Controllers
             return View(calEvent);
         }
 
-        // POST: CalEvents/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,PeriodSize,Period,Status,Modified,Started,Description")] CalEvent calEvent)
@@ -119,7 +155,6 @@ namespace DotNet8.Controllers
             return View(calEvent);
         }
 
-        // GET: CalEvents/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,7 +171,6 @@ namespace DotNet8.Controllers
             return View(calEvent);
         }
 
-        // POST: CalEvents/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

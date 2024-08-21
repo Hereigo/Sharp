@@ -35,6 +35,10 @@ header .navbar {
     margin: 2rem;
 }
 
+    .row-crud-page .form-group {
+        margin-bottom: .5rem;
+    }
+
 /* ======== CALENDAR ======== */
 
 .row > main {
@@ -43,7 +47,7 @@ header .navbar {
 
 .calendar {
     border-collapse: separate;
-    margin:0 auto;
+    margin: 0 auto;
 }
 
     .calendar th {
@@ -103,10 +107,10 @@ div.number {
     word-wrap: break-word;
 }
 
-.day-item-line > a {
-    color: black;
-    text-decoration: none;
-}
+    .day-item-line > a {
+        color: black;
+        text-decoration: none;
+    }
 
 .day-item-time {
     background-color: yellow;
