@@ -36,7 +36,8 @@ namespace DotNet8.Models
 
         public DateTime Modified { get; set; }
         public DateTime Started { get; set; }
-        public DateTime Time { get; set; }
+
+        public TimeSpan Time { get; set; }
         
         public int Day { get; set; }
         public int Month { get; set; }

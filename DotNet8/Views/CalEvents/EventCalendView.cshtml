@@ -18,7 +18,7 @@
 
             <a asp-action="Edit" asp-route-id="@dayItem?.Id">
 
-                @if (dayItem?.Time.Hour != 0)
+                @if (dayItem?.Time.Hours != 0)
                 {
                     <span class="day-item-time">
                         @dayItem?.Time

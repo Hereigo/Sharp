@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DotNet8.Models
 {
@@ -21,8 +22,15 @@ namespace DotNet8.Models
 
         //[DisplayFormat(DataFormatString="{0:D}")]
         //[DisplayFormat(ApplyFormatInEditMode=true, DataFormatString = "{0:yyyy.MM.dd}")]
+
+        //[DisplayFormat(DataFormatString="{0:yyyy.MM.dd}")]
+        [DataType(DataType.Date)]
         public DateTime Started { get; set; }
-        public DateTime Time { get; set; }
+
+        [DataType(DataType.Time)]
+        [DisplayFormat(DataFormatString="HH:mm")]
+        public TimeSpan Time { get; set; }
+
         public DateTime Modified { get; set; }
 
         public IEnumerable<SelectListItem> RepeatList { get; set; }
