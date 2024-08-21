@@ -17,13 +17,13 @@ namespace DotNet8.Models
     public enum CalEventRepeat
     {
         [Description("Once")]
-        ONCE,
+        Once,
         [Description("Yearly")]
-        YEARLY,
+        Yearly,
         [Description("Monthly")]
-        MONTHLY,
+        Monthly,
         [Description("Every X days")]
-        EVERYXDAYS,
+        EveryXdays,
     }
 
     public class CalEvent
@@ -54,7 +54,7 @@ namespace DotNet8.Models
             EveryXDays = null;
             Modified = date;
             Month = date.Month;
-            Repeat = CalEventRepeat.ONCE;
+            Repeat = CalEventRepeat.Once;
             Started = date;
             Status = CalEventStatus.Active;
             Year = date.Year;
@@ -69,7 +69,7 @@ namespace DotNet8.Models
             EveryXDays = null;
             Modified = now;
             Month = now.Month;
-            Repeat = CalEventRepeat.ONCE;
+            Repeat = CalEventRepeat.Once;
             Started = now;
             Status = CalEventStatus.Active;
             Year = now.Year;

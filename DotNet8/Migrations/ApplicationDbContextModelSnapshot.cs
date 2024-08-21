@@ -40,7 +40,7 @@ namespace DotNet8.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EveryXDays")
+                    b.Property<int?>("EveryXdays")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Modified")

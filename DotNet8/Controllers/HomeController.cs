@@ -25,9 +25,9 @@ namespace DotNet8.Controllers
             {
                 Started = DateTime.Now,
                 Time = new TimeSpan(0, 0, 0),
-                EveryXDays = 555,
+                EveryXDays = 0,
                 Description = string.Empty,
-                Repeat = CalEventRepeat.ONCE,
+                Repeat = CalEventRepeat.Once,
                 RepeatList = Enum.GetValues(typeof(CalEventRepeat))
                                 .Cast<CalEventRepeat>()
                                 .Select(e => new SelectListItem
@@ -46,6 +46,9 @@ namespace DotNet8.Controllers
         public async Task<IActionResult> Privacy(CalEventVM calEventVM) // [Bind("Id,PeriodSize,Period,Status,Modified,Started,Description")] CalEvent calEvent)
         {
             var TEST = calEventVM;
+
+            // TODO:
+            // CONTINUE HERE ...
 
             return View();
         }

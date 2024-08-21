@@ -20,14 +20,14 @@
 
                 <div class="form-group">
                     <label asp-for="Started" class="control-label"></label>
-                    
-                    <input type="time" asp-for="Time" value="@timeWithNoSeconds" class="form-control" />
-
-                    <input type="date" asp-for="Started" class="form-control" />
-
-@*                     <input type="datetime" asp-for="Started" class="form-control" />
-                    <input type="datetime-local" asp-for="Started" class="form-control" /> *@
-                    
+                    <div class="row">
+                        <div class="col-3">
+                            <input type="time" asp-for="Time" class="form-control" value="@timeWithNoSeconds" />
+                        </div>
+                        <div class="col-9">
+                            <input type="date" asp-for="Started" class="form-control" />
+                        </div>
+                    </div>
                     <span asp-validation-for="Started" class="text-danger"></span>
                 </div>
 
@@ -37,10 +37,10 @@
                     <span asp-validation-for="EveryXDays" class="text-danger"></span>
                 </div>
 
-
                 <div class="form-group">
                     <label asp-for="Repeat"></label>
-                    @Html.DropDownListFor(model => model.Repeat, Model.RepeatList, "Select Repeat Period", new { @class = "form-control" })
+                    <select asp-for="Repeat" asp-items="Html.GetEnumSelectList<CalEventRepeat>()" class="form-control">
+                    </select>
                     <span asp-validation-for="Repeat" class="text-danger"></span>
                 </div>
 
