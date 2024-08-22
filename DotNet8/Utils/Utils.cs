@@ -9,7 +9,7 @@ namespace DotNet8.Utils
             return new DateTime(date.Year, date.Month, 1).AddMonths(1).AddDays(-1).Day;
         }
 
-        public static List<CalEventVM> GetCalEventVm(List<CalEventVM>? calEvent, int day)
+        public static List<CalEvent> GetCalEventVm(List<CalEvent>? calEvent, int day)
         {
             if (calEvent?.Count > 0)
             {
@@ -17,7 +17,7 @@ namespace DotNet8.Utils
             }
             else
             {
-                return new List<CalEventVM> { };
+                return new List<CalEvent> { };
             }
         }
     }

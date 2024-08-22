@@ -1,49 +1,44 @@
-﻿using System.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DotNet8.Models
 {
     public enum CalEventStatus
     {
-        [Description("Active")]
         Active,
-        [Description("Disabled")]
         Disabled,
-        [Description("Deleted")]
         Deleted
     }
 
-    // Description = Enumerations.GetEnumDescription((MyEnum)value);
-
     public enum CalEventRepeat
     {
-        [Description("Once")]
         Once,
-        [Description("Yearly")]
         Yearly,
-        [Description("Monthly")]
         Monthly,
-        [Description("Every X days")]
         EveryXdays,
     }
 
     public class CalEvent
     {
         public int Id { get; set; }
+        public int Day { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
+        public int? EveryXDays { get; set; }
 
         public CalEventCategory? Category { get; set; }
         public CalEventRepeat Repeat { get; set; }
         public CalEventStatus Status { get; set; }
 
+        [DataType(DataType.Date)]
         public DateTime Modified { get; set; }
+
+        [DataType(DataType.Date)]
         public DateTime Started { get; set; }
 
+        [DataType(DataType.Time)]
+        [DisplayFormat(DataFormatString = "HH:mm")]
         public TimeSpan Time { get; set; }
-        
-        public int Day { get; set; }
-        public int Month { get; set; }
-        public int Year { get; set; }
-        public int? EveryXDays { get; set; }
-        
+
         public string Description { get; set; }
 
         public CalEvent() { }

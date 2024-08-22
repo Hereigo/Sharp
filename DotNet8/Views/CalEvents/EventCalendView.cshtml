@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DotNet8.Models.CalEventVM>
+﻿@model IEnumerable<DotNet8.Models.CalEvent>
 
 @{
     var day = Model?.FirstOrDefault()?.Started.Day;
@@ -18,7 +18,7 @@
 
             <a asp-action="Edit" asp-route-id="@dayItem?.Id">
 
-                @if (dayItem?.Time.Hours != 0)
+                @if (dayItem?.Time.Hours != 0 || dayItem?.Time.Minutes != 0)
                 {
                     <span class="day-item-time">
                         @dayItem?.Time.ToString(@"hh\:mm")
