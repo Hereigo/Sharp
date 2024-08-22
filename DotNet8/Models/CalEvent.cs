@@ -30,7 +30,7 @@ namespace DotNet8.Models
     {
         public int Id { get; set; }
 
-        public CalEventCategory Category { get; set; }
+        public CalEventCategory? Category { get; set; }
         public CalEventRepeat Repeat { get; set; }
         public CalEventStatus Status { get; set; }
 

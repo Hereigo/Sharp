@@ -28,14 +28,14 @@ namespace DotNet8.Controllers
                 EveryXDays = 0,
                 Description = string.Empty,
                 Repeat = CalEventRepeat.Once,
-                RepeatList = Enum.GetValues(typeof(CalEventRepeat))
-                                .Cast<CalEventRepeat>()
-                                .Select(e => new SelectListItem
-                                {
-                                    Value = e.ToString(),
-                                    Text = e.ToString()
-                                })
-                                .ToList()
+                //RepeatList = Enum.GetValues(typeof(CalEventRepeat))
+                //                .Cast<CalEventRepeat>()
+                //                .Select(e => new SelectListItem
+                //                {
+                //                    Value = e.ToString(),
+                //                    Text = e.ToString()
+                //                })
+                //                .ToList()
             };
 
             return View(TEST);

@@ -60,9 +60,9 @@ namespace DotNet8.Controllers
                 Started = new DateTime(now.Year, now.Month, id ?? 1),
                 Time = new TimeSpan(0, 0, 0),
                 Repeat = CalEventRepeat.Once,
-                RepeatList = Enum.GetValues(typeof(CalEventRepeat))
-                    .Cast<CalEventRepeat>()
-                    .Select(e => new SelectListItem { Value = e.ToString(), Text = e.ToString() }).ToList()
+                //RepeatList = Enum.GetValues(typeof(CalEventRepeat))
+                //    .Cast<CalEventRepeat>()
+                //    .Select(e => new SelectListItem { Value = e.ToString(), Text = e.ToString() }).ToList()
             };
 
             return View(newEvent);
@@ -74,8 +74,18 @@ namespace DotNet8.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Description,Started,Time,EveryXDays,Repeat")] CalEventVM evnt)
+        [Consumes("application/x-www-form-urlencoded")]
+        // public async Task<IActionResult> Create([FromForm] CalEventVM evnt)
+        // public async Task<IActionResult> Create([Bind("Description,Started,Time,EveryXDays,Repeat")] CalEventVM evnt)
+        // public async Task<IActionResult> Create([Bind("Description,Started,Time,EveryXDays,Repeat")] CalEventVM evnt, string Description)
+        public async Task<IActionResult> Create(string Description, CalEventVM evnt)
         {
+            if (!ModelState.IsValid)
+            {
+                // For Debugging.
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+            }
+
             if (evnt is null)
             {
                 throw new ArgumentNullException(nameof(evnt));
@@ -91,7 +101,7 @@ namespace DotNet8.Controllers
                     // TODO:
                     // Category = CalEventCategory...
                     Day = evnt.Started.Day,
-                    Description = evnt.Description,
+                    Description = Description,
                     EveryXDays = evnt.EveryXDays,
                     Modified = DateTime.Now,
                     Month = (evnt.Repeat == CalEventRepeat.Monthly) ? 0 : evnt.Started.Month,

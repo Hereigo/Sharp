@@ -4,7 +4,6 @@
     var day = Model?.FirstOrDefault()?.Started.Day;
 }
 
-
 <td class="day">
 
     <div class="number">
@@ -22,7 +21,7 @@
                 @if (dayItem?.Time.Hours != 0)
                 {
                     <span class="day-item-time">
-                        @dayItem?.Time
+                        @dayItem?.Time.ToString(@"hh\:mm")
                     </span>
                     <span> - </span>
                 }
