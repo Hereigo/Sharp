@@ -20,14 +20,8 @@ namespace DotNet8.Data
                         return; // DB has been seeded already.
                     }
 
-                    var dtaToday = DateTime.Now;
-                    var defaultCategory = new CalEventCategory { Name = "default" };
-
-                    context.CalEventCategories.Add(defaultCategory);
-                    context.SaveChanges();
-
                     foreach (CalEvent evt in new CalEvent[] {
-                        new("Test aaa aaa ...", defaultCategory){},
+                        new(DateTime.Now, "INITIAL DEMO."){},
                     })
                     {
                         context.CalEvents.Add(evt);

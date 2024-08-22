@@ -22,16 +22,12 @@ namespace DotNet8.Controllers
             {
                 eventsVm.Add(evt);
             }
-
             var today = DateTime.Now;
             var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(today);
-
             for (var i = 1; i <= monthMaxDay; i++)
             {
-                eventsVm.Add(new CalEvent(
-                    new DateTime(today.Year, today.Month, i)));
+                eventsVm.Add(new CalEvent(new DateTime(today.Year, today.Month, i)));
             }
-
             return View(eventsVm);
         }
 
@@ -52,7 +48,6 @@ namespace DotNet8.Controllers
         public IActionResult Create(int? id)
         {
             var now = DateTime.Now;
-
             var newEvent = new CalEvent()
             {
                 EveryXDays = 0,
@@ -60,7 +55,6 @@ namespace DotNet8.Controllers
                 Time = new TimeSpan(0, 0, 0),
                 Repeat = CalEventRepeat.Once,
             };
-
             return View(newEvent);
         }
 
@@ -100,7 +94,6 @@ namespace DotNet8.Controllers
                     Time = evnt.Time,
                     Year = (evnt.Repeat == CalEventRepeat.Yearly) ? 0 : evnt.Started.Year,
                 };
-
                 _context.Add(calEvent);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
