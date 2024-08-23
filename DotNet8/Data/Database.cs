@@ -21,7 +21,7 @@ namespace DotNet8.Data
                     }
 
                     foreach (CalEvent evt in new CalEvent[] {
-                        new(DateTime.Now, "INITIAL DEMO."){},
+                        new(DateTime.Now, "Initial Demo."){},
                     })
                     {
                         context.CalEvents.Add(evt);

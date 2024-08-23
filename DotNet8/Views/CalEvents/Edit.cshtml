@@ -2,6 +2,7 @@
 
 @{
     var timeWithNoSeconds = Model.Time.ToString(@"hh\:mm");
+    var everyXdaysFieldDisplay = Model.Repeat == CalEventRepeat.EveryXdays ? "block" : "none";
 }
 
 <div class="row-crud-page">
@@ -19,16 +20,21 @@
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
 
-                <div class="form-group">
-                    <label asp-for="Time" class="control-label"></label>
-                    <input type="time" asp-for="Time" class="form-control" value="@timeWithNoSeconds" />
-                    <span asp-validation-for="Time" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Started" class="control-label"></label>
-                    <input asp-for="Started" class="form-control" />
-                    <span asp-validation-for="Started" class="text-danger"></span>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label asp-for="Time" class="control-label"></label>
+                            <input type="time" asp-for="Time" class="form-control" value="@timeWithNoSeconds" />
+                            <span asp-validation-for="Time" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label asp-for="Started" class="control-label"></label>
+                            <input asp-for="Started" class="form-control" />
+                            <span asp-validation-for="Started" class="text-danger"></span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -36,6 +42,30 @@
                     <select asp-for="Repeat" asp-items="Html.GetEnumSelectList<CalEventRepeat>()" class="form-control">
                     </select>
                     <span asp-validation-for="Repeat" class="text-danger"></span>
+                </div>
+
+                <div id="everyXdaysField" style="display:@everyXdaysFieldDisplay" class="form-group">
+                    <label asp-for="EveryXDays" class="control-label"></label>
+                    <input type="number" asp-for="EveryXDays" class="form-control" />
+                    <span asp-validation-for="EveryXDays" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <input readonly asp-for="Day" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <input readonly asp-for="Month" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <input readonly asp-for="Year" class="form-control" />
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -52,12 +82,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="EveryXDays" class="control-label"></label>
-                    <input type="number" asp-for="EveryXDays" class="form-control" />
-                    <span asp-validation-for="EveryXDays" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
                     <br />
                     <input type="submit" value="Save" class="btn btn-primary" /> &nbsp; | &nbsp; <a asp-action="Index">Back to List</a>
                 </div>
@@ -66,9 +90,9 @@
     </div>
     <hr />
     <div>
-        <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" />
+        <form asp-action="Delete" id="deleteForm">
+            <input type="hidden" asp-for="Id" />
+            <input id="deleteInput" type="submit" value="Delete" class="btn btn-danger" />
         </form>
     </div>
 </div>
@@ -78,3 +102,27 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        document.getElementById("deleteInput").addEventListener("click", function (event) {
+            event.preventDefault();
+            if (confirm("Want to Delete?")) {
+                document.getElementById("deleteForm").submit();
+            }
+        });
+
+        document.querySelector("select#Repeat").addEventListener("change", function (e) {
+            let everyXdaysField = document.querySelector("#everyXdaysField");
+            let selected = e.target.value;
+            let selectedText = e.target.querySelector('option[value="' + selected + '"]').text;
+            if (selectedText == "EveryXdays") {
+                everyXdaysField.style.display = "block";
+            } else {
+                everyXdaysField.style.display = "none";
+            }
+        });
+
+    });
+</script>
