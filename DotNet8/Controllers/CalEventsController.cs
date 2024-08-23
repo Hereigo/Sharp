@@ -21,6 +21,30 @@ namespace DotNet8.Controllers
             foreach (var evt in events)
             {
                 eventsVm.Add(evt);
+                if (evt.Repeat == CalEventRepeat.EveryXdays)
+                {
+                    var nextDate = evt.Started.AddDays(evt.EveryXDays.Value);
+                    var isCurrentMonth = true;
+
+                    while (nextDate.Month == evt.Month)
+                    {
+                        eventsVm.Add(new CalEvent()
+                        {
+                            Id = evt.Id,
+                            Day = evt.Started.Day,
+                            Description = evt.Description,
+                            EveryXDays = evt.EveryXDays,
+                            Modified = evt.Modified,
+                            Month = (evt.Repeat == CalEventRepeat.Monthly) ? 0 : evt.Started.Month,
+                            Repeat = evt.Repeat,
+                            Started = nextDate,
+                            Status = evt.Status,
+                            Time = evt.Time,
+                            Year = (evt.Repeat == CalEventRepeat.Yearly) ? 0 : evt.Started.Year
+                        });
+                        nextDate = nextDate.AddDays(evt.EveryXDays.Value);
+                    }
+                }
             }
             var today = DateTime.Now;
             var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(today);
@@ -51,6 +75,7 @@ namespace DotNet8.Controllers
             var newEvent = new CalEvent()
             {
                 EveryXDays = 0,
+                Modified = DateTime.Now,
                 Started = new DateTime(now.Year, now.Month, id ?? 1),
                 Time = new TimeSpan(0, 0, 0),
                 Repeat = CalEventRepeat.Once,
@@ -70,9 +95,8 @@ namespace DotNet8.Controllers
             {
                 throw new ArgumentNullException(nameof(evnt));
             }
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) // For Debugging.
             {
-                // For Debugging.
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
             }
             if (ModelState.IsValid)

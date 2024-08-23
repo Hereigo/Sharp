@@ -30,7 +30,7 @@ namespace DotNet8.Models
         public CalEventRepeat Repeat { get; set; }
         public CalEventStatus Status { get; set; }
 
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         public DateTime Modified { get; set; }
 
         [DataType(DataType.Date)]
