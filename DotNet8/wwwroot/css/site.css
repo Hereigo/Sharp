@@ -42,12 +42,12 @@ header .navbar {
 /* ======== CALENDAR ======== */
 
 .row > main {
-    margin-top: -7px;
+    margin-top: -12px;
 }
 
 .calendar {
     border-collapse: separate;
-    margin: 0 auto;
+    margin-left: 1rem;
 }
 
     .calendar th {
@@ -69,10 +69,6 @@ header .navbar {
             background-color: var(--calend-weekend);
         }
 
-        .calendar td:nth-child(n+6) {
-            background-color: var(--calend-weekend-days);
-        }
-
     .calendar td {
         background-color: white;
         font-weight: 400;
@@ -83,22 +79,44 @@ header .navbar {
         width: 1%;
     }
 
+        .calendar td:nth-child(n+6) {
+            background-color: var(--calend-weekend-days);
+        }
+
+            .calendar td:nth-child(n+6).nextMon {
+                background-color: var(--calend-another-month);
+            }
+
 .day {
     padding-top: 1.5rem;
     position: relative;
 }
 
-div.number {
-    color: rgb(0, 0, 166);
-    float: right;
-    font-size: 16px;
-    font-weight: 500;
-    padding-left: 3px;
-    padding-right: 3px;
-    position: absolute;
-    right: 5px;
-    top: 2px;
-}
+    .day .number {
+        float: right;
+        font-size: 16px;
+        font-weight: 500;
+        padding-left: 3px;
+        padding-right: 3px;
+        position: absolute;
+        right: 5px;
+        top: 2px;
+    }
+
+    .day.nextMon {
+        background-color: var(--calend-another-month);
+    }
+
+    .day.today {
+        background-color: var(--calend-today);
+    }
+
+        .day.today .number {
+            border: 1px solid red;
+            border-radius: 3px;
+            color: red;
+            font-weight: 900;
+        }
 
 .day-item-line {
     font-weight: 200;
@@ -116,31 +134,22 @@ div.number {
     background-color: yellow;
 }
 
-.today {
-    background-color: var(--calend-today);
-}
-
-    .today .number {
-        border: 1px solid red;
-        border-radius: 3px;
-        color: red;
-        font-weight: 900;
-    }
-
 .bday {
     color: hotpink;
     font-weight: 600;
-}
-
-.day.nextMon {
-    background-color: var(--calend-another-month);
 }
 
 /* ======== MEDIA-QUERIES ======== */
 
 @media screen and (max-width: 768px) {
 
+    .navbar-toggler-icon {
+        width: 1em;
+        height: 1em;
+    }
+
     .row > main {
+        margin-top: -15px;
         padding-left: .1rem;
         padding-right: .1rem;
     }
@@ -156,12 +165,21 @@ div.number {
 
     .calendar {
         border-collapse: collapse;
+        margin: 0 auto;
     }
 
         .calendar td {
             height: 20px;
             padding: 5px;
         }
+
+    .day .number {
+        padding-left: 2px;
+        padding-right: 2px;
+        font-size: 14px;
+        right: 2px;
+        top: 1px;
+    }
 }
 
 @media screen and (max-width: 500px) {

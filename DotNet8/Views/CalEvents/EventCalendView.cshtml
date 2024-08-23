@@ -1,34 +1,30 @@
 ﻿@model IEnumerable<DotNet8.Models.CalEvent>
-
 @{
     var day = Model?.FirstOrDefault()?.Started.Day;
 }
 
-<td class="day">
+<div class="number">
+    <a asp-action="Create" asp-route-id="@day"> @day </a>
+</div>
 
-    <div class="number">
-        <a asp-action="Create" asp-route-id="@day"> @day </a>
+<div>&nbsp;</div>
+
+@foreach (var dayItem in Model)
+{
+    <div class="day-item-line">
+
+        <a asp-action="Edit" asp-route-id="@dayItem?.Id">
+
+            @if (dayItem?.Time.Hours != 0 || dayItem?.Time.Minutes != 0)
+            {
+                <span class="day-item-time">
+                    @dayItem?.Time.ToString(@"hh\:mm")
+                </span>
+                <span> - </span>
+            }
+            @dayItem?.Description
+
+        </a>
+
     </div>
-
-    <div>&nbsp;</div>
-
-    @foreach (var dayItem in Model)
-    {
-        <div class="day-item-line">
-
-            <a asp-action="Edit" asp-route-id="@dayItem?.Id">
-
-                @if (dayItem?.Time.Hours != 0 || dayItem?.Time.Minutes != 0)
-                {
-                    <span class="day-item-time">
-                        @dayItem?.Time.ToString(@"hh\:mm")
-                    </span>
-                    <span> - </span>
-                }
-                @dayItem?.Description
-
-            </a>
-
-        </div>
-    }
-</td>
+}
