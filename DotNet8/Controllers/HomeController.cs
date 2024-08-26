@@ -225,5 +225,11 @@ namespace DotNet8.Controllers
         //     }
         //     return View(calEvent);
         // }
+
+        [AllowAnonymous]
+        public IActionResult Privacy()
+        {
+            return View();
+        }
     }
 }
