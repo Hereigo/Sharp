@@ -1,12 +1,12 @@
 ﻿using DotNet8.Data;
 using DotNet8.Models;
-// using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DotNet8.Controllers
 {
-    // [Authorize]
+    [Authorize]
     public class CalEventsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -16,7 +16,7 @@ namespace DotNet8.Controllers
             _context = context;
         }
 
-        // [AllowAnonymous]
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var events = await _context.CalEvents.ToListAsync();

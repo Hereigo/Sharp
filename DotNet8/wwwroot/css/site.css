@@ -29,7 +29,7 @@ header .navbar {
     padding-left: 0;
 }
 
-/* ======== CRUD PAGES ======== */
+/* ======== SPECIAL PAGES ======== */
 
 .row-crud-page {
     margin: 2rem;
@@ -39,8 +39,11 @@ header .navbar {
         margin-bottom: .5rem;
     }
 
-/* ======== CALENDAR ======== */
+.row-login-page {
+    margin: 2rem 18rem;
+}
 
+/* ======== CALENDAR ======== */
 .row > main {
     margin-top: -12px;
 }
