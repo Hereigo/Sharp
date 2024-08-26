@@ -28,6 +28,8 @@ namespace DotNet8.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
+            var TEST = _logger;
+
             var events = await _context.CalEvents.ToListAsync();
             var eventsVm = new List<CalEvent>();
             foreach (var evt in events)

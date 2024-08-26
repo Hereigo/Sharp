@@ -62,15 +62,20 @@ header .navbar {
         text-transform: uppercase;
     }
 
+        .calendar th.today,
+        .calendar th:nth-child(n+6).today {
+            background-color: yellow;
+        }
+
+        .calendar th:nth-child(n+6) {
+            background-color: var(--calend-weekend);
+        }
+
     .calendar th, .calendar td {
         border: 1px solid var(--borders-color);
         border-radius: 5px;
         padding: 5px;
     }
-
-        .calendar th:nth-child(n+6) {
-            background-color: var(--calend-weekend);
-        }
 
     .calendar td {
         background-color: white;
