@@ -1,10 +1,12 @@
 ﻿using DotNet8.Data;
 using DotNet8.Models;
+// using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DotNet8.Controllers
 {
+    // [Authorize]
     public class CalEventsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -14,6 +16,7 @@ namespace DotNet8.Controllers
             _context = context;
         }
 
+        // [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var events = await _context.CalEvents.ToListAsync();
@@ -24,7 +27,6 @@ namespace DotNet8.Controllers
                 if (evt.Repeat == CalEventRepeat.EveryXdays)
                 {
                     var nextDate = evt.Started.AddDays(evt.EveryXDays.Value);
-                    var isCurrentMonth = true;
 
                     while (nextDate.Month == evt.Month)
                     {
@@ -53,20 +55,6 @@ namespace DotNet8.Controllers
                 eventsVm.Add(new CalEvent(new DateTime(today.Year, today.Month, i)));
             }
             return View(eventsVm);
-        }
-
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var calEvent = await _context.CalEvents.FirstOrDefaultAsync(m => m.Id == id);
-            if (calEvent == null)
-            {
-                return NotFound();
-            }
-            return View(calEvent);
         }
 
         public IActionResult Create(int? id)
@@ -101,11 +89,7 @@ namespace DotNet8.Controllers
             }
             if (ModelState.IsValid)
             {
-                // TODO:
-                // Process this !!!
-                // if (evnt.Repeat == CalEventRepeat.EveryXdays)
-
-                var calEvent = new CalEvent()
+                _context.Add(new CalEvent()
                 {
                     Day = evnt.Started.Day,
                     Description = evnt.Description,
@@ -117,8 +101,7 @@ namespace DotNet8.Controllers
                     Status = CalEventStatus.Active,
                     Time = evnt.Time,
                     Year = (evnt.Repeat == CalEventRepeat.Yearly) ? 0 : evnt.Started.Year,
-                };
-                _context.Add(calEvent);
+                });
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -217,5 +200,19 @@ namespace DotNet8.Controllers
         {
             return _context.CalEvents.Any(e => e.Id == id);
         }
+
+        // public async Task<IActionResult> Details(int? id)
+        // {
+        //     if (id == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //     var calEvent = await _context.CalEvents.FirstOrDefaultAsync(m => m.Id == id);
+        //     if (calEvent == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //     return View(calEvent);
+        // }
     }
 }

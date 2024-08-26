@@ -92,15 +92,16 @@ header .navbar {
     position: relative;
 }
 
-    .day .number {
+    .day .number a {
         float: right;
         font-size: 16px;
         font-weight: 500;
         padding-left: 3px;
         padding-right: 3px;
         position: absolute;
-        right: 5px;
+        right: 3px;
         top: 2px;
+        text-decoration: none;
     }
 
     .day.nextMon {
@@ -111,11 +112,10 @@ header .navbar {
         background-color: var(--calend-today);
     }
 
-        .day.today .number {
+        .day.today .number a {
             border: 1px solid red;
             border-radius: 3px;
             color: red;
-            font-weight: 900;
         }
 
 .day-item-line {
