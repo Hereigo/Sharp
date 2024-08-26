@@ -1,8 +1,89 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using DotNet8.Utils
+@model IEnumerable<DotNet8.Models.CalEvent>
+@{
+    ViewData["Title"] = "Index";
+    var daysCount = 0;
+    var now = DateTime.Now;
+    var firstDayOfWeek = (int)(new DateTime(now.Year, now.Month, 1).DayOfWeek) - 1;
+    var daysInMonth = Utils.GetMaxDayOfTheMonth(now);
+    var isCurrentMonth = false;
+    var isPrevMonthFinished = false;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container-fluid">
+    <div class="row row-calend">
+
+        <main class="col-md-10">
+            <table class="calendar">
+                <thead>
+                    <tr>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                        <th>Sun</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int r = 0; r < 5; r++)
+                    {
+                        <tr>
+
+                            @for (int d = 0; d < 7; d++)
+                            {
+                                if (d == firstDayOfWeek && firstDayOfWeek == 0) // Mon
+                                {
+                                    isCurrentMonth = true;
+                                    isPrevMonthFinished = true;
+                                }
+                                else if (d == firstDayOfWeek && !isPrevMonthFinished) // Tue...Sun
+                                {
+                                    daysCount = 0;
+                                    isCurrentMonth = true;
+                                    isPrevMonthFinished = true;
+                                }
+                                if (daysCount == daysInMonth) // Next month.
+                                {
+                                    daysCount = 0;
+                                    isCurrentMonth = false;
+                                }
+                                daysCount++;
+                                var isToday = (isCurrentMonth && now.Day == daysCount) ? "today" : "";
+                                var modelItem = Model.Where(m => m.Started.Day == daysCount).ToList();
+
+                                if (!isCurrentMonth)
+                                {
+                                    <td class="day nextMon"></td>
+                                }
+                                else
+                                {
+                                    <td class="day @isToday">
+
+                                        @await Html.PartialAsync("~/Views/Home/EventCalendView.cshtml", modelItem)
+
+                                    </td>
+                                }
+                            }
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </main>
+
+        @* *** SIDEBAR *** *@
+
+        <aside class="col-md-2 sidebar">
+            <ul>
+                <li>Aaaaaaa</li>
+                <li>Aaaaaaa</li>
+                <li>Aaaaaaa</li>
+                <li>Aaaaaaa</li>
+                <li>Aaaaaaa</li>
+            </ul>
+        </aside>
+
+    </div>
 </div>
