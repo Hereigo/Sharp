@@ -1,7 +1,7 @@
 using DotNet8.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using DotNet8.DbLogger;
+// using DotNet8.DbLogger;
 
 namespace DotNet8
 {
@@ -29,8 +29,8 @@ namespace DotNet8
                 options.Cookie.IsEssential = true;
             });
 
-            builder.Logging.AddDbLogger(options =>
-                    builder.Configuration.GetSection("Logging").GetSection("Database").GetSection("Options").Bind(options));
+            // builder.Logging.AddDbLogger(options =>
+            //         builder.Configuration.GetSection("Logging").GetSection("Database").GetSection("Options").Bind(options));
 
             var app = builder.Build();
 
@@ -49,7 +49,7 @@ namespace DotNet8
             app.UseStaticFiles();
             app.UseDetection(); // for Detection();
             app.UseRouting();
-            app.UseSession(); // for Detection();
+            app.UseSession();  // for Detection();
             app.UseAuthorization();
             app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();

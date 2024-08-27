@@ -26,7 +26,7 @@ header .navbar {
 
 .sidebar > ul {
     background-color: antiquewhite;
-    padding-left: 0;
+    /*padding-left: 0;*/
 }
 
 /* ======== SPECIAL PAGES ======== */

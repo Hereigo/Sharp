@@ -88,7 +88,7 @@ namespace DotNet8.Migrations
                     b.ToTable("CalEventCategories");
                 });
 
-            modelBuilder.Entity("DotNet8.Models.LogItem", b =>
+            modelBuilder.Entity("DotNet8.Models.ClientInfo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -96,16 +96,16 @@ namespace DotNet8.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Values")
+                    b.Property<string>("Info")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Errors");
+                    b.ToTable("ClientInfo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

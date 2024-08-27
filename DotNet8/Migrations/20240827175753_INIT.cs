@@ -64,6 +64,20 @@ namespace DotNet8.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ClientInfo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Info = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClientInfo", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -262,6 +276,9 @@ namespace DotNet8.Migrations
 
             migrationBuilder.DropTable(
                 name: "CalEvents");
+
+            migrationBuilder.DropTable(
+                name: "ClientInfo");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
