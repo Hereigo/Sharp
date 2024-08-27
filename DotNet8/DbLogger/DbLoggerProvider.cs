@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 
-namespace DotNet8.Data
+namespace DotNet8.DbLogger
 {
     [ProviderAlias("Database")]
     public class DbLoggerProvider : ILoggerProvider

@@ -1,4 +1,5 @@
-﻿using DotNet8.Models;
+﻿using DotNet8.DbLogger;
+using DotNet8.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

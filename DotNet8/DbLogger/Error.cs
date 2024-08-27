@@ -1,4 +1,4 @@
-﻿namespace DotNet8.Models
+﻿namespace DotNet8.DbLogger
 {
     public class Error
     {

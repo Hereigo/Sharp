@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
 
-namespace DotNet8.Data
+namespace DotNet8.DbLogger
 {
     public class DbLogger : ILogger
     {

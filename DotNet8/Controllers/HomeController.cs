@@ -31,16 +31,13 @@ namespace DotNet8.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var TEST = new Dictionary<string, string>();
-
-            foreach (var header in Request.Headers)
-            {
-                TEST.Add(header.Key, header.Value);
-            }
-
-            ViewBag.UA = Request.Headers["User-Agent"];
-            ViewBag.DT = _detectionService.Device.Type;
-            ViewBag.BN = _detectionService.Browser.Name;
+            var accept = Request.Headers["Accept"];
+            var crawlr = _detectionService.Crawler.Name;
+            var device = $"{_detectionService.Platform.Name}_{_detectionService.Device.Type}_{_detectionService.Browser.Name}_{_detectionService.Engine.Name}";
+            var encode = Request.Headers["Accept-Encoding"];
+            var langua = Request.Headers["Accept-Language"];
+            var refere = Request.Headers["Referer"];
+            var uagent = Request.Headers["User-Agent"];
 
             // _logger.LogWarning(new EventId(1), new Exception("WARNING TEST"), "");
             // _logger.LogError(new EventId(1), new Exception("ERROR TEST"), "");

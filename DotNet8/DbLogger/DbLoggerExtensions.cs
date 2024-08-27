@@ -1,4 +1,4 @@
-﻿namespace DotNet8.Data
+﻿namespace DotNet8.DbLogger
 {
     public static class DbLoggerExtensions
     {
