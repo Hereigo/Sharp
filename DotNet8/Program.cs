@@ -1,7 +1,7 @@
 using DotNet8.Data;
-using DotNet8.DbLogger;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using DotNet8.DbLogger;
 
 namespace DotNet8
 {
@@ -42,8 +42,7 @@ namespace DotNet8
             else
             {
                 app.UseExceptionHandler("/Home/LogItem");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                app.UseHsts();  //  The default HSTS value is 30 days, see https://aka.ms/aspnetcore-hsts.
             }
 
             app.UseHttpsRedirection();

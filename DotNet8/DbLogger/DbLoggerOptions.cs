@@ -7,9 +7,5 @@
         public string[] LogFields { get; init; }
 
         public string LogTable { get; init; }
-
-        public DbLoggerOptions()
-        {
-        }
     }
 }

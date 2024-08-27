@@ -39,7 +39,8 @@ namespace DotNet8.Controllers
             var refere = Request.Headers["Referer"];
             var uagent = Request.Headers["User-Agent"];
 
-            // _logger.LogWarning(new EventId(1), new Exception("WARNING TEST"), "");
+            _logger.LogWarning(new EventId(1), new Exception("WARNING TEST"), "");
+
             // _logger.LogError(new EventId(1), new Exception("ERROR TEST"), "");
 
             var events = await _context.CalEvents.ToListAsync();
