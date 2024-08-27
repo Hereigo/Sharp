@@ -15,11 +15,21 @@ namespace DotNet8
 
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(strConnectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => 
-                                options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+                    options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
-            builder.Logging.AddDbLogger(options => 
-                                builder.Configuration.GetSection("Logging").GetSection("Database").GetSection("Options").Bind(options));
+
+            builder.Services.AddDetection();
+            // Session needed 4 Detection();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+            builder.Logging.AddDbLogger(options =>
+                    builder.Configuration.GetSection("Logging").GetSection("Database").GetSection("Options").Bind(options));
 
             var app = builder.Build();
 
@@ -37,7 +47,9 @@ namespace DotNet8
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseDetection(); // for Detection();
             app.UseRouting();
+            app.UseSession(); // for Detection();
             app.UseAuthorization();
             app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();

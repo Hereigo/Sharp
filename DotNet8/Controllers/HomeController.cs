@@ -4,6 +4,7 @@ using DotNet8.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Wangkanai.Detection.Services;
 
 namespace DotNet8.Controllers
 {
@@ -11,11 +12,13 @@ namespace DotNet8.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IDetectionService _detectionService;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ApplicationDbContext context, ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext context, IDetectionService detectionService, ILogger<HomeController> logger)
         {
             _context = context;
+            _detectionService = detectionService;
             _logger = logger;
         }
 
@@ -34,6 +37,10 @@ namespace DotNet8.Controllers
             {
                 TEST.Add(header.Key, header.Value);
             }
+
+            ViewBag.UA = Request.Headers["User-Agent"];
+            ViewBag.DT = _detectionService.Device.Type;
+            ViewBag.BN = _detectionService.Browser.Name;
 
             // _logger.LogWarning(new EventId(1), new Exception("WARNING TEST"), "");
             // _logger.LogError(new EventId(1), new Exception("ERROR TEST"), "");
