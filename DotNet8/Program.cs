@@ -14,18 +14,12 @@ namespace DotNet8
                 ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(strConnectionString));
-
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => 
+                                options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
-
-            builder.Logging.AddDbLogger(options =>
-            {
-                builder.Configuration.GetSection("Logging").GetSection("Database").GetSection("Options").Bind(options);
-            });
+            builder.Logging.AddDbLogger(options => 
+                                builder.Configuration.GetSection("Logging").GetSection("Database").GetSection("Options").Bind(options));
 
             var app = builder.Build();
 

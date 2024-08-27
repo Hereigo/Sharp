@@ -28,16 +28,15 @@ namespace DotNet8.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
+            var TEST = new Dictionary<string, string>();
 
-            try
+            foreach (var header in Request.Headers)
             {
-                throw new Exception();
-            }
-            catch (Exception ex)
-            {
-                // _logger.LogError("TEST"); // TEST !!!
+                TEST.Add(header.Key, header.Value);
             }
 
+            // _logger.LogWarning(new EventId(1), new Exception("WARNING TEST"), "");
+            // _logger.LogError(new EventId(1), new Exception("ERROR TEST"), "");
 
             var events = await _context.CalEvents.ToListAsync();
             var eventsVm = new List<CalEvent>();
