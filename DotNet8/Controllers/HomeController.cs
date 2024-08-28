@@ -28,9 +28,20 @@ namespace DotNet8.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        // TODO:
+        // move to service!!!
+        private async Task ProcessClientInfo(IHeaderDictionary headers)
+        {
+            // TODO:
+            return;
+            throw new NotImplementedException();
+        }
+
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
+            await ProcessClientInfo(Request.Headers);
+
             var accept = Request.Headers["Accept"];
             var crawlr = _detectionService.Crawler.Name;
             var device = $"{_detectionService.Platform.Name}_{_detectionService.Device.Type}_{_detectionService.Browser.Name}_{_detectionService.Engine.Name}";
