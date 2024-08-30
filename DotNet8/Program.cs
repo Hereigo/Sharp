@@ -1,7 +1,6 @@
 using DotNet8.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-// using DotNet8.DbLogger;
 
 namespace DotNet8
 {
@@ -28,9 +27,6 @@ namespace DotNet8
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
-
-            // builder.Logging.AddDbLogger(options =>
-            //         builder.Configuration.GetSection("Logging").GetSection("Database").GetSection("Options").Bind(options));
 
             var app = builder.Build();
 

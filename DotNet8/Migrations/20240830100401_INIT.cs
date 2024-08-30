@@ -64,17 +64,18 @@ namespace DotNet8.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClientInfo",
+                name: "RequestsHeaders",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    Info = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Field = table.Column<int>(type: "int", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClientInfo", x => x.Id);
+                    table.PrimaryKey("PK_RequestsHeaders", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -278,7 +279,7 @@ namespace DotNet8.Migrations
                 name: "CalEvents");
 
             migrationBuilder.DropTable(
-                name: "ClientInfo");
+                name: "RequestsHeaders");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

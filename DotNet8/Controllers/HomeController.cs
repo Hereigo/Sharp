@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Threading.Tasks;
 using DotNet8.Data;
 using DotNet8.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -30,29 +31,37 @@ namespace DotNet8.Controllers
 
         // TODO:
         // move to service!!!
-        private async Task ProcessClientInfo(IHeaderDictionary headers)
+        private async Task ProcessRequestHeader(IHeaderDictionary headers)
         {
+            var crawlr = _detectionService.Crawler.Name;
+            var device = $"{_detectionService.Platform.Name}_{_detectionService.Device.Type}_{_detectionService.Browser.Name}_{_detectionService.Engine.Name}";
+            var encode = headers["Accept-Encoding"];
+            var langua = headers["Accept-Language"];
+            var refere = headers["Referer"];
+            var uagent = headers["User-Agent"];
+
             // TODO:
-            return;
-            throw new NotImplementedException();
+            // SMTH... )))
+
+            var reqHead = new RequestHeaderField(ReqHeadFieldType.Accept, headers["Accept"]);
+
+            await NewMethod(reqHead);
+        }
+
+        private async Task NewMethod(RequestHeaderField reqHead)
+        {
+            if (!_context.RequestsHeaders.Any(old =>
+                old.Field == reqHead.Field && old.Text == reqHead.Text && old.Created.AddHours(1) > reqHead.Created))
+            {
+                _context.RequestsHeaders.Add(reqHead);
+                _context.SaveChanges();
+            }
         }
 
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            await ProcessClientInfo(Request.Headers);
-
-            var accept = Request.Headers["Accept"];
-            var crawlr = _detectionService.Crawler.Name;
-            var device = $"{_detectionService.Platform.Name}_{_detectionService.Device.Type}_{_detectionService.Browser.Name}_{_detectionService.Engine.Name}";
-            var encode = Request.Headers["Accept-Encoding"];
-            var langua = Request.Headers["Accept-Language"];
-            var refere = Request.Headers["Referer"];
-            var uagent = Request.Headers["User-Agent"];
-
-            // DbLogger disabled!
-            // _logger.LogWarning(new EventId(1), new Exception("WARNING TEST"), "");
-            // _logger.LogError(new EventId(1), new Exception("ERROR TEST"), "");
+            await ProcessRequestHeader(Request.Headers);
 
             var events = await _context.CalEvents.ToListAsync();
             var eventsVm = new List<CalEvent>();

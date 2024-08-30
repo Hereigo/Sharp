@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotNet8.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240827175753_INIT")]
-    partial class INIT
+    [Migration("20240830111551_rename")]
+    partial class rename
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -91,7 +91,7 @@ namespace DotNet8.Migrations
                     b.ToTable("CalEventCategories");
                 });
 
-            modelBuilder.Entity("DotNet8.Models.ClientInfo", b =>
+            modelBuilder.Entity("DotNet8.Models.RequestHeaderField", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -99,16 +99,19 @@ namespace DotNet8.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Info")
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Field")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.ToTable("ClientInfo");
+                    b.ToTable("RequestsHeaders");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
