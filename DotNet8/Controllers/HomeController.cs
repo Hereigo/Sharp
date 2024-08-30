@@ -31,37 +31,35 @@ namespace DotNet8.Controllers
 
         // TODO:
         // move to service!!!
-        private async Task ProcessRequestHeader(IHeaderDictionary headers)
+        private async Task ProcessRequestHeaders(IHeaderDictionary headers)
         {
-            var crawlr = _detectionService.Crawler.Name;
-            var device = $"{_detectionService.Platform.Name}_{_detectionService.Device.Type}_{_detectionService.Browser.Name}_{_detectionService.Engine.Name}";
-            var encode = headers["Accept-Encoding"];
-            var langua = headers["Accept-Language"];
-            var refere = headers["Referer"];
-            var uagent = headers["User-Agent"];
-
-            // TODO:
-            // SMTH... )))
-
-            var reqHead = new RequestHeaderField(ReqHeadFieldType.Accept, headers["Accept"]);
-
-            await NewMethod(reqHead);
+            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Accept, headers["Accept"]));
+            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Encode, headers["Accept-Encoding"]));
+            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Language, headers["Accept-Language"]));
+            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Referer, headers["Referer"]));
+            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.UAgent, headers["User-Agent"]));
+            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Crawler, _detectionService.Crawler.Name.ToString()));
+            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Device,
+                $"{_detectionService.Platform.Name}_{_detectionService.Device.Type}_{_detectionService.Browser.Name}_{_detectionService.Engine.Name}"));
         }
 
-        private async Task NewMethod(RequestHeaderField reqHead)
+        private async Task ProcessHeader(RequestHeaderField reqHead)
         {
-            if (!_context.RequestsHeaders.Any(old =>
-                old.Field == reqHead.Field && old.Text == reqHead.Text && old.Created.AddHours(1) > reqHead.Created))
+            if (!string.IsNullOrWhiteSpace(reqHead.Text))
             {
-                _context.RequestsHeaders.Add(reqHead);
-                _context.SaveChanges();
+                if (!_context.RequestsHeaders.Any(old =>
+                    old.Field == reqHead.Field && old.Text == reqHead.Text && old.Created.AddHours(1) > reqHead.Created))
+                {
+                    _context.RequestsHeaders.Add(reqHead);
+                    _context.SaveChanges();
+                }
             }
         }
 
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            await ProcessRequestHeader(Request.Headers);
+            await ProcessRequestHeaders(Request.Headers);
 
             var events = await _context.CalEvents.ToListAsync();
             var eventsVm = new List<CalEvent>();
