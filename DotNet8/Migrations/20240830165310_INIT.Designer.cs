@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotNet8.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240830111551_rename")]
-    partial class rename
+    [Migration("20240830165310_INIT")]
+    partial class INIT
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
