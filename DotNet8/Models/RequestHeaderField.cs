@@ -1,4 +1,6 @@
-﻿namespace DotNet8.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DotNet8.Models
 {
     public enum ReqHeadFieldType
     {
@@ -13,9 +15,13 @@
 
     public class RequestHeaderField
     {
-        public int Id { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd.MM HH:mm}")]
         public DateTime Created { get; set; }
+
+        public int Id { get; set; }
+
         public ReqHeadFieldType Field { get; set; }
+
         public string Text { get; set; }
 
         public RequestHeaderField(ReqHeadFieldType field, string text)

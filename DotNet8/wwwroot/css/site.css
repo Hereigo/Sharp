@@ -43,6 +43,11 @@ header .navbar {
     margin: 2rem 18rem;
 }
 
+.page-history {
+    margin: 0 auto;
+    max-width:80%;
+}
+
 /* ======== CALENDAR ======== */
 .row > main {
     margin-top: -12px;
@@ -169,6 +174,13 @@ header .navbar {
     .main-content {
         padding: 0;
         width: 100%;
+    }
+
+    .container-fluid > .page-history {
+        font-size:12px;
+        margin-left: -10px;
+        margin-right: 0;
+        min-width: 100%;
     }
 
     .calendar {

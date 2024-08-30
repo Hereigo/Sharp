@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Threading.Tasks;
 using DotNet8.Data;
 using DotNet8.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -29,50 +28,22 @@ namespace DotNet8.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        // TODO:
-        // move to service!!!
-        private async Task ProcessRequestHeaders(IHeaderDictionary headers)
-        {
-            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Accept, headers["Accept"]));
-            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Encode, headers["Accept-Encoding"]));
-            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Language, headers["Accept-Language"]));
-            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Referer, headers["Referer"]));
-            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.UAgent, headers["User-Agent"]));
-            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Crawler, _detectionService.Crawler.Name.ToString()));
-            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Device,
-                $"{_detectionService.Platform.Name}_{_detectionService.Device.Type}_{_detectionService.Browser.Name}_{_detectionService.Engine.Name}"));
-        }
-
-        private async Task ProcessHeader(RequestHeaderField reqHead)
-        {
-            if (!string.IsNullOrWhiteSpace(reqHead.Text))
-            {
-                if (!_context.RequestsHeaders.Any(old =>
-                    old.Field == reqHead.Field && old.Text == reqHead.Text && old.Created.AddHours(1) > reqHead.Created))
-                {
-                    _context.RequestsHeaders.Add(reqHead);
-                    _context.SaveChanges();
-                }
-            }
-        }
-
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            await ProcessRequestHeaders(Request.Headers);
-
             var events = await _context.CalEvents.ToListAsync();
-            var eventsVm = new List<CalEvent>();
+            await ProcessRequestHeaders(Request.Headers);
+            var eventsModel = new List<CalEvent>();
             foreach (var evt in events)
             {
-                eventsVm.Add(evt);
+                eventsModel.Add(evt);
                 if (evt.Repeat == CalEventRepeat.EveryXdays)
                 {
                     var nextDate = evt.Started.AddDays(evt.EveryXDays.Value);
 
                     while (nextDate.Month == evt.Month)
                     {
-                        eventsVm.Add(new CalEvent()
+                        eventsModel.Add(new CalEvent()
                         {
                             Id = evt.Id,
                             Day = evt.Started.Day,
@@ -94,10 +65,14 @@ namespace DotNet8.Controllers
             var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(today);
             for (var i = 1; i <= monthMaxDay; i++)
             {
-                eventsVm.Add(new CalEvent(new DateTime(today.Year, today.Month, i)));
+                eventsModel.Add(new CalEvent(new DateTime(today.Year, today.Month, i)));
             }
-            return View(eventsVm);
+            return View(eventsModel);
         }
+
+        // TODO:
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 
         public IActionResult Create(int? id)
         {
@@ -113,23 +88,11 @@ namespace DotNet8.Controllers
             return View(newEvent);
         }
 
-        // TODO:
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CalEvent evnt)
         {
-            if (evnt is null)
-            {
-                throw new ArgumentNullException(nameof(evnt));
-            }
-            if (!ModelState.IsValid) // For Debugging.
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-            }
-            if (ModelState.IsValid)
+            if (evnt != null && ModelState.IsValid)
             {
                 _context.Add(new CalEvent()
                 {
@@ -191,20 +154,15 @@ namespace DotNet8.Controllers
                     calEvent.Status = evnt.Status;
                     calEvent.Time = evnt.Time;
                     calEvent.Year = (evnt.Repeat == CalEventRepeat.Yearly) ? 0 : evnt.Started.Year;
-
                     _context.Update(calEvent);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!CalEventExists(evnt.Id))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -238,9 +196,18 @@ namespace DotNet8.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CalEventExists(int id)
+        public async Task<IActionResult> History()
         {
-            return _context.CalEvents.Any(e => e.Id == id);
+            var headers =
+                await _context.RequestsHeaders.OrderByDescending(rh => rh.Created).Take(22).ToListAsync();
+
+            return View(headers);
+        }
+
+        [AllowAnonymous]
+        public IActionResult Privacy()
+        {
+            return View();
         }
 
         // public async Task<IActionResult> Details(int? id)
@@ -257,10 +224,34 @@ namespace DotNet8.Controllers
         //     return View(calEvent);
         // }
 
-        [AllowAnonymous]
-        public IActionResult Privacy()
+        private bool CalEventExists(int id)
         {
-            return View();
+            return _context.CalEvents.Any(e => e.Id == id);
+        }
+
+        private async Task ProcessRequestHeaders(IHeaderDictionary headers)
+        {
+            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Accept, headers["Accept"]));
+            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Encode, headers["Accept-Encoding"]));
+            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Language, headers["Accept-Language"]));
+            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Referer, headers["Referer"]));
+            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.UAgent, headers["User-Agent"]));
+            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Crawler, _detectionService.Crawler.Name.ToString()));
+            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Device,
+                $"{_detectionService.Platform.Name}_{_detectionService.Device.Type}_{_detectionService.Browser.Name}_{_detectionService.Engine.Name}"));
+        }
+
+        private async Task ProcessHeader(RequestHeaderField reqHead)
+        {
+            if (!string.IsNullOrWhiteSpace(reqHead.Text))
+            {
+                if (!_context.RequestsHeaders.Any(old =>
+                    old.Field == reqHead.Field && old.Text == reqHead.Text && old.Created.AddHours(1) > reqHead.Created))
+                {
+                    _context.RequestsHeaders.Add(reqHead);
+                    _context.SaveChanges();
+                }
+            }
         }
     }
 }
