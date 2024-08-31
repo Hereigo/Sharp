@@ -48,6 +48,10 @@ header .navbar {
     max-width:80%;
 }
 
+.row-footer{
+    padding:1rem;
+}
+
 /* ======== CALENDAR ======== */
 .row > main {
     margin-top: -12px;
@@ -165,6 +169,10 @@ header .navbar {
         margin-top: -15px;
         padding-left: .1rem;
         padding-right: .1rem;
+    }
+
+    .row-login-page {
+        margin: 2rem;
     }
 
     .sidebar > ul {

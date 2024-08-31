@@ -14,6 +14,7 @@ namespace DotNet8.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IDetectionService _detectionService;
         private readonly ILogger<HomeController> _logger;
+        private const int _historyLines = 40;
 
         public HomeController(ApplicationDbContext context, IDetectionService detectionService, ILogger<HomeController> logger)
         {
@@ -199,7 +200,7 @@ namespace DotNet8.Controllers
         public async Task<IActionResult> History()
         {
             var headers =
-                await _context.RequestsHeaders.OrderByDescending(rh => rh.Created).Take(22).ToListAsync();
+                await _context.RequestsHeaders.OrderByDescending(rh => rh.Created).Take(_historyLines).ToListAsync();
 
             return View(headers);
         }
