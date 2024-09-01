@@ -32,7 +32,7 @@ namespace DotNet8.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var events = await _context.CalEvents.ToListAsync();
+            var events = await _context.CalEvents.ToListAsync(); // TODO: for current month
             await ProcessRequestHeaders(Request.Headers);
             var eventsModel = new List<CalEvent>();
             foreach (var evt in events)
@@ -237,7 +237,7 @@ namespace DotNet8.Controllers
             await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Language, headers["Accept-Language"]));
             await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Referer, headers["Referer"]));
             await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.UAgent, headers["User-Agent"]));
-            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Crawler, _detectionService.Crawler.Name.ToString()));
+            // await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Crawler, _detectionService.Crawler.Name.ToString()));
             await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Device,
                 $"{_detectionService.Platform.Name}_{_detectionService.Device.Type}_{_detectionService.Browser.Name}_{_detectionService.Engine.Name}"));
         }

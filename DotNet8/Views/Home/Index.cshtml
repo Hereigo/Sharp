@@ -9,7 +9,8 @@
     var now = DateTime.Now;
     var daysCount = 0;
     var daysInMonth = Utils.GetMaxDayOfTheMonth(now);
-    var firstDayOfWeek = (int)(new DateTime(now.Year, now.Month, 1).DayOfWeek) - 1;
+    var firstDayOfWeekNum = (int)(new DateTime(now.Year, now.Month, 1).DayOfWeek) - 1;
+    var firstDayOfWeek = firstDayOfWeekNum == -1 ? 6 : firstDayOfWeekNum;
     var isCurrentMonth = false;
     var isPrevMonthFinished = false;
     var nowDayOfWeek = (int)(now.DayOfWeek);
@@ -35,7 +36,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int r = 0; r < 5; r++)
+                    @for (int r = 0; r < 6; r++)
                     {
                         <tr>
 
@@ -84,6 +85,14 @@
         @* *** SIDEBAR *** *@
 
         <aside class="col-md-2 sidebar">
+
+            <div>
+                <button id="login-submit" type="submit" class="btn btn-sm btn-light"> &lt; &lt; &nbsp; Prev</button>
+                &nbsp; &nbsp;
+                <button id="login-submit" type="submit" class="btn btn-sm btn-light">Next &nbsp; &gt; &gt; </button>
+            </div>
+            <br/>
+
             <ul>
                 <li>Aaaaaaa</li>
                 <li>Aaaaaaa</li>
