@@ -14,6 +14,9 @@ namespace DotNet8.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IDetectionService _detectionService;
         private readonly ILogger<HomeController> _logger;
+
+        private readonly IWebHostEnvironment _appEnvironment; // TODO: read css file changes
+
         private const int _historyLines = 40;
 
         public HomeController(ApplicationDbContext context, IDetectionService detectionService, ILogger<HomeController> logger)
@@ -30,11 +33,30 @@ namespace DotNet8.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string pMonth = "")
         {
-            var events = await _context.CalEvents.ToListAsync(); // TODO: for current month
+            var today = DateTime.Now;
+            if (pMonth == "next")
+            {
+                today = today.AddMonths(1);
+            }
+            else if (pMonth == "prev")
+            {
+                today = today.AddMonths(-1);
+            }
+            ViewBag.Today = today;
+
+            var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(today);
+
+            var events = await _context.CalEvents.Where(e => e.Month == today.Month).ToListAsync();
+
+            // TODO:
+            // also select all previous that are Repeating & Actual for Current month
+
             await ProcessRequestHeaders(Request.Headers);
+
             var eventsModel = new List<CalEvent>();
+
             foreach (var evt in events)
             {
                 eventsModel.Add(evt);
@@ -62,8 +84,7 @@ namespace DotNet8.Controllers
                     }
                 }
             }
-            var today = DateTime.Now;
-            var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(today);
+
             for (var i = 1; i <= monthMaxDay; i++)
             {
                 eventsModel.Add(new CalEvent(new DateTime(today.Year, today.Month, i)));

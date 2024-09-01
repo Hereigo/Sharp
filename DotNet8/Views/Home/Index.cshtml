@@ -6,7 +6,7 @@
 @model IEnumerable<DotNet8.Models.CalEvent>
 @{
     ViewData["Title"] = "Index";
-    var now = DateTime.Now;
+    var now = ViewBag.Today;
     var daysCount = 0;
     var daysInMonth = Utils.GetMaxDayOfTheMonth(now);
     var firstDayOfWeekNum = (int)(new DateTime(now.Year, now.Month, 1).DayOfWeek) - 1;
@@ -14,6 +14,11 @@
     var isCurrentMonth = false;
     var isPrevMonthFinished = false;
     var nowDayOfWeek = (int)(now.DayOfWeek);
+
+    var months = new string[12] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+    var monthPrev = months[DateTime.Now.Month - 2];
+    var monthCurrent = months[DateTime.Now.Month - 1];
+    var monthNext = months[DateTime.Now.Month];
 }
 
 @* <input type="hidden" value="@DetectionService.Device.Type" />
@@ -86,12 +91,15 @@
 
         <aside class="col-md-2 sidebar">
 
+            <br />
             <div>
-                <button id="login-submit" type="submit" class="btn btn-sm btn-light"> &lt; &lt; &nbsp; Prev</button>
-                &nbsp; &nbsp;
-                <button id="login-submit" type="submit" class="btn btn-sm btn-light">Next &nbsp; &gt; &gt; </button>
+                <a asp-action="Index" asp-route-pMonth="prev" class="btn btn-sm btn-light"> @monthPrev &nbsp; &lt; </a>
+                &nbsp;
+                <a asp-action="Index" asp-route-pMonth="" class="btn btn-sm btn-light"> @monthCurrent </a>
+                &nbsp;
+                <a asp-action="Index" asp-route-pMonth="next" class="btn btn-sm btn-light"> &gt; &nbsp; @monthNext </a>
             </div>
-            <br/>
+            <br />
 
             <ul>
                 <li>Aaaaaaa</li>

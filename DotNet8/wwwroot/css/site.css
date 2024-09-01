@@ -26,7 +26,6 @@ header .navbar {
 
 .sidebar > ul {
     background-color: antiquewhite;
-    /*padding-left: 0;*/
 }
 
 /* ======== SPECIAL PAGES ======== */
@@ -45,14 +44,19 @@ header .navbar {
 
 .page-history {
     margin: 0 auto;
-    max-width:80%;
+    max-width: 80%;
 }
 
-.row-footer{
-    padding:1rem;
+    .page-history .table {
+        padding: .2rem .5rem;
+    }
+
+.row-footer {
+    padding: 1rem;
 }
 
 /* ======== CALENDAR ======== */
+
 .row > main {
     margin-top: -12px;
 }
@@ -185,7 +189,7 @@ header .navbar {
     }
 
     .container-fluid > .page-history {
-        font-size:12px;
+        font-size: 12px;
         margin-left: -10px;
         margin-right: 0;
         min-width: 100%;
