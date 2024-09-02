@@ -46,7 +46,7 @@ namespace DotNet8.Controllers
             var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(today);
 
             var events = await _context.CalEvents
-                .Where(e => e.Month == today.Month || (e.Month < today.Month && e.Repeat == CalEventRepeat.EveryXdays)).ToListAsync();
+                .Where(e => e.Month == today.Month || (e.Month < today.Month && e.Repeat != CalEventRepeat.Once)).ToListAsync();
 
             await ProcessRequestHeaders(Request.Headers);
 
