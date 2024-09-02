@@ -1,8 +1,4 @@
 ﻿@using DotNet8.Utils
-@*
-@inject Wangkanai.Detection.Services.IDetectionService DetectionService
-(also see in _ViewImports.cshtml)
-*@
 @model IEnumerable<DotNet8.Models.CalEvent>
 @{
     ViewData["Title"] = "Index";
@@ -20,9 +16,6 @@
     var monthCurrent = months[DateTime.Now.Month - 1];
     var monthNext = months[DateTime.Now.Month];
 }
-
-@* <input type="hidden" value="@DetectionService.Device.Type" />
-<input type="hidden" value="@DetectionService.Browser.Name" /> *@
 
 <div class="container-fluid">
     <div class="row row-calend">
@@ -68,8 +61,8 @@
                                 var isToday = (isCurrentMonth && now.Day == daysCount) ? "today" : "";
 
                                 var modelItem = Model
-                                    .Where(m => m.Started.Day == daysCount && m.Started.Month == now.Month || m.Started.Day == daysCount && m.Repeat == CalEventRepeat.Monthly)
-                                    .ToList();
+                                .Where(m => m.Started.Day == daysCount && m.Started.Month == now.Month || m.Started.Day == daysCount && m.Repeat == CalEventRepeat.Monthly)
+                                .ToList();
 
                                 if (!isCurrentMonth)
                                 {
