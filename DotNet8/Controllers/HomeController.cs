@@ -45,10 +45,8 @@ namespace DotNet8.Controllers
 
             var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(today);
 
-            var events = await _context.CalEvents.Where(e => e.Month == today.Month).ToListAsync();
-
-            // TODO:
-            // also select all previous that are Repeating & Actual for Current month.
+            var events = await _context.CalEvents
+                .Where(e => e.Month == today.Month || (e.Month < today.Month && e.Repeat == CalEventRepeat.EveryXdays)).ToListAsync();
 
             await ProcessRequestHeaders(Request.Headers);
 
@@ -57,11 +55,12 @@ namespace DotNet8.Controllers
             foreach (var evt in events)
             {
                 eventsModel.Add(evt);
+
                 if (evt.Repeat == CalEventRepeat.EveryXdays)
                 {
                     var nextDate = evt.Started.AddDays(evt.EveryXDays.Value);
 
-                    while (nextDate.Month == evt.Month)
+                    while (nextDate.Month <= today.Month)
                     {
                         eventsModel.Add(new CalEvent()
                         {
@@ -217,8 +216,8 @@ namespace DotNet8.Controllers
 
         public async Task<IActionResult> History()
         {
-            var headers =
-                await _context.RequestsHeaders.OrderByDescending(rh => rh.Created).Take(_historyLines).ToListAsync();
+            var headers = await _context.RequestsHeaders
+                .OrderByDescending(rh => rh.Created).Take(_historyLines).ToListAsync();
 
             return View(headers);
         }

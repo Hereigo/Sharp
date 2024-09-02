@@ -64,8 +64,10 @@
                                     isCurrentMonth = false;
                                 }
                                 daysCount++;
+
                                 var isToday = (isCurrentMonth && now.Day == daysCount) ? "today" : "";
-                                var modelItem = Model.Where(m => m.Started.Day == daysCount).ToList();
+
+                                var modelItem = Model.Where(m => m.Started.Day == daysCount && m.Started.Month == now.Month).ToList();
 
                                 if (!isCurrentMonth)
                                 {
