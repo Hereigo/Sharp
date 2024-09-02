@@ -68,8 +68,7 @@
                                 var isToday = (isCurrentMonth && now.Day == daysCount) ? "today" : "";
 
                                 var modelItem = Model
-                                    .Where(m => m.Started.Day == daysCount && m.Started.Month == now.Month
-                                        || (m.Started.Day == daysCount && (m.Repeat == CalEventRepeat.Monthly || m.Repeat == CalEventRepeat.Yearly)))
+                                    .Where(m => m.Started.Day == daysCount && m.Started.Month == now.Month || m.Started.Day == daysCount && m.Repeat == CalEventRepeat.Monthly)
                                     .ToList();
 
                                 if (!isCurrentMonth)
