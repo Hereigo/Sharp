@@ -1,4 +1,6 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using DotNet8.Utils
+@using Microsoft.AspNetCore.Identity
+@inject IContentManager contentManager
 @inject SignInManager<IdentityUser> SignInManager
 
 <!DOCTYPE html>
@@ -9,8 +11,9 @@
     <title>@ViewData["Title"] - DotNet8</title>
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Ubuntu:400,500,700' type='text/css'>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    @* <link rel="stylesheet" href="~/DotNet8.styles.css" asp-append-version="true" /> *@
+    <link rel="stylesheet" href="@contentManager.GetVersionedContentFileLink(Url.Content("/css/site.css"))" />
+    @* <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/DotNet8.styles.css" asp-append-version="true" /> *@
 </head>
 <body>
     <header>

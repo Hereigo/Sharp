@@ -1,4 +1,5 @@
 using DotNet8.Data;
+using DotNet8.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,15 +19,7 @@ namespace DotNet8
             builder.Services.AddDefaultIdentity<IdentityUser>(options =>
                     options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
-
-            builder.Services.AddDetection();
-            // Session needed 4 Detection();
-            builder.Services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
-            });
+            builder.Services.AddSingleton<IContentManager, ContentManager>();
 
             var app = builder.Build();
 
@@ -43,9 +36,7 @@ namespace DotNet8
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseDetection(); // for Detection();
             app.UseRouting();
-            app.UseSession();  // for Detection();
             app.UseAuthorization();
             app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();

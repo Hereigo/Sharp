@@ -4,7 +4,6 @@ using DotNet8.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Wangkanai.Detection.Services;
 
 namespace DotNet8.Controllers
 {
@@ -12,17 +11,13 @@ namespace DotNet8.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IDetectionService _detectionService;
         private readonly ILogger<HomeController> _logger;
-
-        private readonly IWebHostEnvironment _appEnvironment; // TODO: read css file changes
 
         private const int _historyLines = 40;
 
-        public HomeController(ApplicationDbContext context, IDetectionService detectionService, ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext context, ILogger<HomeController> logger)
         {
             _context = context;
-            _detectionService = detectionService;
             _logger = logger;
         }
 
@@ -45,13 +40,15 @@ namespace DotNet8.Controllers
                 today = today.AddMonths(-1);
             }
             ViewBag.Today = today;
+            ViewBag.CssChanged = new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), "/wwwroot/css/site.css"))
+                .LastWriteTime.ToString("yyMMddHHmm");
 
             var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(today);
 
             var events = await _context.CalEvents.Where(e => e.Month == today.Month).ToListAsync();
 
             // TODO:
-            // also select all previous that are Repeating & Actual for Current month
+            // also select all previous that are Repeating & Actual for Current month.
 
             await ProcessRequestHeaders(Request.Headers);
 
@@ -235,14 +232,10 @@ namespace DotNet8.Controllers
         // public async Task<IActionResult> Details(int? id)
         // {
         //     if (id == null)
-        //     {
         //         return NotFound();
-        //     }
         //     var calEvent = await _context.CalEvents.FirstOrDefaultAsync(m => m.Id == id);
         //     if (calEvent == null)
-        //     {
         //         return NotFound();
-        //     }
         //     return View(calEvent);
         // }
 
@@ -258,9 +251,6 @@ namespace DotNet8.Controllers
             await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Language, headers["Accept-Language"]));
             await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Referer, headers["Referer"]));
             await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.UAgent, headers["User-Agent"]));
-            // await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Crawler, _detectionService.Crawler.Name.ToString()));
-            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Device,
-                $"{_detectionService.Platform.Name}_{_detectionService.Device.Type}_{_detectionService.Browser.Name}_{_detectionService.Engine.Name}"));
         }
 
         private async Task ProcessHeader(RequestHeaderField reqHead)

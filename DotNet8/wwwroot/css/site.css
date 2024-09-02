@@ -22,6 +22,9 @@ header .navbar {
     padding-top: 0;
 }
 
+    header .navbar .nav-link {
+    }
+
 /* ======== SIDEBAR ======== */
 
 .sidebar > ul {
@@ -47,8 +50,8 @@ header .navbar {
     max-width: 80%;
 }
 
-    .page-history .table {
-        padding: .2rem .5rem;
+    .page-history .table tr {
+        line-height: .7rem;
     }
 
 .row-footer {
