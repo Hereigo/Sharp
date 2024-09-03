@@ -2,19 +2,21 @@
 @model IEnumerable<DotNet8.Models.CalEvent>
 @{
     ViewData["Title"] = "Index";
-    var now = ViewBag.Today;
+
+    var nowReal = DateTime.Now;
+    var now4page = ViewBag.Today;
     var daysCount = 0;
-    var daysInMonth = Utils.GetMaxDayOfTheMonth(now);
-    var firstDayOfWeekNum = (int)(new DateTime(now.Year, now.Month, 1).DayOfWeek) - 1;
+    var daysInMonth = Utils.GetMaxDayOfTheMonth(now4page);
+    var firstDayOfWeekNum = (int)(new DateTime(now4page.Year, now4page.Month, 1).DayOfWeek) - 1;
     var firstDayOfWeek = firstDayOfWeekNum == -1 ? 6 : firstDayOfWeekNum;
     var isCurrentMonth = false;
     var isPrevMonthFinished = false;
-    var nowDayOfWeek = (int)(now.DayOfWeek);
+    var nowDayOfWeek = nowReal.Month != now4page.Month ? 0 : (int)(now4page.DayOfWeek);
 
     var months = new string[12] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-    var monthPrev = months[DateTime.Now.Month - 2];
-    var monthCurrent = months[DateTime.Now.Month - 1];
-    var monthNext = months[DateTime.Now.Month];
+    var monthPrev = months[nowReal.Month - 2];
+    var monthCurrent = months[nowReal.Month - 1];
+    var monthNext = months[nowReal.Month];
 }
 
 <div class="container-fluid">
@@ -58,10 +60,10 @@
                                 }
                                 daysCount++;
 
-                                var isToday = (isCurrentMonth && now.Day == daysCount) ? "today" : "";
+                                var todayCss = (isCurrentMonth && now4page.Day == daysCount && nowReal.Month == now4page.Month) ? "today" : "";
 
                                 var modelItem = Model
-                                .Where(m => m.Started.Day == daysCount && m.Started.Month == now.Month || m.Started.Day == daysCount && m.Repeat == CalEventRepeat.Monthly)
+                                .Where(m => m.Started.Day == daysCount && m.Started.Month == now4page.Month || m.Started.Day == daysCount && m.Repeat == CalEventRepeat.Monthly)
                                 .ToList();
 
                                 if (!isCurrentMonth)
@@ -70,7 +72,7 @@
                                 }
                                 else
                                 {
-                                    <td class="day @isToday">
+                                    <td class="day @todayCss">
 
                                         @await Html.PartialAsync("~/Views/Home/EventCalendView.cshtml", modelItem)
 
