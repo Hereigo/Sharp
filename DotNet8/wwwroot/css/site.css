@@ -167,6 +167,10 @@ header .navbar {
 
 @media screen and (max-width: 768px) {
 
+    body {
+        font-size: 12px;
+    }
+
     .navbar-toggler-icon {
         width: 1em;
         height: 1em;
