@@ -25,8 +25,13 @@ header .navbar {
     header .navbar .nav-link {
     }
 
-/* ======== SIDEBAR ======== */
+input[type='number']:read-only,
+input[type='datetime-local']:read-only {
+    text-align: center;
+    color: darkgray;
+}
 
+/* ======== SIDEBAR ======== */
 .sidebar > ul {
     background-color: antiquewhite;
 }

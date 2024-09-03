@@ -48,7 +48,7 @@
                     <input type="number" asp-for="EveryXDays" class="form-control" />
                     <span asp-validation-for="EveryXDays" class="text-danger"></span>
                 </div>
-
+                <br />
                 <div class="row">
                     <div class="col-4">
                         <div class="form-group">
@@ -67,11 +67,29 @@
                     </div>
                 </div>
 
+                @*
                 <div class="form-group">
-                    <label asp-for="Status" class="control-label"></label>
-                    <select asp-for="Status" asp-items="Html.GetEnumSelectList<CalEventStatus>()" class="form-control">
-                    </select>
-                    <span asp-validation-for="Status" class="text-danger"></span>
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="Status" asp-items="Html.GetEnumSelectList<CalEventStatus>()" class="form-control">
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+                *@
+
+                <div class="form-group">
+                    <hr />
+                    <div class="row">
+                        @foreach (var item in System.Enum.GetValues(typeof(CalEventStatus)))
+                        {
+                            <div class="col-4">
+                                <label>
+                                    <input type="radio" asp-for="Status" value="@Convert.ToInt32(item)" />
+                                    @item
+                                </label>
+                            </div>
+                        }
+                    </div>
+                    <hr />
                 </div>
 
                 <div class="form-group">
