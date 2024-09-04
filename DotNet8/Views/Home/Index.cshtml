@@ -89,7 +89,6 @@
         @* *** SIDEBAR *** *@
 
         <aside class="col-md-2 sidebar">
-
             <br />
             <div>
                 <a asp-action="Index" asp-route-pMonth="prev" class="btn btn-sm btn-light"> @monthPrev &nbsp; &lt; </a>
@@ -97,9 +96,17 @@
                 <a asp-action="Index" asp-route-pMonth="" class="btn btn-sm btn-light"> @monthCurrent </a>
                 &nbsp;
                 <a asp-action="Index" asp-route-pMonth="next" class="btn btn-sm btn-light"> &gt; &nbsp; @monthNext </a>
+                &nbsp;
+
+                @* 
+                    TODO;
+                *@
+                <span style="font-weight:500;font-size:13px">
+                    [ @ViewBag.EnvtsCount ]
+                </span>
+
             </div>
             <br />
-
             <ul>
                 <li>Aaaaaaa</li>
                 <li>Aaaaaaa</li>

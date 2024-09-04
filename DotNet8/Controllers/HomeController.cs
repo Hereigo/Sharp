@@ -39,11 +39,6 @@ namespace DotNet8.Controllers
             {
                 today = today.AddMonths(-1);
             }
-            ViewBag.Today = today;
-            ViewBag.CssChanged = new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), "/wwwroot/css/site.css"))
-                .LastWriteTime.ToString("yyMMddHHmm");
-
-            var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(today);
 
             var events = await _context.CalEvents
                 .Where(e => e.Month == today.Month || (e.Month < today.Month && e.Repeat != CalEventRepeat.Once)).ToListAsync();
@@ -51,6 +46,13 @@ namespace DotNet8.Controllers
             await ProcessRequestHeaders(Request.Headers);
 
             var eventsModel = new List<CalEvent>();
+
+            ViewBag.Today = today;
+            var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(today);
+
+            ViewBag.CssChanged = new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), "/wwwroot/css/site.css"))
+                .LastWriteTime.ToString("yyMMddHHmm");
+            ViewBag.EnvtsCount = events.Count;
 
             foreach (var evt in events)
             {
@@ -85,6 +87,7 @@ namespace DotNet8.Controllers
             {
                 eventsModel.Add(new CalEvent(new DateTime(today.Year, today.Month, i)));
             }
+
             return View(eventsModel);
         }
 
