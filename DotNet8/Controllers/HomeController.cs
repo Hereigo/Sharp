@@ -30,7 +30,7 @@ namespace DotNet8.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index(string pMonth = "")
         {
-            var now = DateTime.UtcNow;
+            var now = DateTime.UtcNow.AddHours(3);
             var now4currentPage = now;
 
             if (pMonth == "next")
@@ -102,6 +102,7 @@ namespace DotNet8.Controllers
                 EveryXDays = 0,
                 Modified = DateTime.Now,
                 Started = new DateTime(now.Year, now.Month, id ?? 1),
+                Status = CalEventStatus.Active,
                 Time = new TimeSpan(0, 0, 0),
                 Repeat = CalEventRepeat.Once,
             };

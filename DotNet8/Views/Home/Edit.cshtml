@@ -81,9 +81,12 @@
                     <div class="row">
                         @foreach (var item in System.Enum.GetValues(typeof(CalEventStatus)))
                         {
+                            var statusNum = @Convert.ToInt32(item);
+                            var isChecked = @Convert.ToInt32(Model?.Status) == statusNum;
+
                             <div class="col-4">
                                 <label>
-                                    <input type="radio" asp-for="Status" value="@Convert.ToInt32(item)" />
+                                    <input type="radio" asp-for="Status" value="@statusNum" checked="@isChecked" />
                                     @item
                                 </label>
                             </div>
