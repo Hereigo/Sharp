@@ -3,8 +3,8 @@
 @{
     ViewData["Title"] = "Index";
 
-    var nowReal = DateTime.Now;
-    var now4page = ViewBag.Today;
+    var nowReal = ViewBag.TodayReal;
+    var now4page = ViewBag.TodayCurrent;
     var daysCount = 0;
     var daysInMonth = Utils.GetMaxDayOfTheMonth(now4page);
     var firstDayOfWeekNum = (int)(new DateTime(now4page.Year, now4page.Month, 1).DayOfWeek) - 1;
@@ -102,7 +102,7 @@
                     TODO;
                 *@
                 <span style="font-weight:500;font-size:13px">
-                    [ @ViewBag.EnvtsCount ]
+                    [ @ViewBag.EnvtsCount ] - @nowReal.ToString("HH:mm")
                 </span>
 
             </div>

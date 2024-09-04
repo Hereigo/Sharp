@@ -30,26 +30,25 @@ namespace DotNet8.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index(string pMonth = "")
         {
-            var today = DateTime.Now;
+            var now = DateTime.UtcNow;
+            var now4currentPage = now;
+
             if (pMonth == "next")
-            {
-                today = today.AddMonths(1);
-            }
+                now4currentPage = now.AddMonths(1);
             else if (pMonth == "prev")
-            {
-                today = today.AddMonths(-1);
-            }
+                now4currentPage = now.AddMonths(-1);
 
             var events = await _context.CalEvents
-                .Where(e => e.Month == today.Month || (e.Month < today.Month && e.Repeat != CalEventRepeat.Once)).ToListAsync();
+                .Where(e => e.Month == now4currentPage.Month || (e.Month < now4currentPage.Month && e.Repeat != CalEventRepeat.Once))
+                .ToListAsync();
 
             await ProcessRequestHeaders(Request.Headers);
 
             var eventsModel = new List<CalEvent>();
+            var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(now4currentPage);
 
-            ViewBag.Today = today;
-            var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(today);
-
+            ViewBag.TodayReal = now;
+            ViewBag.TodayCurrent = now4currentPage;
             ViewBag.CssChanged = new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), "/wwwroot/css/site.css"))
                 .LastWriteTime.ToString("yyMMddHHmm");
             ViewBag.EnvtsCount = events.Count;
@@ -62,7 +61,7 @@ namespace DotNet8.Controllers
                 {
                     var nextDate = evt.Started.AddDays(evt.EveryXDays.Value);
 
-                    while (nextDate.Month <= today.Month)
+                    while (nextDate.Month <= now4currentPage.Month)
                     {
                         eventsModel.Add(new CalEvent()
                         {
@@ -85,7 +84,7 @@ namespace DotNet8.Controllers
 
             for (var i = 1; i <= monthMaxDay; i++)
             {
-                eventsModel.Add(new CalEvent(new DateTime(today.Year, today.Month, i)));
+                eventsModel.Add(new CalEvent(new DateTime(now4currentPage.Year, now4currentPage.Month, i)));
             }
 
             return View(eventsModel);
