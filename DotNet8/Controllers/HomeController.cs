@@ -27,6 +27,8 @@ namespace DotNet8.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        // [Ajax]
+
         [AllowAnonymous]
         public async Task<IActionResult> Index(string pMonth = "")
         {
@@ -44,6 +46,8 @@ namespace DotNet8.Controllers
 
             await ProcessRequestHeaders(Request.Headers);
 
+            var eventsFullCount = await _context.CalEvents.CountAsync();
+
             var eventsModel = new List<CalEvent>();
             var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(now4currentPage);
 
@@ -52,6 +56,7 @@ namespace DotNet8.Controllers
             ViewBag.CssChanged = new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), "/wwwroot/css/site.css"))
                 .LastWriteTime.ToString("yyMMddHHmm");
             ViewBag.EnvtsCount = events.Count;
+            ViewBag.EnvtsFullCount = eventsFullCount;
 
             foreach (var evt in events)
             {
