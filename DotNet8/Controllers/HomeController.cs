@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text.Json;
 using DotNet8.Data;
 using DotNet8.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -26,8 +27,6 @@ namespace DotNet8.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-        // [Ajax]
 
         [AllowAnonymous]
         public async Task<IActionResult> Index(string pMonth = "")
@@ -223,12 +222,13 @@ namespace DotNet8.Controllers
         }
 
         public async Task<IActionResult> History()
-        {
-            var headers = await _context.RequestsHeaders
-                .OrderByDescending(rh => rh.Created).Take(_historyLines).ToListAsync();
+            => View(await _context.RequestsHeaders
+                .OrderByDescending(rh => rh.Created).Take(_historyLines).ToListAsync());
 
-            return View(headers);
-        }
+        public async Task<JsonResult> GetJson()
+            => new JsonResult(
+                await _context.CalEvents.ToArrayAsync(),
+                new JsonSerializerOptions { PropertyNamingPolicy = null });
 
         [AllowAnonymous]
         public IActionResult Privacy()
@@ -238,11 +238,9 @@ namespace DotNet8.Controllers
 
         // public async Task<IActionResult> Details(int? id)
         // {
-        //     if (id == null)
-        //         return NotFound();
+        //     if (id == null) return NotFound();
         //     var calEvent = await _context.CalEvents.FirstOrDefaultAsync(m => m.Id == id);
-        //     if (calEvent == null)
-        //         return NotFound();
+        //     if (calEvent == null) return NotFound();
         //     return View(calEvent);
         // }
 
@@ -256,7 +254,7 @@ namespace DotNet8.Controllers
             await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Accept, headers["Accept"]));
             await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Encode, headers["Accept-Encoding"]));
             await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Language, headers["Accept-Language"]));
-            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Referer, headers["Referer"]));
+            // await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Referer, headers["Referer"]));
             await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.UAgent, headers["User-Agent"]));
         }
 
