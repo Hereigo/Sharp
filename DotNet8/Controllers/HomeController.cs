@@ -26,7 +26,6 @@ namespace DotNet8.Controllers
 
         // use css bundler
         // add TASKS LIST Editable
-        // may be use langing page?
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -34,6 +33,10 @@ namespace DotNet8.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [AllowAnonymous]
+        public ContentResult StartPage()
+            => base.Content(System.IO.File.ReadAllText("index.html"), "text/html");
 
         [AllowAnonymous]
         public async Task<IActionResult> Index(string pMonth = "")
