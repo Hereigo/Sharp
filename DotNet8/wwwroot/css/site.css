@@ -22,25 +22,27 @@ header .navbar {
     padding-top: 0;
 }
 
-    header .navbar .nav-link {
-    }
-
 input[type='number']:read-only,
 input[type='datetime-local']:read-only {
     text-align: center;
     color: darkgray;
 }
 
-.evnts-cntr {
-    color: red;
-    
-    font-weight:500;
-    font-size:13px;
+.evnts-cntr,
+.evnts-cntr > a {
+    color: black;
+    cursor: default;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
 }
 
 /* ======== SIDEBAR ======== */
+
 .sidebar > ul {
     background-color: antiquewhite;
+    margin-right:1rem;
+    padding: 1rem 1rem 1rem 1.5rem;
 }
 
 /* ======== SPECIAL PAGES ======== */

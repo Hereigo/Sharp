@@ -36,18 +36,24 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label asp-for="Repeat"></label>
-                    <select asp-for="Repeat" asp-items="Html.GetEnumSelectList<CalEventRepeat>()" class="form-control">
-                    </select>
-                    <span asp-validation-for="Repeat" class="text-danger"></span>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label asp-for="Repeat"></label>
+                            <select asp-for="Repeat" asp-items="Html.GetEnumSelectList<CalEventRepeat>()" class="form-control">
+                            </select>
+                            <span asp-validation-for="Repeat" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div id="everyXdaysField" style="display:@everyXdaysFieldDisplay" class="form-group">
+                            <label asp-for="EveryXDays" class="control-label"></label>
+                            <input type="number" asp-for="EveryXDays" class="form-control" />
+                            <span asp-validation-for="EveryXDays" class="text-danger"></span>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="everyXdaysField" style="display:@everyXdaysFieldDisplay" class="form-group">
-                    <label asp-for="EveryXDays" class="control-label"></label>
-                    <input type="number" asp-for="EveryXDays" class="form-control" />
-                    <span asp-validation-for="EveryXDays" class="text-danger"></span>
-                </div>
                 <br />
                 <div class="row">
                     <div class="col-4">
@@ -84,12 +90,12 @@
                             var statusNum = @Convert.ToInt32(item);
                             var isChecked = @Convert.ToInt32(Model?.Status) == statusNum;
 
-                            <div class="col-4">
-                                <label>
-                                    <input type="radio" asp-for="Status" value="@statusNum" checked="@isChecked" />
+                                <div class="col-4">
+                                    <label>
+                                        <input type="radio" asp-for="Status" value="@statusNum" checked="@isChecked" />
                                     @item
-                                </label>
-                            </div>
+                                    </label>
+                                </div>
                         }
                     </div>
                     <hr />

@@ -22,6 +22,13 @@ namespace DotNet8.Controllers
             _logger = logger;
         }
 
+        // TODO:
+        // add json bkp ajax request
+        // use css bundler
+        // add TASKS LIST Editable
+        // may be use langing page?
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -40,7 +47,8 @@ namespace DotNet8.Controllers
                 now4currentPage = now.AddMonths(-1);
 
             var events = await _context.CalEvents
-                .Where(e => e.Month == now4currentPage.Month || (e.Month < now4currentPage.Month && e.Repeat != CalEventRepeat.Once))
+                .Where(e => e.Month == now4currentPage.Month && e.Year == now4currentPage.Year
+                    || (e.Month < now4currentPage.Month && e.Year <= now4currentPage.Year && e.Repeat != CalEventRepeat.Once))
                 .ToListAsync();
 
             await ProcessRequestHeaders(Request.Headers);
@@ -223,6 +231,7 @@ namespace DotNet8.Controllers
 
         public async Task<IActionResult> History()
             => View(await _context.RequestsHeaders
+                .Where(rh => rh.Field == ReqHeadFieldType.UAgent) // TODO: TEMPORARY !!!
                 .OrderByDescending(rh => rh.Created).Take(_historyLines).ToListAsync());
 
         public async Task<JsonResult> GetJson()

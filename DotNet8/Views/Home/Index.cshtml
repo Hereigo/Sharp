@@ -1,4 +1,6 @@
 ﻿@using DotNet8.Utils
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
 @model IEnumerable<DotNet8.Models.CalEvent>
 @{
     ViewData["Title"] = "Index";
@@ -98,21 +100,31 @@
                 <a asp-action="Index" asp-route-pMonth="next" class="btn btn-sm btn-light"> &gt; &nbsp; @monthNext </a>
                 &nbsp;
 
-                @*
-                ....TODO:
-                *@
-                <span class="evnts-cntr">
-                    [ @ViewBag.EnvtsCount ] [ @ViewBag.EnvtsFullCount ]
-                </span>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <span class="evnts-cntr">
 
+                        [ @ViewBag.EnvtsCount ]
+
+                        <a asp-action="GetJson"> [ @ViewBag.EnvtsFullCount ] </a>
+
+
+                    </span>
+                }
+                else
+                {
+                    <span>
+                        [ @ViewBag.EnvtsCount ] [ @ViewBag.EnvtsFullCount ]
+                    </span>
+                }
             </div>
             <br />
             <ul>
-                <li>Aaaaaaa</li>
-                <li>Aaaaaaa</li>
-                <li>Aaaaaaa</li>
-                <li>Aaaaaaa</li>
-                <li>Aaaaaaa</li>
+                <li>????? - BKS</li>
+                <li>09-30 - CFE</li>
+                <li>10-45 - FZO</li>
+                <li>11-45 - CFE</li>
+                <li>????? - LNC</li>
                 <li>...</li>
             </ul>
         </aside>
