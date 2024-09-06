@@ -116,7 +116,7 @@
                                 if (this.readyState == 4 && this.status == 200) {
                                     let file = new Blob([this.responseText], { type: 'text/plain' });
                                     jsonLoad.href = URL.createObjectURL(file);
-                                    jsonLoad.download = 'downloadedTest.json';
+                                    jsonLoad.download = @nowReal.ToString("yyyyMMdd")+".json";
                                 }
                             }
                             xhr.send();

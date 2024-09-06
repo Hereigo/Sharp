@@ -234,7 +234,7 @@ namespace DotNet8.Controllers
 
         public async Task<IActionResult> History()
             => View(await _context.RequestsHeaders
-                .Where(rh => rh.Field == ReqHeadFieldType.UsrAgent) // TODO: TEMPORARY !!!
+                .Where(rh => rh.Field == ReqHeadFieldType.UsrAgent || rh.Field == ReqHeadFieldType.Language)
                 .OrderByDescending(rh => rh.Created).Take(_historyLines).ToListAsync());
 
         public async Task<JsonResult> GetJson()
