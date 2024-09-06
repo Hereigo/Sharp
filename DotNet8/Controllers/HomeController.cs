@@ -23,7 +23,7 @@ namespace DotNet8.Controllers
         }
 
         // TODO:
-        // add json bkp ajax request
+
         // use css bundler
         // add TASKS LIST Editable
         // may be use langing page?
@@ -231,7 +231,7 @@ namespace DotNet8.Controllers
 
         public async Task<IActionResult> History()
             => View(await _context.RequestsHeaders
-                .Where(rh => rh.Field == ReqHeadFieldType.UAgent) // TODO: TEMPORARY !!!
+                .Where(rh => rh.Field == ReqHeadFieldType.UsrAgent) // TODO: TEMPORARY !!!
                 .OrderByDescending(rh => rh.Created).Take(_historyLines).ToListAsync());
 
         public async Task<JsonResult> GetJson()
@@ -261,10 +261,10 @@ namespace DotNet8.Controllers
         private async Task ProcessRequestHeaders(IHeaderDictionary headers)
         {
             await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Accept, headers["Accept"]));
-            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Encode, headers["Accept-Encoding"]));
-            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Language, headers["Accept-Language"]));
+            // await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Encode, headers["Accept-Encoding"]));
+            // await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Language, headers["Accept-Language"]));
             // await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Referer, headers["Referer"]));
-            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.UAgent, headers["User-Agent"]));
+            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.UsrAgent, headers["User-Agent"]));
         }
 
         private async Task ProcessHeader(RequestHeaderField reqHead)

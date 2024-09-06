@@ -103,13 +103,25 @@
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <span class="evnts-cntr">
-
-                        [ @ViewBag.EnvtsCount ]
-
-                        <a asp-action="GetJson"> [ @ViewBag.EnvtsFullCount ] </a>
-
-
+                        <span id="jsonMake">[ @ViewBag.EnvtsCount ]</span>
+                        <a id="jsonLoad" href="">[ @ViewBag.EnvtsFullCount ]</a>
                     </span>
+                    <script>
+                        let jsonLoad = document.querySelector("#jsonLoad");
+                        document.querySelector("#jsonMake").addEventListener("click", function () {
+                            let xhr = new XMLHttpRequest();
+                            let url = '/Home/GetJson/';
+                            xhr.open("GET", url, true);
+                            xhr.onreadystatechange = function () {
+                                if (this.readyState == 4 && this.status == 200) {
+                                    let file = new Blob([this.responseText], { type: 'text/plain' });
+                                    jsonLoad.href = URL.createObjectURL(file);
+                                    jsonLoad.download = 'downloadedTest.json';
+                                }
+                            }
+                            xhr.send();
+                        });
+                    </script>
                 }
                 else
                 {
@@ -124,10 +136,9 @@
                 <li>09-30 - CFE</li>
                 <li>10-45 - FZO</li>
                 <li>11-45 - CFE</li>
-                <li>????? - LNC</li>
+                <li>13-45 - LNC</li>
                 <li>...</li>
             </ul>
         </aside>
-
     </div>
 </div>

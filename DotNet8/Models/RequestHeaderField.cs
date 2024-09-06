@@ -10,12 +10,12 @@ namespace DotNet8.Models
         Encode,
         Language,
         Referer,
-        UAgent,
+        UsrAgent,
     }
 
     public class RequestHeaderField
     {
-        [DisplayFormat(DataFormatString = "{0:dd.MM HH:mm}")]
+        [DisplayFormat(DataFormatString = "{0:dd.MM_HH:mm}")]
         public DateTime Created { get; set; }
 
         public int Id { get; set; }
