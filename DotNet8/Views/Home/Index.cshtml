@@ -14,11 +14,13 @@
     var isCurrentMonth = false;
     var isPrevMonthFinished = false;
     var nowDayOfWeek = nowReal.Month != now4page.Month ? 0 : (int)(now4page.DayOfWeek);
-
     var months = new string[12] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-    var monthPrev = months[nowReal.Month - 2];
-    var monthCurrent = months[nowReal.Month - 1];
+    var monthCurr = months[nowReal.Month - 1];
     var monthNext = months[nowReal.Month];
+    var monthPrev = months[nowReal.Month - 2];
+    var monCurrColor = now4page.Month == (nowReal.Month - 0) ? "yellow" : "";
+    var monNextColor = now4page.Month == (nowReal.Month + 1) ? "yellow" : "";
+    var monPrevColor = now4page.Month == (nowReal.Month - 1) ? "yellow" : "";
 }
 
 <div class="container-fluid">
@@ -28,7 +30,7 @@
             <table class="calendar">
                 <thead>
                     <tr>
-                        <th class='@(nowDayOfWeek==1?"today":"")'> Mon </th>
+                        <th class='@(nowDayOfWeek==1?"today":"")'> Mon @now4page.Month @nowReal.Month </th>
                         <th class='@(nowDayOfWeek==2?"today":"")'> Tue </th>
                         <th class='@(nowDayOfWeek==3?"today":"")'> Wed </th>
                         <th class='@(nowDayOfWeek==4?"today":"")'> Thu </th>
@@ -93,11 +95,11 @@
         <aside class="col-md-2 sidebar">
             <br />
             <div>
-                <a asp-action="Index" asp-route-pMonth="prev" class="btn btn-sm btn-light"> @monthPrev &nbsp; &lt; </a>
+                <a asp-action="Index" asp-route-pMonth="prev" class="btn btn-sm btn-light" style="background-color:@monPrevColor"> @monthPrev </a>
                 &nbsp;
-                <a asp-action="Index" asp-route-pMonth="" class="btn btn-sm btn-light"> @monthCurrent </a>
+                <a asp-action="Index" asp-route-pMonth="" class="btn btn-sm btn-light" style="background-color:@monCurrColor"> @monthCurr </a>
                 &nbsp;
-                <a asp-action="Index" asp-route-pMonth="next" class="btn btn-sm btn-light"> &gt; &nbsp; @monthNext </a>
+                <a asp-action="Index" asp-route-pMonth="next" class="btn btn-sm btn-light" style="background-color:@monNextColor"> @monthNext </a>
                 &nbsp;
 
                 @if (SignInManager.IsSignedIn(User))

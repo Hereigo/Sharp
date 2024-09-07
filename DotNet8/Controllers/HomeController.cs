@@ -35,10 +35,6 @@ namespace DotNet8.Controllers
         }
 
         [AllowAnonymous]
-        public ContentResult StartPage()
-            => base.Content(System.IO.File.ReadAllText("index.html"), "text/html");
-
-        [AllowAnonymous]
         public async Task<IActionResult> Index(string pMonth = "")
         {
             var now = DateTime.UtcNow.AddHours(3);
@@ -50,8 +46,9 @@ namespace DotNet8.Controllers
                 now4currentPage = now.AddMonths(-1);
 
             var events = await _context.CalEvents
-                .Where(e => e.Month == now4currentPage.Month && e.Year == now4currentPage.Year
-                    || (e.Month < now4currentPage.Month && e.Year <= now4currentPage.Year && e.Repeat != CalEventRepeat.Once))
+                .Where(e => e.Repeat == CalEventRepeat.Monthly
+                    || (e.Month == now4currentPage.Month && (e.Year == now4currentPage.Year || e.Repeat == CalEventRepeat.Yearly))
+                    || (e.Month <= now4currentPage.Month && e.Year <= now4currentPage.Year && e.Repeat == CalEventRepeat.EveryXdays))
                 .ToListAsync();
 
             await ProcessRequestHeaders(Request.Headers);
@@ -243,10 +240,10 @@ namespace DotNet8.Controllers
                 new JsonSerializerOptions { PropertyNamingPolicy = null });
 
         [AllowAnonymous]
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        public IActionResult Privacy() =>  View();
+
+        [AllowAnonymous]
+        public ContentResult StartPage() => base.Content(System.IO.File.ReadAllText("index.html"), "text/html");
 
         // public async Task<IActionResult> Details(int? id)
         // {
