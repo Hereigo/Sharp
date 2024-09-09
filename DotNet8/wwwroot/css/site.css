@@ -121,6 +121,7 @@ input[type='datetime-local']:read-only {
             background-color: var(--calend-weekend-days);
         }
 
+            .calendar td.today,
             .calendar td:nth-child(n+6).today {
                 background-color: var(--calend-today);
             }

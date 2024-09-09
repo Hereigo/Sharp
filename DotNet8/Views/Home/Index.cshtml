@@ -30,7 +30,7 @@
             <table class="calendar">
                 <thead>
                     <tr>
-                        <th class='@(nowDayOfWeek==1?"today":"")'> Mon @now4page.Month @nowReal.Month </th>
+                        <th class='@(nowDayOfWeek==1?"today":"")'> Mon </th>
                         <th class='@(nowDayOfWeek==2?"today":"")'> Tue </th>
                         <th class='@(nowDayOfWeek==3?"today":"")'> Wed </th>
                         <th class='@(nowDayOfWeek==4?"today":"")'> Thu </th>
@@ -141,6 +141,14 @@
                 <li>13-45 - LNC</li>
                 <li>...</li>
             </ul>
+            <br />
+            @if (ViewBag.IsDevEnv)
+            {
+                <form enctype="multipart/form-data" method="post" action="UploadFile">
+                    <input type="file" class="form-control" name="uploadingFile" />
+                    <input class="btn btn-info" type="submit" value="Upload" />
+                </form>
+            }
         </aside>
     </div>
 </div>

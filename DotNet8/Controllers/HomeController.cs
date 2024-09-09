@@ -12,20 +12,24 @@ namespace DotNet8.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHostEnvironment _hostEnvironment;
         private readonly ILogger<HomeController> _logger;
 
         private const int _historyLines = 40;
 
-        public HomeController(ApplicationDbContext context, ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext context, ILogger<HomeController> logger, IHostEnvironment hostEnvironment)
         {
             _context = context;
+            _hostEnvironment = hostEnvironment;
             _logger = logger;
         }
 
         // TODO:
 
         // use css bundler
-        // add TASKS LIST Editable
+        // add Tasks list Editable
+        // move month to nav bar
+        // transfer data from gt
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -58,12 +62,12 @@ namespace DotNet8.Controllers
             var eventsModel = new List<CalEvent>();
             var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(now4currentPage);
 
-            ViewBag.TodayReal = now;
-            ViewBag.TodayCurrent = now4currentPage;
-            ViewBag.CssChanged = new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), "/wwwroot/css/site.css"))
-                .LastWriteTime.ToString("yyMMddHHmm");
+            ViewBag.CssChanged = new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), "/wwwroot/css/site.css")).LastWriteTime.ToString("yyMMddHHmm");
             ViewBag.EnvtsCount = events.Count;
             ViewBag.EnvtsFullCount = eventsFullCount;
+            ViewBag.IsDevEnv = _hostEnvironment.IsDevelopment();
+            ViewBag.TodayCurrent = now4currentPage;
+            ViewBag.TodayReal = now;
 
             foreach (var evt in events)
             {
@@ -93,7 +97,6 @@ namespace DotNet8.Controllers
                     }
                 }
             }
-
             for (var i = 1; i <= monthMaxDay; i++)
             {
                 eventsModel.Add(new CalEvent(new DateTime(now4currentPage.Year, now4currentPage.Month, i)));
@@ -105,6 +108,21 @@ namespace DotNet8.Controllers
         // TODO:
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        [HttpPost]
+        public IActionResult UploadFile(IFormFile uploadingFile)
+        {
+            if (uploadingFile != null)
+            {
+                string ImageName = Guid.NewGuid().ToString() + Path.GetExtension(uploadingFile.FileName);
+                string SavePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/temp", ImageName);
+                using (var stream = new FileStream(SavePath, FileMode.Create))
+                {
+                    uploadingFile.CopyTo(stream);
+                }
+            }
+            return RedirectToAction("Index");
+        }
 
         public IActionResult Create(int? id)
         {
@@ -240,7 +258,7 @@ namespace DotNet8.Controllers
                 new JsonSerializerOptions { PropertyNamingPolicy = null });
 
         [AllowAnonymous]
-        public IActionResult Privacy() =>  View();
+        public IActionResult Privacy() => View();
 
         [AllowAnonymous]
         public ContentResult StartPage() => base.Content(System.IO.File.ReadAllText("index.html"), "text/html");
