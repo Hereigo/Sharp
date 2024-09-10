@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using DotNet8.Data;
 using DotNet8.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -33,15 +32,19 @@ namespace DotNet8.Controllers
         }
 
         [AllowAnonymous]
+        public IActionResult Privacy() => View();
+
+        [AllowAnonymous]
+        public ContentResult StartPage() => base.Content(System.IO.File.ReadAllText("index.html"), "text/html");
+
+        [AllowAnonymous]
         public async Task<IActionResult> Index(string pMonth = "")
         {
             var now = DateTime.UtcNow.AddHours(3);
             var now4currentPage = now;
 
-            if (pMonth == "next")
-                now4currentPage = now.AddMonths(1);
-            else if (pMonth == "prev")
-                now4currentPage = now.AddMonths(-1);
+            if (pMonth == "next") now4currentPage = now.AddMonths(1);
+            else if (pMonth == "prev") now4currentPage = now.AddMonths(-1);
 
             var events = await _context.CalEvents
                 .Where(e => e.Repeat == CalEventRepeat.Monthly
@@ -222,21 +225,44 @@ namespace DotNet8.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> History()
-            => View(await _context.RequestsHeaders
-                .Where(rh => rh.Field == ReqHeadFieldType.UsrAgent || rh.Field == ReqHeadFieldType.Language)
-                .OrderByDescending(rh => rh.Created).Take(_historyLines).ToListAsync());
+        public async Task<IActionResult> History() => View(await _context.RequestsHeaders
+            .Where(rh => rh.Field == ReqHeadFieldType.UsrAgent || rh.Field == ReqHeadFieldType.Language)
+            .OrderByDescending(rh => rh.Created).Take(_historyLines).ToListAsync());
 
-        public async Task<JsonResult> GetJson()
-            => new JsonResult(
-                await _context.CalEvents.ToArrayAsync(),
-                new JsonSerializerOptions { PropertyNamingPolicy = null });
+        public async Task<JsonResult> GetJson() => new JsonResult(
+            await _context.CalEvents.ToArrayAsync(),
+            new JsonSerializerOptions { PropertyNamingPolicy = null });
 
-        [AllowAnonymous]
-        public IActionResult Privacy() => View();
+        [HttpPost]
+        public async Task<IActionResult> UploadFile(IFormFile uploadingFile)
+        {
+            if (uploadingFile != null)
+            {
+                if (uploadingFile.Length < 2097152) // 2 MB
+                {
+                    try
+                    {
+                        var result = new StringBuilder();
+                        using (var reader = new StreamReader(uploadingFile.OpenReadStream()))
+                        {
+                            while (reader.Peek() >= 0)
+                                result.AppendLine(reader.ReadLine());
+                        }
+                        var CalEventsList = JsonSerializer.Deserialize<List<CalEvent>>(result.ToString());
 
-        [AllowAnonymous]
-        public ContentResult StartPage() => base.Content(System.IO.File.ReadAllText("index.html"), "text/html");
+                        _context.AddRangeAsync(CalEventsList);
+
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        // TODO:
+                        // smth...
+                    }
+                }
+            }
+            return RedirectToAction("Index");
+        }
 
         // public async Task<IActionResult> Details(int? id)
         // {
@@ -272,69 +298,5 @@ namespace DotNet8.Controllers
                 }
             }
         }
-
-        [HttpPost]
-        public async Task<IActionResult> UploadFile(IFormFile uploadingFile)
-        {
-            if (uploadingFile != null)
-            {
-                if (uploadingFile.Length < 2097152) // 2 MB
-                {
-                    try
-                    {
-                        var result = new StringBuilder();
-                        using (var reader = new StreamReader(uploadingFile.OpenReadStream()))
-                        {
-                            while (reader.Peek() >= 0)
-                                result.AppendLine(reader.ReadLine());
-                        }
-
-                        var JsonFileCollection = JsonSerializer.Deserialize<List<JsonFileObject>>(result.ToString());
-                        var CalEventsList = new List<CalEvent>();
-
-                        foreach (var jsonItem in JsonFileCollection)
-                        {
-                            var date = new DateTime(2023, jsonItem.m, jsonItem.d);
-
-                            CalEventsList.Add(new CalEvent
-                            {
-                                Day = date.Day,
-                                Description = jsonItem.n,
-                                // EveryXDays = evnt.EveryXDays,
-                                Modified = DateTime.Now,
-                                Month = date.Month,
-                                Repeat = jsonItem.x,
-                                Started = date,
-                                Status = CalEventStatus.Active,
-                                // Time = evnt.Time,
-                                Year = date.Year,
-                            });
-                        }
-                        _context.AddRangeAsync(CalEventsList);
-
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        // TODO:
-                        // smth...
-                    }
-                }
-            }
-            return RedirectToAction("Index");
-        }
-    }
-
-    public class JsonFileObject
-    {
-        public JsonFileObject() { }
-
-        [JsonPropertyName("x")]
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        public CalEventRepeat x { get; set; }
-
-        public int d { get; set; }
-        public int m { get; set; }
-        public string n { get; set; }
     }
 }
