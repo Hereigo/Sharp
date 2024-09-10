@@ -288,11 +288,31 @@ namespace DotNet8.Controllers
                             while (reader.Peek() >= 0)
                                 result.AppendLine(reader.ReadLine());
                         }
-                        List<JsonFileObject> jsonString = JsonSerializer.Deserialize<List<JsonFileObject>>(result.ToString());
-                        //
-                        // _dbContext.File.Add(file);
-                        // 
-                        // await _dbContext.SaveChangesAsync();
+
+                        var JsonFileCollection = JsonSerializer.Deserialize<List<JsonFileObject>>(result.ToString());
+                        var CalEventsList = new List<CalEvent>();
+
+                        foreach (var jsonItem in JsonFileCollection)
+                        {
+                            var date = new DateTime(2023, jsonItem.m, jsonItem.d);
+
+                            CalEventsList.Add(new CalEvent
+                            {
+                                Day = date.Day,
+                                Description = jsonItem.n,
+                                // EveryXDays = evnt.EveryXDays,
+                                Modified = DateTime.Now,
+                                Month = date.Month,
+                                Repeat = jsonItem.x,
+                                Started = date,
+                                Status = CalEventStatus.Active,
+                                // Time = evnt.Time,
+                                Year = date.Year,
+                            });
+                        }
+                        _context.AddRangeAsync(CalEventsList);
+
+                        await _context.SaveChangesAsync();
                     }
                     catch (Exception ex)
                     {
