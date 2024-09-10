@@ -8,12 +8,13 @@
 
             // Delegates.TestDelegates();           
 
-            Delegate_min.Test();
+            // Delegate_min.Test();
 
 
-            if(false || true) { 
-                Console.WriteLine("Norm");
-                }
+            if (false && false || true)
+            {
+                Console.WriteLine("TRUE");
+            }
 
 
             Console.WriteLine("\r\n Done.");

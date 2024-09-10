@@ -38,7 +38,10 @@ namespace DotNet8
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
-            app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=StartPage}/{id?}");
+            if (app.Environment.IsDevelopment())
+                app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
+            else
+                app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=StartPage}/{id?}");
             app.MapRazorPages();
 
             Database.CreateDbIfNotExists(app);

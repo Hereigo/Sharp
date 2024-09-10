@@ -18,9 +18,9 @@
     var monthCurr = months[nowReal.Month - 1];
     var monthNext = months[nowReal.Month];
     var monthPrev = months[nowReal.Month - 2];
-    var monCurrColor = now4page.Month == (nowReal.Month - 0) ? "yellow" : "";
-    var monNextColor = now4page.Month == (nowReal.Month + 1) ? "yellow" : "";
-    var monPrevColor = now4page.Month == (nowReal.Month - 1) ? "yellow" : "";
+    var monCurrColor = now4page.Month == (nowReal.Month - 0) ? "rgb(255, 240, 155)" : "";
+    var monNextColor = now4page.Month == (nowReal.Month + 1) ? "rgb(255, 240, 155)" : "";
+    var monPrevColor = now4page.Month == (nowReal.Month - 1) ? "rgb(255, 240, 155)" : "";
 }
 
 <div class="container-fluid">
@@ -146,6 +146,7 @@
             {
                 <form enctype="multipart/form-data" method="post" action="UploadFile">
                     <input type="file" class="form-control" name="uploadingFile" />
+                    <br/>
                     <input class="btn btn-info" type="submit" value="Upload" />
                 </form>
             }

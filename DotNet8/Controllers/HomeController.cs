@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
+using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using DotNet8.Data;
 using DotNet8.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -23,14 +25,6 @@ namespace DotNet8.Controllers
             _hostEnvironment = hostEnvironment;
             _logger = logger;
         }
-
-        // TODO:
-
-        // use css bundler
-        // add Tasks list Editable
-        // move month to nav bar
-        // transfer data from gt
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -108,21 +102,6 @@ namespace DotNet8.Controllers
         // TODO:
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-
-        [HttpPost]
-        public IActionResult UploadFile(IFormFile uploadingFile)
-        {
-            if (uploadingFile != null)
-            {
-                string ImageName = Guid.NewGuid().ToString() + Path.GetExtension(uploadingFile.FileName);
-                string SavePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/temp", ImageName);
-                using (var stream = new FileStream(SavePath, FileMode.Create))
-                {
-                    uploadingFile.CopyTo(stream);
-                }
-            }
-            return RedirectToAction("Index");
-        }
 
         public IActionResult Create(int? id)
         {
@@ -223,14 +202,10 @@ namespace DotNet8.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
             var calEvent = await _context.CalEvents.FirstOrDefaultAsync(m => m.Id == id);
             if (calEvent == null)
-            {
                 return NotFound();
-            }
             return View(calEvent);
         }
 
@@ -297,5 +272,49 @@ namespace DotNet8.Controllers
                 }
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadFile(IFormFile uploadingFile)
+        {
+            if (uploadingFile != null)
+            {
+                if (uploadingFile.Length < 2097152) // 2 MB
+                {
+                    try
+                    {
+                        var result = new StringBuilder();
+                        using (var reader = new StreamReader(uploadingFile.OpenReadStream()))
+                        {
+                            while (reader.Peek() >= 0)
+                                result.AppendLine(reader.ReadLine());
+                        }
+                        List<JsonFileObject> jsonString = JsonSerializer.Deserialize<List<JsonFileObject>>(result.ToString());
+                        //
+                        // _dbContext.File.Add(file);
+                        // 
+                        // await _dbContext.SaveChangesAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        // TODO:
+                        // smth...
+                    }
+                }
+            }
+            return RedirectToAction("Index");
+        }
+    }
+
+    public class JsonFileObject
+    {
+        public JsonFileObject() { }
+
+        [JsonPropertyName("x")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public CalEventRepeat x { get; set; }
+
+        public int d { get; set; }
+        public int m { get; set; }
+        public string n { get; set; }
     }
 }
