@@ -204,11 +204,9 @@ namespace DotNet8.Controllers
 
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-                return NotFound();
+            if (id == null) return NotFound();
             var calEvent = await _context.CalEvents.FirstOrDefaultAsync(m => m.Id == id);
-            if (calEvent == null)
-                return NotFound();
+            if (calEvent == null) return NotFound();
             return View(calEvent);
         }
 
