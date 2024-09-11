@@ -225,9 +225,7 @@ input[type='datetime-local']:read-only {
         }
 
     .day .number {
-        padding-left: 2px;
-        padding-right: 2px;
-        font-size: 14px;
+        font-size: 12px;
         right: 2px;
         top: 1px;
     }

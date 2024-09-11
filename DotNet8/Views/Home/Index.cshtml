@@ -3,7 +3,7 @@
 @inject SignInManager<IdentityUser> SignInManager
 @model IEnumerable<DotNet8.Models.CalEvent>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Calendarium";
 
     var nowReal = ViewBag.TodayReal;
     var now4page = ViewBag.TodayCurrent;
@@ -118,7 +118,7 @@
                                 if (this.readyState == 4 && this.status == 200) {
                                     let file = new Blob([this.responseText], { type: 'text/plain' });
                                     jsonLoad.href = URL.createObjectURL(file);
-                                    jsonLoad.download = @nowReal.ToString("yyyyMMdd")+".json";
+                                    jsonLoad.download = "calendBkp.json";
                                 }
                             }
                             xhr.send();
