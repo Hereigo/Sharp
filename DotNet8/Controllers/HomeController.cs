@@ -298,3 +298,19 @@ namespace DotNet8.Controllers
         }
     }
 }
+// TODO:
+//
+// use css bundler
+// add Tasks list Editable
+// move month to nav bar
+// fix curr date in mobile
+// extend cal navidate for authorized
+// refact css
+// use  WebOptimizer?
+// minify bootstrap jquery
+//
+// transfer data from gt
+// ------Second Sunday of May ----------------
+// { m: "05", d: "11", c: "b", n: "Mom's day (2025)" },
+// ----- Yearly July Last Friday -------------------
+// { m: "07", d: "25", c: "a", n: "SysAdm Day (Last Frid)" },
