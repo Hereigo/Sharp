@@ -26,10 +26,7 @@ namespace DotNet8.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        public IActionResult Error() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 
         [AllowAnonymous]
         public IActionResult Privacy() => View();
@@ -307,7 +304,6 @@ namespace DotNet8.Controllers
 // extend cal navidate for authorized
 // refact css
 // use  WebOptimizer?
-// minify bootstrap jquery
 //
 // transfer data from gt
 // ------Second Sunday of May ----------------
