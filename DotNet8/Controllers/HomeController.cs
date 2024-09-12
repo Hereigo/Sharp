@@ -38,6 +38,9 @@ namespace DotNet8.Controllers
         public async Task<IActionResult> Index(string pMonth = "")
         {
             var now = DateTime.UtcNow.AddHours(3);
+
+            now = now.AddDays(-1); // TEST
+
             var now4currentPage = now;
 
             if (pMonth == "next") now4currentPage = now.AddMonths(1);
@@ -300,10 +303,8 @@ namespace DotNet8.Controllers
 // use css bundler
 // add Tasks list Editable
 // move month to nav bar
-// fix curr date in mobile
 // extend cal navidate for authorized
 // refact css
-// use  WebOptimizer?
 //
 // transfer data from gt
 // ------Second Sunday of May ----------------
