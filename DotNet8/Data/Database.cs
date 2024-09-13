@@ -15,19 +15,21 @@ namespace DotNet8.Data
 
                     context.Database.EnsureCreated();
 
-                    if (context.CalEvents.Any())
+                    if (!context.CalEvents.Any())
                     {
-                        return; // DB has been seeded already.
+                        foreach (CalEvent evt in new CalEvent[] { new(DateTime.Now, "Initial Demo.") { } })
+                        {
+                            context.CalEvents.Add(evt);
+                        }
+                        context.SaveChanges();
                     }
 
-                    foreach (CalEvent evt in new CalEvent[] {
-                        new(DateTime.Now, "Initial Demo."){},
-                    })
+                    if (!context.Notes.Any())
                     {
-                        context.CalEvents.Add(evt);
+                        context.Notes.Add(new Note() { SortNum = 0, Text = "Demo Note." });
+                        context.SaveChanges();
                     }
 
-                    context.SaveChanges();
                 }
                 catch (Exception ex)
                 {
