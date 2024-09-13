@@ -39,7 +39,6 @@ namespace DotNet8.Controllers
         {
             var now = DateTime.UtcNow.AddHours(3);
             var now4currentPage = now;
-
             if (pMonth == "next") now4currentPage = now.AddMonths(1);
             else if (pMonth == "prev") now4currentPage = now.AddMonths(-1);
 
@@ -50,11 +49,9 @@ namespace DotNet8.Controllers
                 .ToListAsync();
 
             await ProcessRequestHeaders(Request.Headers);
-
             var eventsFullCount = await _context.CalEvents.CountAsync();
-
-            var eventsModel = new List<CalEvent>();
             var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(now4currentPage);
+            var eventsModel = new List<CalEvent>();
 
             ViewBag.CssChanged = new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), "/wwwroot/css/site.css")).LastWriteTime.ToString("yyMMddHHmm");
             ViewBag.EnvtsCount = events.Count;
@@ -295,6 +292,7 @@ namespace DotNet8.Controllers
         }
     }
 }
+//
 // TODO:
 //
 // use css bundler
