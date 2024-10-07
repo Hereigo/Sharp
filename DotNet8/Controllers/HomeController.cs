@@ -23,6 +23,9 @@ namespace DotNet8.Controllers
             _context = context;
             _hostEnvironment = hostEnvironment;
             _logger = logger;
+
+            ViewBag.CssChanged = 
+                new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), "/wwwroot/css/site.css")).LastWriteTime.ToString("yyMMddHHmm");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -53,7 +56,6 @@ namespace DotNet8.Controllers
             var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(now4currentPage);
             var eventsModel = new List<CalEvent>();
 
-            ViewBag.CssChanged = new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), "/wwwroot/css/site.css")).LastWriteTime.ToString("yyMMddHHmm");
             ViewBag.EnvtsCount = events.Count;
             ViewBag.EnvtsFullCount = eventsFullCount;
             ViewBag.IsDevEnv = _hostEnvironment.IsDevelopment();
@@ -99,6 +101,12 @@ namespace DotNet8.Controllers
         // TODO:
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        public async Task<IActionResult> FullList()
+        {
+            var events = await _context.CalEvents.OrderBy(x => x.Day).OrderBy(x => x.Month).ToListAsync();
+            return View(events);
+        }
 
         public IActionResult Create(int? id)
         {

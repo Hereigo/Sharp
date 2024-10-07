@@ -1,0 +1,102 @@
+﻿@model IEnumerable<DotNet8.Models.CalEvent>
+
+@{
+    ViewData["Title"] = "FullList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currLineNum = 99;
+    var lineChanged = false;
+    var nextColor = false;
+}
+
+<style>
+    .lineGrey td {
+        background-color: rgb(228, 226, 226);
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="page-history">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Day)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Month)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Year)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EveryXDays)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Repeat)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Modified)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Started)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Time)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    lineChanged = currLineNum != item.Month;
+                    nextColor = lineChanged ? !nextColor : nextColor;
+                    currLineNum = item.Month;
+
+                    <tr class="@(nextColor ? "" : "lineGrey")">
+
+                        <td style="text-align:center">
+                            @Html.DisplayFor(modelItem => item.Day)
+                        </td>
+                        <td style="text-align:center">
+                            @Html.DisplayFor(modelItem => item.Month)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Year)
+                        </td>
+                        <td style="text-align:center">
+                            @Html.DisplayFor(modelItem => item.EveryXDays)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Repeat)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Modified)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Started)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Time)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
