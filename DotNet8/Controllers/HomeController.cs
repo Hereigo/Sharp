@@ -104,7 +104,7 @@ namespace DotNet8.Controllers
 
         public async Task<IActionResult> FullList()
         {
-            var events = await _context.CalEvents.OrderBy(x => x.Day).OrderBy(x => x.Month).ToListAsync();
+            var events = await _context.CalEvents.OrderBy(x => x.Month).ThenBy(x => x.Day).ToListAsync();
             return View(events);
         }
 
