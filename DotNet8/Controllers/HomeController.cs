@@ -24,7 +24,7 @@ namespace DotNet8.Controllers
             _hostEnvironment = hostEnvironment;
             _logger = logger;
 
-            ViewBag.CssChanged = 
+            ViewBag.CssChanged =
                 new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), "/wwwroot/css/site.css")).LastWriteTime.ToString("yyMMddHHmm");
         }
 
@@ -42,6 +42,7 @@ namespace DotNet8.Controllers
         {
             var now = DateTime.UtcNow.AddHours(3);
             var now4currentPage = now;
+
             if (pMonth == "next") now4currentPage = now.AddMonths(1);
             else if (pMonth == "prev") now4currentPage = now.AddMonths(-1);
 
@@ -70,7 +71,9 @@ namespace DotNet8.Controllers
                 {
                     var nextDate = evt.Started.AddDays(evt.EveryXDays.Value);
 
-                    while (nextDate.Month <= now4currentPage.Month)
+                    while (now4currentPage.Month == nextDate.Month
+                        || now4currentPage.Month == nextDate.Month - 1
+                        || now4currentPage.Month == nextDate.Month + 1)
                     {
                         eventsModel.Add(new CalEvent()
                         {
