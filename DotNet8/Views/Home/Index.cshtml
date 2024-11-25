@@ -23,6 +23,20 @@
     var monPrevColor = now4page.Month == (nowReal.Month - 1) ? "rgb(255, 240, 155)" : "";
 }
 
+<style>
+    td.nextMon > div {
+        text-align: right;
+        font-weight: 500;
+        padding-right: 3px;
+    }
+
+    td.nextMon,
+    td.nextMon > .number > a,
+    td.nextMon .day-item-line > a {
+        color: grey;
+    }
+</style>
+
 <div class="container-fluid">
     <div class="row row-calend">
 
@@ -67,12 +81,19 @@
                                 var todayCss = (isCurrentMonth && now4page.Day == daysCount && nowReal.Month == now4page.Month) ? "today" : "";
 
                                 var modelItem = Model
-                                .Where(m => m.Started.Day == daysCount && m.Started.Month == now4page.Month || m.Started.Day == daysCount && m.Repeat == CalEventRepeat.Monthly)
+                                .Where(m => m.Started.Day == daysCount && m.Started.Month == now4page.Month
+                                || m.Started.Day == daysCount && m.Repeat == CalEventRepeat.Monthly)
                                 .ToList();
 
                                 if (!isCurrentMonth)
                                 {
-                                    <td class="day nextMon"></td>
+                                    <td class="day nextMon">
+
+                                        <div>
+                                            @daysCount
+                                        </div>
+
+                                    </td>
                                 }
                                 else
                                 {
@@ -146,7 +167,7 @@
             {
                 <form enctype="multipart/form-data" method="post" action="UploadFile">
                     <input type="file" class="form-control" name="uploadingFile" />
-                    <br/>
+                    <br />
                     <input class="btn btn-info" type="submit" value="Upload" />
                 </form>
             }
