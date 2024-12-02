@@ -45,37 +45,33 @@ namespace DotNet8.Controllers
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time");
             DateTime today = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, tz);
 
-            var todayCurrentView = today;
-            if (pMonth == "next") todayCurrentView = today.AddMonths(1);
-            else if (pMonth == "prev") todayCurrentView = today.AddMonths(-1);
+            var todayForCurrentView = today;
 
-            DateTime monthFirstDay = new DateTime(todayCurrentView.Year, todayCurrentView.Month, 1);
+            if (pMonth == "next") todayForCurrentView = today.AddMonths(1);
+            else if (pMonth == "prev") todayForCurrentView = today.AddMonths(-1);
 
-            int monBeginDayOfWeek = (int)monthFirstDay.DayOfWeek; // Mon = 1 \ .. \ Sat = 6 \ Sun = 0
+            DateTime currMonStart = new DateTime(todayForCurrentView.Year, todayForCurrentView.Month, 1);
 
-            //                                    if Sunday
+            int monBeginDayOfWeek = (int)currMonStart.DayOfWeek; // Mon = 1 \ .. \ Sat = 6 \ Sun = 0
             int prevMonDaysOnSheet = monBeginDayOfWeek == 0 ? 6 : monBeginDayOfWeek - 1;
-
-            //                                    if Monday
-            DateTime sheetFirstDay = monBeginDayOfWeek == 1 ? monthFirstDay : monthFirstDay.AddDays(-prevMonDaysOnSheet);
-
-            int currMonDays = new DateTime(todayCurrentView.Year, todayCurrentView.Month, 1).AddMonths(1).AddDays(-1).Day;
-
+            int currMonDays = new DateTime(todayForCurrentView.Year, todayForCurrentView.Month, 1).AddMonths(1).AddDays(-1).Day;
+            int currMonMaxDay = Utils.Utils.GetMaxDayOfTheMonth(todayForCurrentView);
             int nextMonDaysOnSheet = 7 * 6 - (currMonDays + prevMonDaysOnSheet);
 
-            DateTime sheetLastDay = new DateTime(todayCurrentView.Year, todayCurrentView.Month, nextMonDaysOnSheet).AddMonths(1);
+            DateTime sheetFirstDay = monBeginDayOfWeek == 1 ? currMonStart : currMonStart.AddDays(-prevMonDaysOnSheet);
+            DateTime sheetLastDay = new DateTime(todayForCurrentView.Year, todayForCurrentView.Month, nextMonDaysOnSheet).AddMonths(1);
 
             // Gat All: Monthly, Yearly-ThisMonth, ThisYear-ThisMonth, EveryXDay-ThisPrevMon-ThisPrevYear(already started)
             var events = await _context.CalEvents
                 .Where(e => e.Repeat == CalEventRepeat.Monthly
-                    || (e.Month == todayCurrentView.Month && e.Repeat == CalEventRepeat.Yearly)
-                    || (e.Month == todayCurrentView.Month && e.Year == todayCurrentView.Year)
-                    || (e.Month == 12 && e.Year == todayCurrentView.Year + 1) // December
+                    || (e.Month == todayForCurrentView.Month && e.Repeat == CalEventRepeat.Yearly)
+                    || (e.Month == todayForCurrentView.Month && e.Year == todayForCurrentView.Year)
+                    || (e.Month == 12 && e.Year == todayForCurrentView.Year + 1) // December
                     || (e.Started <= sheetLastDay && e.Repeat == CalEventRepeat.EveryXdays))
                 .ToListAsync();
 
-            var eventsFullCount = await _context.CalEvents.CountAsync();
-            var monthMaxDay = Utils.Utils.GetMaxDayOfTheMonth(todayCurrentView);
+            var allEventsCount = await _context.CalEvents.CountAsync();
+
             var eventsModel = new List<CalEvent>();
 
             foreach (var evt in events)
@@ -112,16 +108,16 @@ namespace DotNet8.Controllers
                     eventsModel.Add(evt);
                 }
             }
-            for (var i = 1; i <= monthMaxDay; i++)
+            for (var i = 1; i <= currMonMaxDay; i++)
             {
-                eventsModel.Add(new CalEvent(new DateTime(todayCurrentView.Year, todayCurrentView.Month, i)));
+                eventsModel.Add(new CalEvent(new DateTime(todayForCurrentView.Year, todayForCurrentView.Month, i)));
             }
 
             ViewBag.EnvtsCount = events.Count;
             // ViewBag.EnvtsCount = eventsModel.Count; ??????????
-            ViewBag.EnvtsFullCount = eventsFullCount;
+            ViewBag.EnvtsFullCount = allEventsCount;
             ViewBag.IsDevEnv = _hostEnvironment.IsDevelopment();
-            ViewBag.TodayCurrent = todayCurrentView;
+            ViewBag.TodayCurrent = todayForCurrentView;
             ViewBag.TodayReal = today;
 
             return View(eventsModel);

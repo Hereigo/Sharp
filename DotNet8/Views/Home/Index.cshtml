@@ -5,7 +5,7 @@
 @{
     ViewData["Title"] = "Calendarium";
 
-    var nowReal = ViewBag.TodayReal;
+    DateTime nowReal = ViewBag.TodayReal;
     var now4page = ViewBag.TodayCurrent;
     var daysCount = 0;
     var daysInMonth = Utils.GetMaxDayOfTheMonth(now4page);
@@ -14,10 +14,10 @@
     var isCurrentMonth = false;
     var isPrevMonthFinished = false;
     var nowDayOfWeek = nowReal.Month != now4page.Month ? 0 : (int)(now4page.DayOfWeek);
-    var months = new string[12] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-    var monthCurr = months[nowReal.Month - 1];
-    var monthNext = months[nowReal.Month];
-    var monthPrev = months[nowReal.Month - 2];
+    var months = new string[13] { "ERR!", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+    var monthCurr = months[nowReal.Month];
+    var monthNext = nowReal.Month == 12 ? "Jan" : months[nowReal.Month + 1];
+    var monthPrev = nowReal.Month == 1 ? "Dec" : months[nowReal.Month - 1];
     var monCurrColor = now4page.Month == (nowReal.Month - 0) ? "rgb(255, 240, 155)" : "";
     var monNextColor = now4page.Month == (nowReal.Month + 1) ? "rgb(255, 240, 155)" : "";
     var monPrevColor = now4page.Month == (nowReal.Month - 1) ? "rgb(255, 240, 155)" : "";
@@ -80,10 +80,25 @@
 
                                 var todayCss = (isCurrentMonth && now4page.Day == daysCount && nowReal.Month == now4page.Month) ? "today" : "";
 
-                                var modelItem = Model
-                                .Where(m => m.Started.Day == daysCount && m.Started.Month == now4page.Month
-                                || m.Started.Day == daysCount && m.Repeat == CalEventRepeat.Monthly)
-                                .ToList();
+                                var modelItem = new List<CalEvent>();
+
+                                if (!isPrevMonthFinished) // PREV MONTH
+                                {
+
+                                }
+                                else if (isCurrentMonth) // CURR MONTH
+                                {
+
+                                }
+                                else // NEXT MONTH
+                                {
+
+                                }
+
+                                modelItem = Model
+                                    .Where(m => m.Started.Day == daysCount && m.Started.Month == now4page.Month
+                                    || m.Started.Day == daysCount && m.Repeat == CalEventRepeat.Monthly)
+                                    .ToList();
 
                                 if (!isCurrentMonth)
                                 {
