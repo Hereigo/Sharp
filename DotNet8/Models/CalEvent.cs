@@ -37,7 +37,7 @@ namespace DotNet8.Models
         public DateTime Started { get; set; }
 
         [DataType(DataType.Time)]
-        [DisplayFormat(DataFormatString = "HH:mm")]
+        [DisplayFormat(DataFormatString = @"{0:hh\:mm}", ApplyFormatInEditMode = true)]
         public TimeSpan Time { get; set; }
 
         public string Description { get; set; }

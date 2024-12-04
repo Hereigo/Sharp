@@ -69,7 +69,7 @@ input[type='datetime-local']:read-only {
     }
 
 .row-footer {
-    padding: 1rem;
+    padding: .5rem;
 }
 
 /* ======== CALENDAR ======== */
@@ -130,6 +130,17 @@ input[type='datetime-local']:read-only {
             .calendar td.day.nextMon {
                 background-color: var(--calend-another-month);
             }
+
+        .calendar td.nextMon > div {
+            font-weight: 200;
+            padding-right: 3px;
+        }
+
+        .calendar td.nextMon,
+        .calendar td.nextMon > .number > a,
+        .calendar td.nextMon .day-item-line > a {
+            color: grey;
+        }
 
 .day {
     padding-top: 1.5rem;

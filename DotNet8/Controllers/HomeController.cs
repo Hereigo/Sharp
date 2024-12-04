@@ -25,7 +25,7 @@ namespace DotNet8.Controllers
             _logger = logger;
 
             ViewBag.CssChanged =
-                new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), "/wwwroot/css/site.css")).LastWriteTime.ToString("yyMMddHHmm");
+                new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), "/wwwroot/css/site.min.css")).LastWriteTime.ToString("yyMMddHHmm");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -53,72 +53,38 @@ namespace DotNet8.Controllers
             DateTime currMonStart = new DateTime(todayForCurrentView.Year, todayForCurrentView.Month, 1);
 
             int monBeginDayOfWeek = (int)currMonStart.DayOfWeek; // Mon = 1 \ .. \ Sat = 6 \ Sun = 0
+
+            int sheetSize = 7 * 6;
             int prevMonDaysOnSheet = monBeginDayOfWeek == 0 ? 6 : monBeginDayOfWeek - 1;
             int currMonDays = new DateTime(todayForCurrentView.Year, todayForCurrentView.Month, 1).AddMonths(1).AddDays(-1).Day;
-            int currMonMaxDay = Utils.Utils.GetMaxDayOfTheMonth(todayForCurrentView);
-            int nextMonDaysOnSheet = 7 * 6 - (currMonDays + prevMonDaysOnSheet);
+            int nextMonDaysOnSheet = sheetSize - (currMonDays + prevMonDaysOnSheet);
 
             DateTime sheetFirstDay = monBeginDayOfWeek == 1 ? currMonStart : currMonStart.AddDays(-prevMonDaysOnSheet);
             DateTime sheetLastDay = new DateTime(todayForCurrentView.Year, todayForCurrentView.Month, nextMonDaysOnSheet).AddMonths(1);
 
-            // Gat All: Monthly, Yearly-ThisMonth, ThisYear-ThisMonth, EveryXDay-ThisPrevMon-ThisPrevYear(already started)
+            // Gat All aplicable: Monthly, Yearly, ThisYear-ThisMonth, EveryXDay(already started)
             var events = await _context.CalEvents
-                .Where(e => e.Repeat == CalEventRepeat.Monthly
-                    || (e.Month == todayForCurrentView.Month && e.Repeat == CalEventRepeat.Yearly)
-                    || (e.Month == todayForCurrentView.Month && e.Year == todayForCurrentView.Year)
-                    || (e.Month == 12 && e.Year == todayForCurrentView.Year + 1) // December
-                    || (e.Started <= sheetLastDay && e.Repeat == CalEventRepeat.EveryXdays))
+                .Where(e =>
+                       (e.Repeat == CalEventRepeat.Monthly)
+                    || (e.Repeat == CalEventRepeat.Yearly)
+                    || (e.Repeat == CalEventRepeat.EveryXdays && e.Started <= sheetLastDay)
+                    || (e.Repeat == CalEventRepeat.Once && e.Started >= sheetFirstDay && e.Started <= sheetLastDay))
                 .ToListAsync();
 
             var allEventsCount = await _context.CalEvents.CountAsync();
 
-            var eventsModel = new List<CalEvent>();
+            var eventsModel = GenerateRepeatingEvents(events, sheetFirstDay, sheetLastDay, todayForCurrentView);
 
-            foreach (var evt in events)
-            {
-                if (evt.Repeat == CalEventRepeat.EveryXdays)
-                {
-                    var nextDate = evt.Started;
+            ViewBag.EnvtsCount = eventsModel.Count;
 
-                    while (nextDate <= sheetLastDay)
-                    {
-                        if (nextDate >= sheetFirstDay)
-                        {
-                            eventsModel.Add(new CalEvent()
-                            {
-                                Id = evt.Id,
-                                Day = evt.Started.Day,
-                                Description = evt.Description,
-                                EveryXDays = evt.EveryXDays,
-                                Modified = evt.Modified,
-                                Month = (evt.Repeat == CalEventRepeat.Monthly) ? 0 : evt.Started.Month,
-                                Repeat = evt.Repeat,
-                                Started = nextDate,
-                                Status = evt.Status,
-                                Time = evt.Time,
-                                Year = (evt.Repeat == CalEventRepeat.Yearly) ? 0 : evt.Started.Year
-                            });
-                        }
+            // Fill empty days:
+            for (var i = 0; i < sheetSize; i++) eventsModel.Add(new CalEvent(sheetFirstDay.AddDays(i)));
 
-                        nextDate = nextDate.AddDays(evt.EveryXDays.Value);
-                    }
-                }
-                else
-                {
-                    eventsModel.Add(evt);
-                }
-            }
-            for (var i = 1; i <= currMonMaxDay; i++)
-            {
-                eventsModel.Add(new CalEvent(new DateTime(todayForCurrentView.Year, todayForCurrentView.Month, i)));
-            }
-
-            ViewBag.EnvtsCount = events.Count;
-            // ViewBag.EnvtsCount = eventsModel.Count; ??????????
             ViewBag.EnvtsFullCount = allEventsCount;
             ViewBag.IsDevEnv = _hostEnvironment.IsDevelopment();
             ViewBag.TodayCurrent = todayForCurrentView;
             ViewBag.TodayReal = today;
+            ViewBag.SheetFirstDay = sheetFirstDay;
 
             return View(eventsModel);
         }
@@ -289,14 +255,6 @@ namespace DotNet8.Controllers
             return RedirectToAction("Index");
         }
 
-        // public async Task<IActionResult> Details(int? id)
-        // {
-        //     if (id == null) return NotFound();
-        //     var calEvent = await _context.CalEvents.FirstOrDefaultAsync(m => m.Id == id);
-        //     if (calEvent == null) return NotFound();
-        //     return View(calEvent);
-        // }
-
         private bool CalEventExists(int id)
         {
             return _context.CalEvents.Any(e => e.Id == id);
@@ -323,20 +281,94 @@ namespace DotNet8.Controllers
                 }
             }
         }
+
+        private List<CalEvent> GenerateRepeatingEvents(List<CalEvent> events, DateTime sheetFirstDay, DateTime sheetLastDay, DateTime today)
+        {
+            var eventsModel = new List<CalEvent>();
+            int currMonMaxDay = Utils.Utils.GetMaxDayOfTheMonth(today);
+
+            foreach (var evt in events)
+            {
+                if (evt.Repeat == CalEventRepeat.Monthly)
+                {
+                    for (int i = -1; i <= 1; i++) // Add for 3 month (Prev, Curretc, Next):
+                    {
+                        var startedDateForMonthly = new DateTime(today.Year, today.Month, evt.Day).AddMonths(i);
+
+                        if (startedDateForMonthly >= sheetFirstDay && startedDateForMonthly <= sheetLastDay)
+                        {
+                            eventsModel.Add(new CalEvent()
+                            {
+                                Id = evt.Id,
+                                Day = evt.Started.Day,
+                                Description = evt.Description,
+                                EveryXDays = evt.EveryXDays,
+                                Modified = evt.Modified,
+                                Month = startedDateForMonthly.Month,
+                                Repeat = evt.Repeat,
+                                Started = startedDateForMonthly,
+                                Status = evt.Status,
+                                Time = evt.Time,
+                                Year = startedDateForMonthly.Year
+                            });
+                        }
+                    }
+                }
+                else if (evt.Repeat == CalEventRepeat.Yearly)
+                {
+                    var startedDateForYearly = new DateTime(today.Year, evt.Month, evt.Day);
+
+                    if (startedDateForYearly >= sheetFirstDay && startedDateForYearly <= sheetLastDay)
+                    {
+                        eventsModel.Add(new CalEvent()
+                        {
+                            Id = evt.Id,
+                            Day = evt.Started.Day,
+                            Description = evt.Description,
+                            EveryXDays = evt.EveryXDays,
+                            Modified = evt.Modified,
+                            Month = startedDateForYearly.Month,
+                            Repeat = evt.Repeat,
+                            Started = startedDateForYearly,
+                            Status = evt.Status,
+                            Time = evt.Time,
+                            Year = startedDateForYearly.Year
+                        });
+                    }
+                }
+                else if (evt.Repeat == CalEventRepeat.EveryXdays)
+                {
+                    var startedDateForCurrent = evt.Started;
+
+                    while (startedDateForCurrent <= sheetLastDay)
+                    {
+                        if (startedDateForCurrent >= sheetFirstDay)
+                        {
+                            eventsModel.Add(new CalEvent()
+                            {
+                                Id = evt.Id,
+                                Day = evt.Started.Day,
+                                Description = evt.Description,
+                                EveryXDays = evt.EveryXDays,
+                                Modified = evt.Modified,
+                                Month = (evt.Repeat == CalEventRepeat.Monthly) ? 0 : evt.Started.Month,
+                                Repeat = evt.Repeat,
+                                Started = startedDateForCurrent.Date,
+                                Status = evt.Status,
+                                Time = evt.Time,
+                                Year = (evt.Repeat == CalEventRepeat.Yearly) ? 0 : evt.Started.Year
+                            });
+                        }
+                        // date increment.
+                        startedDateForCurrent = startedDateForCurrent.AddDays(evt.EveryXDays.Value);
+                    }
+                }
+                else
+                {
+                    eventsModel.Add(evt);
+                }
+            }
+            return eventsModel;
+        }
     }
 }
-//
-// TODO:
-//
-// use css bundler
-// add Tasks list Editable
-// move month to nav bar
-// extend cal navidate for authorized
-// refact css
-// combine two _ValidationScriptsPartial
-//
-// transfer data from gt
-// ------Second Sunday of May ----------------
-// { m: "05", d: "11", c: "b", n: "Mom's day (2025)" },
-// ----- Yearly July Last Friday -------------------
-// { m: "07", d: "25", c: "a", n: "SysAdm Day (Last Frid)" },

@@ -6,36 +6,18 @@
     ViewData["Title"] = "Calendarium";
 
     DateTime nowReal = ViewBag.TodayReal;
-    var now4page = ViewBag.TodayCurrent;
-    var daysCount = 0;
-    var daysInMonth = Utils.GetMaxDayOfTheMonth(now4page);
-    var firstDayOfWeekNum = (int)(new DateTime(now4page.Year, now4page.Month, 1).DayOfWeek) - 1;
-    var firstDayOfWeek = firstDayOfWeekNum == -1 ? 6 : firstDayOfWeekNum;
-    var isCurrentMonth = false;
-    var isPrevMonthFinished = false;
+    DateTime now4page = ViewBag.TodayCurrent;
+    DateTime sheetFirstDay = ViewBag.SheetFirstDay;
+    var sheetDaysCount = 0;
     var nowDayOfWeek = nowReal.Month != now4page.Month ? 0 : (int)(now4page.DayOfWeek);
     var months = new string[13] { "ERR!", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
     var monthCurr = months[nowReal.Month];
     var monthNext = nowReal.Month == 12 ? "Jan" : months[nowReal.Month + 1];
     var monthPrev = nowReal.Month == 1 ? "Dec" : months[nowReal.Month - 1];
-    var monCurrColor = now4page.Month == (nowReal.Month - 0) ? "rgb(255, 240, 155)" : "";
-    var monNextColor = now4page.Month == (nowReal.Month + 1) ? "rgb(255, 240, 155)" : "";
-    var monPrevColor = now4page.Month == (nowReal.Month - 1) ? "rgb(255, 240, 155)" : "";
+    var monCurrColor = now4page.Month == (nowReal.AddMonths(0).Month) ? "rgb(255, 240, 155)" : "";
+    var monNextColor = now4page.Month == (nowReal.AddMonths(1).Month) ? "rgb(255, 240, 155)" : "";
+    var monPrevColor = now4page.Month == (nowReal.AddMonths(-1).Month) ? "rgb(255, 240, 155)" : "";
 }
-
-<style>
-    td.nextMon > div {
-        text-align: right;
-        font-weight: 500;
-        padding-right: 3px;
-    }
-
-    td.nextMon,
-    td.nextMon > .number > a,
-    td.nextMon .day-item-line > a {
-        color: grey;
-    }
-</style>
 
 <div class="container-fluid">
     <div class="row row-calend">
@@ -57,69 +39,20 @@
                     @for (int r = 0; r < 6; r++)
                     {
                         <tr>
-
                             @for (int d = 0; d < 7; d++)
                             {
-                                if (d == firstDayOfWeek && firstDayOfWeek == 0) // Mon
-                                {
-                                    isCurrentMonth = true;
-                                    isPrevMonthFinished = true;
-                                }
-                                else if (d == firstDayOfWeek && !isPrevMonthFinished) // Tue...Sun
-                                {
-                                    daysCount = 0;
-                                    isCurrentMonth = true;
-                                    isPrevMonthFinished = true;
-                                }
-                                if (daysCount == daysInMonth) // Next month.
-                                {
-                                    daysCount = 0;
-                                    isCurrentMonth = false;
-                                }
-                                daysCount++;
+                                var processingDate = sheetFirstDay.AddDays(sheetDaysCount);
+                                var isCurrentMonth = processingDate.Month == now4page.Month;
+                                var todayCss = (nowReal.Date == processingDate.Date) ? "today" : "";
+                                var otherMonCss = isCurrentMonth ? "" : "nextMon";
 
-                                var todayCss = (isCurrentMonth && now4page.Day == daysCount && nowReal.Month == now4page.Month) ? "today" : "";
+                                var dayItemsList = Model.Where(m => m.Started.Date == processingDate.Date).ToList();
+                                sheetDaysCount++;
 
-                                var modelItem = new List<CalEvent>();
-
-                                if (!isPrevMonthFinished) // PREV MONTH
-                                {
-
-                                }
-                                else if (isCurrentMonth) // CURR MONTH
-                                {
-
-                                }
-                                else // NEXT MONTH
-                                {
-
-                                }
-
-                                modelItem = Model
-                                    .Where(m => m.Started.Day == daysCount && m.Started.Month == now4page.Month
-                                    || m.Started.Day == daysCount && m.Repeat == CalEventRepeat.Monthly)
-                                    .ToList();
-
-                                if (!isCurrentMonth)
-                                {
-                                    <td class="day nextMon">
-
-                                        <div>
-                                            @daysCount
-                                        </div>
-
-                                    </td>
-                                }
-                                else
-                                {
-                                    <td class="day @todayCss">
-
-                                        @await Html.PartialAsync("~/Views/Home/EventCalendView.cshtml", modelItem)
-
-                                    </td>
-                                }
+                                <td class="day @otherMonCss @todayCss">
+                                    @await Html.PartialAsync("~/Views/Home/EventCalendView.cshtml", dayItemsList)
+                                </td>
                             }
-
                         </tr>
                     }
                 </tbody>
