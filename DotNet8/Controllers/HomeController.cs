@@ -62,13 +62,9 @@ namespace DotNet8.Controllers
             DateTime sheetFirstDay = monBeginDayOfWeek == 1 ? currMonStart : currMonStart.AddDays(-prevMonDaysOnSheet);
             DateTime sheetLastDay = new DateTime(todayForCurrentView.Year, todayForCurrentView.Month, nextMonDaysOnSheet).AddMonths(1);
 
-            // Gat All aplicable: Monthly, Yearly, ThisYear-ThisMonth, EveryXDay(already started)
+            // Gat All already started Events with applicable non-repeating:
             var events = await _context.CalEvents
-                .Where(e =>
-                       (e.Repeat == CalEventRepeat.Monthly)
-                    || (e.Repeat == CalEventRepeat.Yearly)
-                    || (e.Repeat == CalEventRepeat.EveryXdays && e.Started <= sheetLastDay)
-                    || (e.Repeat == CalEventRepeat.Once && e.Started >= sheetFirstDay && e.Started <= sheetLastDay))
+                .Where(e => e.Started <= sheetLastDay && (e.Repeat != CalEventRepeat.Once || e.Repeat == CalEventRepeat.Once && e.Started >= sheetFirstDay))
                 .ToListAsync();
 
             var allEventsCount = await _context.CalEvents.CountAsync();
@@ -291,9 +287,9 @@ namespace DotNet8.Controllers
             {
                 if (evt.Repeat == CalEventRepeat.Monthly)
                 {
-                    for (int i = -1; i <= 1; i++) // Add for 3 month (Prev, Curretc, Next):
+                    for (int i = -1; i <= 1; i++) // Add for 3 month (Prev, Current, Next and Prev.):
                     {
-                        var startedDateForMonthly = new DateTime(today.Year, today.Month, evt.Day).AddMonths(i);
+                        var startedDateForMonthly = new DateTime(today.Year, today.Month, evt.Day).AddMonths(i); // 21,03,2025 ??? MONTHLY
 
                         if (startedDateForMonthly >= sheetFirstDay && startedDateForMonthly <= sheetLastDay)
                         {
