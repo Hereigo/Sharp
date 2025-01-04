@@ -287,9 +287,17 @@ namespace DotNet8.Controllers
             {
                 if (evt.Repeat == CalEventRepeat.Monthly)
                 {
+                    int betweenStartedAndSheet = today.Month - evt.Started.Month;
+
                     for (int i = -1; i <= 1; i++) // Add for 3 month (Prev, Current, Next and Prev.):
                     {
-                        var startedDateForMonthly = new DateTime(today.Year, today.Month, evt.Day).AddMonths(i); // 21,03,2025 ??? MONTHLY
+                        //var startedDateForMonthlyOLD = new DateTime(today.Year, today.Month, evt.Day).AddMonths(i);
+
+                        // TODO:
+
+                        // Handle 29 of February!!!!!!!!!!!!!
+                        // Handle 29 of February!!!!!!!!!!!!!
+                        var startedDateForMonthly = new DateTime(today.Year, evt.Started.Month, evt.Day).AddMonths(betweenStartedAndSheet + i);
 
                         if (startedDateForMonthly >= sheetFirstDay && startedDateForMonthly <= sheetLastDay)
                         {
