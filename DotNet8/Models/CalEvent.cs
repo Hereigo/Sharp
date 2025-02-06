@@ -17,7 +17,7 @@ namespace DotNet8.Models
         EveryXdays,
     }
 
-    public class CalEvent
+    public class CalEvent : IValidatableObject
     {
         public int Id { get; set; }
 
@@ -55,6 +55,14 @@ namespace DotNet8.Models
             Started = date;
             Status = CalEventStatus.Active;
             Year = date.Year;
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Repeat == CalEventRepeat.EveryXdays && (EveryXDays == null || EveryXDays < 1 || EveryXDays > 777))
+            {
+                yield return new ValidationResult("Every X days - must be setup for the repeating.", new[] { nameof(Repeat) });
+            }
         }
     }
 

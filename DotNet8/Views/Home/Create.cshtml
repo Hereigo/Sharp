@@ -45,7 +45,8 @@
                         </div>
                     </div>
                     <div class="col-4">
-                        <div id="everyXdaysField" style="display:@everyXdaysFieldDisplay" class="form-group">
+                        @* <div id="everyXdaysField" style="display:@everyXdaysFieldDisplay" class="form-group"> *@
+                        <div id="everyXdaysField" class="form-group">
                             <label asp-for="EveryXDays" class="control-label"></label>
                             <input type="number" asp-for="EveryXDays" class="form-control" />
                             <span asp-validation-for="EveryXDays" class="text-danger"></span>

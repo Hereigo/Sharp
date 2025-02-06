@@ -74,7 +74,7 @@ namespace DotNet8.Controllers
             ViewBag.EnvtsCount = eventsModel.Count;
 
             // Fill empty days:
-            for (var i = 0; i < sheetSize; i++) eventsModel.Add(new CalEvent(sheetFirstDay.AddDays(i)));
+            for (var i = 0; i < sheetSize; i++) { eventsModel.Add(new CalEvent(sheetFirstDay.AddDays(i))); }
 
             ViewBag.EnvtsFullCount = allEventsCount;
             ViewBag.IsDevEnv = _hostEnvironment.IsDevelopment();
