@@ -118,6 +118,7 @@ namespace DotNet8.Controllers
             {
                 _context.Add(new CalEvent()
                 {
+                    Created = DateTime.Now,
                     Day = evnt.Started.Day,
                     Description = evnt.Description,
                     EveryXDays = evnt.EveryXDays,

@@ -1,4 +1,10 @@
 ﻿
+- ADD ItemCreated field
+
+- See FULL LIST to Understand!
+
+- ...
+
 - use css bundler
 
 - add Tasks list Editable
