@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
-using DotNet8.Data;
-using DotNet8.Models;
+using Calendarium.Data;
+using Calendarium.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace DotNet8.Controllers
+namespace Calendarium.Controllers
 {
     [Authorize]
     public class HomeController : Controller
@@ -95,14 +95,14 @@ namespace DotNet8.Controllers
             return View(events);
         }
 
-        public IActionResult Create(int? id)
+        public IActionResult Create(int? id, int? month)
         {
             var now = DateTime.Now;
             var newEvent = new CalEvent()
             {
                 EveryXDays = 0,
                 Modified = DateTime.Now,
-                Started = new DateTime(now.Year, now.Month, id ?? 1),
+                Started = new DateTime(now.Year, month ?? now.Month, id ?? 1),
                 Status = CalEventStatus.Active,
                 Time = new TimeSpan(0, 0, 0),
                 Repeat = CalEventRepeat.Once,

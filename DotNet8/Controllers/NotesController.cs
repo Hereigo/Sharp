@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DotNet8.Data;
-using DotNet8.Models;
+using Calendarium.Data;
+using Calendarium.Models;
 
-namespace DotNet8.Controllers
+namespace Calendarium.Controllers
 {
     public class NotesController : Controller
     {

@@ -3,7 +3,7 @@
 // using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
 
-namespace DotNet8.DbLogger
+namespace Calendarium.DbLogger
 {
     public class DbLogger : ILogger
     {

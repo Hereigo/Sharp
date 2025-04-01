@@ -1,4 +1,4 @@
-﻿@model DotNet8.Models.CalEvent
+﻿@model Calendarium.Models.CalEvent
 @{
     var timeWithNoSeconds = Model.Time.ToString(@"hh\:mm");
     var everyXdaysFieldDisplay = Model.Repeat == CalEventRepeat.EveryXdays ? "block" : "none";

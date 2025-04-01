@@ -1,4 +1,4 @@
-namespace DotNet8.Models
+namespace Calendarium.Models
 {
     public enum NoteStatus
     {

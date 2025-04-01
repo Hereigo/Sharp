@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 
-namespace DotNet8.DbLogger
+namespace Calendarium.DbLogger
 {
     [ProviderAlias("Database")]
     public class DbLoggerProvider : ILoggerProvider

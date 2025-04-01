@@ -1,8 +1,8 @@
-﻿using DotNet8.Models;
+﻿using Calendarium.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace DotNet8.Data
+namespace Calendarium.Data
 {
     public partial class ApplicationDbContext : IdentityDbContext
     {
@@ -20,3 +20,4 @@ namespace DotNet8.Data
         public DbSet<Note> Notes { get; set; }
     }
 }
+ 

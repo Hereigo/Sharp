@@ -28,7 +28,7 @@
 # IN PROGRAM :
 -------------------------------------------------------------------------
 ```csharp
-using DotNet8.DbLogger;
+using Calendarium.DbLogger;
 
 builder.Logging.AddDbLogger(options =>
     builder.Configuration.GetSection("Logging").GetSection("Database").GetSection("Options").Bind(options));

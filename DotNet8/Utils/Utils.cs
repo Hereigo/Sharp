@@ -1,4 +1,4 @@
-﻿namespace DotNet8.Utils
+﻿namespace Calendarium.Utils
 {
     public static class Utils
     {

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DotNet8.Areas.Identity.Pages.Account
+namespace Calendarium.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {

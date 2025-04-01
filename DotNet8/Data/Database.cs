@@ -1,6 +1,6 @@
-﻿using DotNet8.Models;
+﻿using Calendarium.Models;
 
-namespace DotNet8.Data
+namespace Calendarium.Data
 {
     internal static class Database
     {

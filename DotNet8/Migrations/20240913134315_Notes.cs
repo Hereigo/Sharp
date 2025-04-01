@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace DotNet8.Migrations
+namespace Calendarium.Migrations
 {
     /// <inheritdoc />
     public partial class Notes : Migration

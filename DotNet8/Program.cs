@@ -1,9 +1,9 @@
-using DotNet8.Data;
-using DotNet8.Utils;
+using Calendarium.Data;
+using Calendarium.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace DotNet8
+namespace Calendarium
 {
     public class Program
     {
@@ -42,6 +42,7 @@ namespace DotNet8
                 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
             else
                 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=StartPage}/{id?}");
+
             app.MapRazorPages();
 
             Database.CreateDbIfNotExists(app);

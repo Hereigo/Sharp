@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace DotNet8.Data
+namespace Calendarium.Data
 {
     public partial class ApplicationDbContext : IdentityDbContext
     {

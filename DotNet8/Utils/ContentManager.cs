@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace DotNet8.Utils
+namespace Calendarium.Utils
 {
     public interface IContentManager
     {

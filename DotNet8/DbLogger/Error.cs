@@ -1,4 +1,4 @@
-﻿namespace DotNet8.DbLogger
+﻿namespace Calendarium.DbLogger
 {
     public class Error
     {

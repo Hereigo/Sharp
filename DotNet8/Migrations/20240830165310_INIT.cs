@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace DotNet8.Migrations
+namespace Calendarium.Migrations
 {
     /// <inheritdoc />
     public partial class INIT : Migration
