@@ -35,6 +35,7 @@
         transition: all 0.3s;
         vertical-align: initial;
         width: 1%;
+        overflow-wrap: break-word;
     }
 
         .calendar td:nth-child(n+6) {

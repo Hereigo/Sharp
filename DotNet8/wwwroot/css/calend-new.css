@@ -34,20 +34,19 @@ body {
 .cell.cell-head {
     background-color: var(--calend-week);
     font-weight: 600;
-    font-size: 11px;
     letter-spacing: 2px;
     text-align: center;
     text-transform: uppercase;
 }
 
-.cell.cell-head.today,
-.cell.cell-head:nth-child(n+6).today {
-    background-color: yellow;
-}
+    .cell.cell-head.today,
+    .cell.cell-head:nth-child(n+6).today {
+        background-color: yellow;
+    }
 
-.cell.cell-head:nth-child(n+6) {
-    background-color: var(--calend-weekend);
-}
+    .cell.cell-head:nth-child(n+6) {
+        background-color: var(--calend-weekend);
+    }
 
 .cell, .cell.cell-head {
     border: 1px solid var(--borders-color);
@@ -83,39 +82,39 @@ body {
         background-color: var(--calend-another-month);
     }
 
-.cell.nextMon > div {
-    font-weight: 200;
-    padding-right: 3px;
-}
+    .cell.nextMon > div {
+        font-weight: 200;
+        padding-right: 3px;
+    }
 
-.cell.nextMon,
-.cell.nextMon > .number > a,
-.cell.nextMon .day-item-line > a {
-    color: grey;
-}
+    .cell.nextMon,
+    .cell.nextMon > .number > a,
+    .cell.nextMon .day-item-line > a {
+        color: grey;
+    }
 
 .day {
     padding-top: .3rem;
     position: relative;
 }
 
-.day .number a {
-    float: right;
-    font-size: 16px;
-    font-weight: 500;
-    padding-left: 3px;
-    padding-right: 3px;
-    position: absolute;
-    right: 3px;
-    top: 2px;
-    text-decoration: none;
-}
+    .day .number a {
+        float: right;
+        font-size: 16px;
+        font-weight: 500;
+        padding-left: 3px;
+        padding-right: 3px;
+        position: absolute;
+        right: 3px;
+        text-decoration: none;
+        top: 2px;
+    }
 
-.day.today .number a {
-    border: 1px solid red;
-    border-radius: 3px;
-    color: red;
-}
+    .day.today .number a {
+        border: 1px solid red;
+        border-radius: 3px;
+        color: red;
+    }
 
 .day-item-line {
     font-weight: 200;
@@ -141,9 +140,20 @@ body {
 /* ======== MEDIA-QUERIES ======== */
 
 @media screen and (max-width: 768px) {
-    .cell.cell-head {
-        font-size: xx-small;
+    .cell {
+        font-size: 11px;
         font-weight: 500;
-        letter-spacing: 0px;
+        margin: 0;
+        width: calc(100% / 7);
+    }
+
+        .cell.cell-head {
+            font-size: xx-small;
+            font-weight: 500;
+            letter-spacing: 0px;
+        }
+
+    .day {
+        padding-top: .6rem;
     }
 }
