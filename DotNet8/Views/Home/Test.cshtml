@@ -19,43 +19,46 @@
     var monPrevColor = now4page.Month == (nowReal.AddMonths(-1).Month) ? "rgb(255, 240, 155)" : "";
 }
 
-<link rel="stylesheet" href="~/css/calend-new.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/calend-old.css" asp-append-version="true" />
 
 <div class="container-fluid">
     <div class="row row-calend">
+
         <main class="col-md-10">
-
-            <div class="grid calendar">
-
-                <div class='cell cell-head @(nowDayOfWeek == 1 ? "today" : "")'> Mon </div>
-                <div class='cell cell-head @(nowDayOfWeek == 2 ? "today" : "")'> Tue </div>
-                <div class='cell cell-head @(nowDayOfWeek == 3 ? "today" : "")'> Wed </div>
-                <div class='cell cell-head @(nowDayOfWeek == 4 ? "today" : "")'> Thu </div>
-                <div class='cell cell-head @(nowDayOfWeek == 5 ? "today" : "")'> Fri </div>
-                <div class='cell cell-head @(nowDayOfWeek == 6 ? "today" : "")'> Sat </div>
-                <div class='cell cell-head @(nowDayOfWeek == 7 ? "today" : "")'> Sun </div>
-
-                @for (int r = 0; r < 6; r++)
-                {
-                    @for (int d = 0; d < 7; d++)
+            <table class="calendar">
+                <thead>
+                    <tr>
+                        <th class='@(nowDayOfWeek==1?"today":"")'> Mon </th>
+                        <th class='@(nowDayOfWeek==2?"today":"")'> Tue </th>
+                        <th class='@(nowDayOfWeek==3?"today":"")'> Wed </th>
+                        <th class='@(nowDayOfWeek==4?"today":"")'> Thu </th>
+                        <th class='@(nowDayOfWeek==5?"today":"")'> Fri </th>
+                        <th class='@(nowDayOfWeek==6?"today":"")'> Sat </th>
+                        <th class='@(nowDayOfWeek==7?"today":"")'> Sun </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int r = 0; r < 6; r++)
                     {
-                        var processingDate = sheetFirstDay.AddDays(sheetDaysCount);
-                        var isCurrentMonth = processingDate.Month == now4page.Month;
-                        var todayCss = (nowReal.Date == processingDate.Date) ? "today" : "";
-                        var otherMonCss = isCurrentMonth ? "" : "nextMon";
+                        <tr>
+                            @for (int d = 0; d < 7; d++)
+                            {
+                                var processingDate = sheetFirstDay.AddDays(sheetDaysCount);
+                                var isCurrentMonth = processingDate.Month == now4page.Month;
+                                var todayCss = (nowReal.Date == processingDate.Date) ? "today" : "";
+                                var otherMonCss = isCurrentMonth ? "" : "nextMon";
 
-                        var dayItemsList = Model.Where(m => m.Started.Date == processingDate.Date).ToList();
-                        sheetDaysCount++;
+                                var dayItemsList = Model.Where(m => m.Started.Date == processingDate.Date).ToList();
+                                sheetDaysCount++;
 
-                        <div class="cell day @otherMonCss @todayCss">
-
-                            @await Html.PartialAsync("~/Views/Home/EventCalendView.cshtml", dayItemsList)
-
-                        </div>
+                                <td class="day @otherMonCss @todayCss">
+                                    @await Html.PartialAsync("~/Views/Home/EventCalendView.cshtml", dayItemsList)
+                                </td>
+                            }
+                        </tr>
                     }
-                }
-            </div>
-
+                </tbody>
+            </table>
         </main>
 
         @* *** SIDEBAR *** *@
