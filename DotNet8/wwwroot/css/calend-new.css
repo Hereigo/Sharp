@@ -154,6 +154,20 @@ body {
         }
 
     .day {
-        padding-top: .6rem;
+        padding-top: .3rem;
+    }
+
+    .day-item-line {
+        line-height: 11px;
+        margin-bottom: .45rem;
+    }
+
+    .day .number a {
+        font-size: 14px;
+        line-height: 16px;
+        padding-left: 1px;
+        padding-right: 1px;
+        right: 1px;
+        top: 1px;
     }
 }
