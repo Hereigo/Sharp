@@ -32,14 +32,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             menuStrip1 = new MenuStrip();
             notifyIcon1 = new NotifyIcon(components);
-            button1 = new Button();
             SuspendLayout();
             // 
             // menuStrip1
             // 
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(320, 24);
+            menuStrip1.Size = new Size(120, 24);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             menuStrip1.ItemClicked += menuStrip1_ItemClicked;
@@ -50,22 +49,11 @@
             notifyIcon1.Text = "AAAA";
             notifyIcon1.Visible = true;
             // 
-            // button1
-            // 
-            button1.Location = new Point(233, 153);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 1;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(320, 188);
-            Controls.Add(button1);
+            ClientSize = new Size(120, 24);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "Form1";
@@ -107,6 +95,5 @@
         {
             this.Show();
         }
-        private Button button1;
     }
 }
