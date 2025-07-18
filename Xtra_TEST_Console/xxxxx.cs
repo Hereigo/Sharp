@@ -6,11 +6,34 @@ namespace AAA_TEST_Console
     {
         static void Main(string[] args)
         {
+
             // Shift.Test();
 
             // Delegates.TestDelegates();           
 
             // Delegate_min.Test();
+
+            // var drives = DriveInfo.GetDrives();
+
+            ChromiumUpdate.GetApiData();
+
+            var BreakPoint = true;
+        }
+
+        private long GetTotalFreeSpace(string driveName)
+        {
+            foreach (DriveInfo drive in DriveInfo.GetDrives())
+            {
+                if (drive.IsReady && drive.Name == driveName)
+                {
+                    return drive.TotalFreeSpace;
+                }
+            }
+            return -1;
+        }
+
+        static void Test234()
+        {
 
             if (false && false || true)
             {
