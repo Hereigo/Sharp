@@ -30,23 +30,13 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            menuStrip1 = new MenuStrip();
             notifyIcon1 = new NotifyIcon(components);
             SuspendLayout();
-            // 
-            // menuStrip1
-            // 
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(120, 24);
-            menuStrip1.TabIndex = 0;
-            menuStrip1.Text = "menuStrip1";
-            menuStrip1.ItemClicked += menuStrip1_ItemClicked;
             // 
             // notifyIcon1
             // 
             notifyIcon1.Icon = (Icon)resources.GetObject("notifyIcon1.Icon");
-            notifyIcon1.Text = "AAAA";
+            notifyIcon1.Text = "Hello world :)";
             notifyIcon1.Visible = true;
             // 
             // Form1
@@ -54,20 +44,13 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(120, 24);
-            Controls.Add(menuStrip1);
-            MainMenuStrip = menuStrip1;
             Name = "Form1";
             Text = "Form1";
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private MenuStrip menuStrip1;
         private NotifyIcon notifyIcon1;
-
-
 
         private void showToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -76,7 +59,6 @@
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //Exit your program
             Application.Exit();
         }
 

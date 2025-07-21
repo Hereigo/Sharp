@@ -19,10 +19,6 @@ namespace WinFormsApp1
             RunTimer();
         }
 
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-        }
-
         private void RunTimer()
         {
             aTimer = new System.Timers.Timer(60 * 1000 * 5); // 5 minutes
@@ -43,7 +39,7 @@ namespace WinFormsApp1
             Font fontToUse = new("Arial", 12, FontStyle.Bold, GraphicsUnit.Pixel);
             Brush brushToUse = new SolidBrush(DateTime.Now.Second % 2 == 0 ? Color.Magenta : Color.Red);
             Bitmap bitmapText = new(18, 12);
-            Graphics g = System.Drawing.Graphics.FromImage(bitmapText);
+            Graphics g = Graphics.FromImage(bitmapText);
 
             IntPtr hIcon;
 
@@ -51,7 +47,7 @@ namespace WinFormsApp1
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
             g.DrawString(freeGb.ToString(), fontToUse, brushToUse, -4, -2);
             hIcon = (bitmapText.GetHicon());
-            notifyIcon1.Icon = System.Drawing.Icon.FromHandle(hIcon);
+            notifyIcon1.Icon = Icon.FromHandle(hIcon);
 
             //DestroyIcon(hIcon.ToInt32);
         }
