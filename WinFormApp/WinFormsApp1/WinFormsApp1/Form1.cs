@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Timers;
 
 namespace WinFormsApp1
@@ -7,13 +8,15 @@ namespace WinFormsApp1
         private static System.Timers.Timer? aTimer;
         private static string freeGb = "?";
 
+        private static bool switcher = true;
+
         public Form1()
         {
             InitializeComponent();
 
             this.StartPosition = FormStartPosition.CenterScreen;
-            //this.ShowInTaskbar = false;
-            //this.Opacity = 0;
+            this.ShowInTaskbar = false;
+            this.Opacity = 0;
 
             WriteIconText();
             RunTimer();
@@ -37,7 +40,8 @@ namespace WinFormsApp1
             freeGb = GetFreeSpaceInGb("C:\\").ToString();
 
             Font fontToUse = new("Arial", 12, FontStyle.Bold, GraphicsUnit.Pixel);
-            Brush brushToUse = new SolidBrush(DateTime.Now.Second % 2 == 0 ? Color.Magenta : Color.Red);
+            Brush brushToUse = new SolidBrush(switcher ? Color.Red : Color.HotPink);
+            switcher = !switcher;
             Bitmap bitmapText = new(18, 12);
             Graphics g = Graphics.FromImage(bitmapText);
 
