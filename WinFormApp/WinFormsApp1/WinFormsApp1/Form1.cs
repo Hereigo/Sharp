@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Timers;
 
 namespace WinFormsApp1
@@ -39,9 +38,14 @@ namespace WinFormsApp1
         {
             freeGb = GetFreeSpaceInGb("C:\\").ToString();
 
+            if (freeGb.Length == 2) freeGb = "." + freeGb;
+            else if (freeGb.Length == 1) freeGb = ".  " + freeGb;
+
             Font fontToUse = new("Arial", 12, FontStyle.Bold, GraphicsUnit.Pixel);
             Brush brushToUse = new SolidBrush(switcher ? Color.Red : Color.HotPink);
-            switcher = !switcher;
+
+            // switcher = !switcher;
+
             Bitmap bitmapText = new(18, 12);
             Graphics g = Graphics.FromImage(bitmapText);
 
