@@ -4,12 +4,15 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@*
 <h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
-</p>
+</p> 
+*@
+
+<div style="margin:3rem">
 <table class="table">
     <thead>
         <tr>
@@ -19,10 +22,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Text)
             </th>
+                @* 
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
             <th></th>
+*@
         </tr>
     </thead>
     <tbody>
@@ -34,6 +39,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Text)
             </td>
+@*          
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
@@ -41,8 +47,10 @@
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+            </td> 
+            *@
         </tr>
 }
     </tbody>
 </table>
+</div>
