@@ -33,7 +33,7 @@ namespace Calendarium.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Day")9
+                    b.Property<int>("Day")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
