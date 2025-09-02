@@ -1,4 +1,4 @@
-﻿namespace WinFormsApp1
+﻿namespace WinFormsFreeSpacer
 {
     partial class Form1
     {

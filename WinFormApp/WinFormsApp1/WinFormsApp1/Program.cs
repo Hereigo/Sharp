@@ -1,4 +1,4 @@
-namespace WinFormsApp1
+namespace WinFormsFreeSpacer
 {
     internal static class Program
     {

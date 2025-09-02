@@ -1,6 +1,6 @@
 using System.Timers;
 
-namespace WinFormsApp1
+namespace WinFormsFreeSpacer
 {
     public partial class Form1 : Form
     {

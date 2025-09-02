@@ -1,7 +1,17 @@
 ﻿using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace AAA_TEST_Console
 {
+    public class AAAAA
+    {
+        public string Success { get; set; } // true,
+        public DateTime CreationDate { get; set; } // "2025-08-29T16:54:59.8077314Z DATE !!!!!!!!!!!!!!
+        public Guid SubmissionId { get; set; } // "4423
+        public string Message { get; set; } // "rejected"
+        public string NextAction { get; set; } // "None",
+    }
+
     internal class xxxxx
     {
         static void Main(string[] args)
@@ -15,7 +25,22 @@ namespace AAA_TEST_Console
 
             // var drives = DriveInfo.GetDrives();
 
-            ChromiumUpdate.GetApiData();
+            // ChromiumUpdate.GetApiData();
+
+            string TEST = "{\r\n  \"SubmissionId\": \"442329a5-83c4-4696-831b-312492982b81\",\r\n  \"Success\": true,\r\n  \"NextAction\": \"None\",\r\n  \"CreationDate\": \"2025-08-29T16:56:27.8077314Z\",\r\n  \"Message\": \"rejected\"\r\n}";
+
+            try
+            {
+                AAAAA aaaa = JsonConvert.DeserializeObject<AAAAA>(TEST);
+            }
+            catch (Exception)
+            {
+                dynamic aaa = JsonConvert.DeserializeObject(TEST);
+
+                var TSET2 = aaa.SubmissionId;
+            }
+
+            Guid submissionId = new();
 
             var BreakPoint = true;
         }
