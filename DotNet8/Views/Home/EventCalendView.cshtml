@@ -1,31 +1,36 @@
 ﻿@model IEnumerable<Calendarium.Models.CalEvent>
+
 @{
-    var month = Model?.FirstOrDefault()?.Started.Month;
-    var day = Model?.FirstOrDefault()?.Started.Day;
+    var firstEvent = Model?.FirstOrDefault();
+    var month = firstEvent?.Started.Month;
+    var day = firstEvent?.Started.Day;
 }
 
 <div class="number">
-    <a asp-action="Create" asp-route-id="@day" asp-route-month="@month"> @day </a>
+    <a asp-action="Create" asp-route-id="@day" asp-route-month="@month">@day</a>
 </div>
 
 <div>&nbsp;</div>
 
-@foreach (var dayItem in Model)
+@if (Model != null)
 {
-    <div class="day-item-line">
+    foreach (var dayItem in Model)
+    {
+        <div class="day-item-line">
 
-        <a asp-action="Edit" asp-route-id="@dayItem?.Id">
+            <a asp-action="Edit" asp-route-id="@dayItem?.Id">
 
-            @if (dayItem?.Time.Hours != 0 || dayItem?.Time.Minutes != 0)
-            {
-                <span class="day-item-time">
-                    @dayItem?.Time.ToString(@"hh\:mm")
-                </span>
-                <span> - </span>
-            }
-            @dayItem?.Description
+                @if (dayItem?.Time != null && (dayItem.Time.Hours != 0 || dayItem.Time.Minutes != 0))
+                {
+                    <span class="day-item-time">
+                        @dayItem.Time.ToString(@"hh\:mm")
+                    </span>
+                    <span> - </span>
+                }
+                @dayItem?.Description
 
-        </a>
+            </a>
 
-    </div>
+        </div>
+    }
 }

@@ -3,46 +3,45 @@ using Calendarium.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace Calendarium.Controllers
+namespace Calendarium.Controllers;
+
+public class AaaBacsCallbackController : ControllerBase
 {
+    private readonly ApplicationDbContext _context;
 
-    public class AaaBacsCallbackController : ControllerBase
+    public AaaBacsCallbackController(ApplicationDbContext context)
     {
-        private readonly ApplicationDbContext _context;
+        _context = context;
+    }
 
-        public AaaBacsCallbackController(ApplicationDbContext context)
+    [HttpPost]
+    public IActionResult Index([FromBody] dynamic content)
+    {
+        string unknownJsonString = content.ToString();
+
+        LOG_THIS(_context, unknownJsonString);
+
+        try
         {
-            _context = context;
+            MODEL aaaa = JsonConvert.DeserializeObject<MODEL>(unknownJsonString);
+        }
+        catch (Exception)
+        {
+            LOG_THIS(_context, "CANNOT PARSE: " + unknownJsonString);
         }
 
-        [HttpPost]
-        public IActionResult Index([FromBody] dynamic content)
+        return Ok();
+    }
+
+    private static void LOG_THIS(ApplicationDbContext context, string message)
+    {
+        var note = new Note
         {
-            string unknownJsonString = content.ToString();
+            SortNum = 0,
+            Text = $"{DateTime.Now:MM.dd HH:mm} - {message}"
+        };
 
-            LOG_THIS(_context, unknownJsonString);
-
-            try
-            {
-                MODEL aaaa = JsonConvert.DeserializeObject<MODEL>(unknownJsonString);
-            }
-            catch (Exception)
-            {
-                LOG_THIS(_context, "CANNOT PARSE: " + unknownJsonString);
-            }
-
-            return Ok();
-        }
-
-        private static void LOG_THIS(ApplicationDbContext context, string textToLog)
-        {
-            Note note = new Note()
-            {
-                SortNum = 0,
-                Text = DateTime.Now.ToString("MM.dd HH:mm - ") + textToLog
-            };
-            context.Add(note);
-            context.SaveChanges();
-        }
+        context.Add(note);
+        context.SaveChanges();
     }
 }
