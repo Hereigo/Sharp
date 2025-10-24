@@ -33,11 +33,11 @@ namespace Calendarium
                 app.UseExceptionHandler("/Home/LogItem");
                 app.UseHsts();  //  The default HSTS value is 30 days, see https://aka.ms/aspnetcore-hsts.
             }
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
+
             if (app.Environment.IsDevelopment())
                 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
             else

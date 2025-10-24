@@ -12,12 +12,12 @@ body {
     width: 100%;
 }
 
+.grid > *:nth-child(7n),
 .grid > *:nth-child(7n-1) {
     background-color: var(--calend-weekend-days);
 }
 
 .grid > *:nth-child(7n) {
-    background-color: var(--calend-weekend-days);
     margin-right: 0;
 }
 

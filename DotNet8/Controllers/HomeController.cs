@@ -89,58 +89,6 @@ namespace Calendarium.Controllers
             return View(sortedByTimeModel);
         }
 
-        [AllowAnonymous]
-        public async Task<IActionResult> Test(string pMonth = "")
-        {
-            await ProcessRequestHeaders(Request.Headers);
-
-            TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time");
-            DateTime today = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, tz);
-
-            var todayForCurrentView = today;
-
-            if (pMonth == "next") todayForCurrentView = today.AddMonths(1);
-            else if (pMonth == "prev") todayForCurrentView = today.AddMonths(-1);
-
-            DateTime currMonStart = new DateTime(todayForCurrentView.Year, todayForCurrentView.Month, 1);
-
-            int monBeginDayOfWeek = (int)currMonStart.DayOfWeek; // Mon = 1 \ .. \ Sat = 6 \ Sun = 0
-
-            int sheetSize = 7 * 6;
-            int prevMonDaysOnSheet = monBeginDayOfWeek == 0 ? 6 : monBeginDayOfWeek - 1;
-            int currMonDays = new DateTime(todayForCurrentView.Year, todayForCurrentView.Month, 1).AddMonths(1).AddDays(-1).Day;
-            int nextMonDaysOnSheet = sheetSize - (currMonDays + prevMonDaysOnSheet);
-
-            DateTime sheetFirstDay = monBeginDayOfWeek == 1 ? currMonStart : currMonStart.AddDays(-prevMonDaysOnSheet);
-            DateTime sheetLastDay = new DateTime(todayForCurrentView.Year, todayForCurrentView.Month, nextMonDaysOnSheet).AddMonths(1);
-
-            // Gat All already started Events with applicable non-repeating:
-            var events = await _context.CalEvents
-                .Where(e => e.Started <= sheetLastDay && (e.Repeat != CalEventRepeat.Once || e.Repeat == CalEventRepeat.Once && e.Started >= sheetFirstDay))
-                .ToListAsync();
-
-            var allEventsCount = await _context.CalEvents.CountAsync();
-
-            var eventsModel = GenerateRepeatingEvents(events, sheetFirstDay, sheetLastDay, todayForCurrentView);
-
-            ViewBag.EnvtsCount = eventsModel.Count;
-
-            // Fill empty days:
-            for (var i = 0; i < sheetSize; i++) { eventsModel.Add(new CalEvent(sheetFirstDay.AddDays(i))); }
-
-            ViewBag.EnvtsFullCount = allEventsCount;
-            ViewBag.IsDevEnv = _hostEnvironment.IsDevelopment();
-            ViewBag.TodayCurrent = todayForCurrentView;
-            ViewBag.TodayReal = today;
-            ViewBag.SheetFirstDay = sheetFirstDay;
-
-            var sortedByTimeModel = eventsModel.Where(x => x.Time != default).OrderBy(x => x.Time).ToList();
-
-            sortedByTimeModel.AddRange(eventsModel.Where(x => x.Time == default));
-
-            return View(sortedByTimeModel);
-        }
-
         // TODO:
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
