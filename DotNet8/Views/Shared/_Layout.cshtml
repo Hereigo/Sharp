@@ -38,6 +38,12 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Notes" asp-action="Index">Notes</a>
                             </li>
+                            @if (ViewBag.IsCalendarPage == true)
+                            {
+                                <li class="nav-item nav-item-calend">
+                                    <partial name="_CalendPartial" />
+                                </li>
+                            }
                         }
                         else
                         {
@@ -45,9 +51,10 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                             </li>
                         }
-
                     </ul>
+
                     <partial name="_LoginPartial" />
+
                 </div>
             </div>
         </nav>

@@ -82,6 +82,8 @@ namespace Calendarium.Controllers
             ViewBag.TodayReal = today;
             ViewBag.SheetFirstDay = sheetFirstDay;
 
+            ViewBag.IsCalendarPage = true;
+
             var sortedByTimeModel = eventsModel.Where(x => x.Time != default).OrderBy(x => x.Time).ToList();
 
             sortedByTimeModel.AddRange(eventsModel.Where(x => x.Time == default));

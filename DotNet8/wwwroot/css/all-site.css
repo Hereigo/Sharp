@@ -37,8 +37,14 @@ input[type='datetime-local']:read-only {
     text-decoration: none;
 }
 
-/* ======== SIDEBAR ======== */
+.nav-item.nav-item-calend {
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+    padding: .2rem .2rem .2rem .6rem;
+    margin-left: .5rem;
+}
 
+/* ======== SIDEBAR ======== */
 .sidebar > ul {
     background-color: antiquewhite;
     margin-right: 1rem;

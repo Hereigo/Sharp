@@ -171,3 +171,44 @@ body {
         top: 1px;
     }
 }
+
+
+@media screen and (max-width: 260px) {
+    .row > main {
+        padding-left: 0;
+        padding-right: .01rem;
+    }
+
+    .cell {
+        border-radius: 0;
+        border-right: 0;
+        border-bottom: 0;
+        font-size: 8px;
+        font-weight: 400;
+        padding-right: 0;
+        padding-bottom: 0;
+    }
+
+        .cell.cell-head {
+            border-radius: 0;
+            border-right: 0;
+            border-bottom: 0;
+            font-size: 8px;
+        }
+
+    .day {
+        padding-top: .2rem;
+    }
+
+    .day-item-line {
+        line-height: 8px;
+    }
+
+    .day .number a {
+        font-size: 10px;
+    }
+
+    .navbar-toggler {
+        padding: 0 var(--bs-navbar-toggler-padding-x);
+    }
+}

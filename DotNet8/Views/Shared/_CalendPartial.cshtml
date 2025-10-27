@@ -1,0 +1,21 @@
+﻿@{
+    DateTime nowReal = ViewBag.TodayReal;
+    DateTime now4page = ViewBag.TodayCurrent;
+    DateTime sheetFirstDay = ViewBag.SheetFirstDay;
+    var sheetDaysCount = 0;
+    var nowDayOfWeek = nowReal.Month != now4page.Month ? 0 : (int)(now4page.DayOfWeek);
+    var months = new string[13] { "ERR!", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+    var monthCurr = months[nowReal.Month];
+    var monthNext = nowReal.Month == 12 ? "Jan" : months[nowReal.Month + 1];
+    var monthPrev = nowReal.Month == 1 ? "Dec" : months[nowReal.Month - 1];
+    var monCurrColor = now4page.Month == (nowReal.AddMonths(0).Month) ? "rgb(255, 240, 155)" : "";
+    var monNextColor = now4page.Month == (nowReal.AddMonths(1).Month) ? "rgb(255, 240, 155)" : "";
+    var monPrevColor = now4page.Month == (nowReal.AddMonths(-1).Month) ? "rgb(255, 240, 155)" : "";
+}
+
+<a asp-action="Index" asp-route-pMonth="prev" class="btn btn-sm btn-light" style="background-color:@monPrevColor"> @monthPrev </a>
+&nbsp;
+<a asp-action="Index" asp-route-pMonth="" class="btn btn-sm btn-light" style="background-color:@monCurrColor"> @monthCurr </a>
+&nbsp;
+<a asp-action="Index" asp-route-pMonth="next" class="btn btn-sm btn-light" style="background-color:@monNextColor"> @monthNext </a>
+&nbsp;
