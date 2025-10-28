@@ -15,6 +15,8 @@
 
         .box {
             background-color: bisque;
+            border: 1px solid #ccc;
+            border-radius: 3px;
         }
 
         .main-container {
@@ -26,7 +28,7 @@
 
         .main-content {
             flex: 1;
-            padding: 1rem;
+            padding: .7rem;
         }
 
         .sidebar {
@@ -40,14 +42,12 @@
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             grid-template-rows: repeat(7, 1fr);
-            gap: 10px;
+            gap: 3px;
         }
 
-        .grid-item {
-            background-color: #e9ecef;
-            border: 1px solid #dee2e6;
-            padding: 1rem;
-            text-align: center;
+        .head-col {
+            max-height: 10px;
+            padding: 0;
         }
 
         @media (max-width: 768px) {
@@ -59,6 +59,20 @@
                 width: 100%;
                 border-left: none;
                 border-top: 1px solid #dee2e6;
+            }
+        }
+
+        @media (max-width: 240px) {
+            body {
+                font-size: xx-small;
+            }
+
+            .grid-container {
+                gap: 0;
+            }
+
+            .main-content {
+                padding: .1rem;
             }
         }
     </style>
@@ -82,27 +96,14 @@
         </div>
     </nav>
 
-    <!-- Main Layout -->
     <div class="main-container">
-        <!-- Main Content -->
+
         <div class="main-content">
-            <h2>7×7 CSS Grid</h2>
             <div class="grid-container">
-                <!-- Generate 49 grid items -->
-                <!-- You can use JS to generate dynamically -->
-                <!-- Static version below -->
-                <!-- Loop from 1 to 49 -->
-                <!-- Example: -->
-                <!-- <div class="grid-item">1</div> -->
-                <!-- ... -->
-                <!-- <div class="grid-item">49</div> -->
-                <!-- Here's the static version -->
-                <!-- Start -->
 
             </div>
         </div>
 
-        <!-- Sidebar on the right -->
         <div class="sidebar">
             <h4>Sidebar</h4>
             <p>This is the right-hand sidebar content. You can add links, widgets, or anything else here.</p>
@@ -120,7 +121,20 @@
 
             // Create an array of 10 divs
             for (let i = 1; i <= 49; i++) {
-                divs.push($('<div>').addClass('box').text('Cell ' + i));
+
+                var cellText = 'Cell ' + i;
+
+                if (i == 17) {
+                    cellText += ' Hello world! =) Hello world! =) Hello world! =) ';
+                }
+
+                if (i <= 7) {
+                    divs.push($('<div>').addClass('head-col').text('AAA'));
+                } else {
+                    divs.push($('<div>').addClass('box').text(cellText));
+                }
+
+
             }
 
             // Append all divs to the container
