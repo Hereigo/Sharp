@@ -172,7 +172,6 @@ body {
     }
 }
 
-
 @media screen and (max-width: 260px) {
     .row > main {
         padding-left: 0;
@@ -206,9 +205,5 @@ body {
 
     .day .number a {
         font-size: 10px;
-    }
-
-    .navbar-toggler {
-        padding: 0 var(--bs-navbar-toggler-padding-x);
     }
 }

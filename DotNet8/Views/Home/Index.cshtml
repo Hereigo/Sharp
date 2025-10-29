@@ -22,9 +22,7 @@
 <div class="container-fluid">
     <div class="row row-calend">
         <main class="col-md-10">
-
             <div class="grid calendar">
-
                 <div class='cell cell-head @(nowDayOfWeek == 1 ? "today" : "")'> Mon </div>
                 <div class='cell cell-head @(nowDayOfWeek == 2 ? "today" : "")'> Tue </div>
                 <div class='cell cell-head @(nowDayOfWeek == 3 ? "today" : "")'> Wed </div>
@@ -41,10 +39,8 @@
                         var isCurrentMonth = processingDate.Month == now4page.Month;
                         var todayCss = (nowReal.Date == processingDate.Date) ? "today" : "";
                         var otherMonCss = isCurrentMonth ? "" : "nextMon";
-
                         var dayItemsList = Model.Where(m => m.Started.Date == processingDate.Date).ToList();
                         sheetDaysCount++;
-
                         <div class="cell day @otherMonCss @todayCss">
 
                             @await Html.PartialAsync("~/Views/Home/EventCalendView.cshtml", dayItemsList)
@@ -59,21 +55,14 @@
         @* *** SIDEBAR *** *@
 
         <aside class="col-md-2 sidebar">
-            <br />
             <div>
-                <a asp-action="Index" asp-route-pMonth="prev" class="btn btn-sm btn-light" style="background-color:@monPrevColor"> @monthPrev </a>
-                &nbsp;
-                <a asp-action="Index" asp-route-pMonth="" class="btn btn-sm btn-light" style="background-color:@monCurrColor"> @monthCurr </a>
-                &nbsp;
-                <a asp-action="Index" asp-route-pMonth="next" class="btn btn-sm btn-light" style="background-color:@monNextColor"> @monthNext </a>
-                &nbsp;
+                <span class="evnts-cntr">
+                    <span id="jsonMake">[ @ViewBag.EnvtsCount ]</span>
+                    <a id="jsonLoad" href="">[ @ViewBag.EnvtsFullCount ]</a>
+                </span>
 
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <span class="evnts-cntr">
-                        <span id="jsonMake">[ @ViewBag.EnvtsCount ]</span>
-                        <a id="jsonLoad" href="">[ @ViewBag.EnvtsFullCount ]</a>
-                    </span>
                     <script>
                         let jsonLoad = document.querySelector("#jsonLoad");
                         document.querySelector("#jsonMake").addEventListener("click", function () {
@@ -91,12 +80,6 @@
                         });
                     </script>
                 }
-                else
-                {
-                    <span>
-                        [ @ViewBag.EnvtsCount ] [ @ViewBag.EnvtsFullCount ]
-                    </span>
-                }
             </div>
             <br />
             <ul>
@@ -111,9 +94,11 @@
             <p>
                 https://dictionary.cambridge.org/dictionary/english/insist
             </p>
-            <br />
+
             @if (ViewBag.IsDevEnv)
             {
+                <br />
+                <hr />
                 <form enctype="multipart/form-data" method="post" action="UploadFile">
                     <input type="file" class="form-control" name="uploadingFile" />
                     <br />

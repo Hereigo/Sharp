@@ -122,3 +122,14 @@ input[type='datetime-local']:read-only {
         min-width: 100%;
     }
 }
+
+@media screen and (max-width: 260px) {
+    .navbar-toggler {
+        padding: 0 var(--bs-navbar-toggler-padding-x);
+    }
+
+    .nav-item.nav-item-calend {
+        padding-left: 0;
+        margin-left: 0;
+    }
+}
