@@ -127,5 +127,19 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        $(document).ready(function(){
+            let xDaysElement = $('#everyXdaysField');
+            let repeatElement = $('#Repeat');
+            function switchXdaysEl(){
+                if(repeatElement.val() === "3"){ // Every X days
+                    xDaysElement.css('display', 'block');
+                }else{
+                    xDaysElement.css('display', 'none');
+                }
+            }
+        });
+        $('#Repeat').change(switchXdaysEl);
+    </script>
 }
 
