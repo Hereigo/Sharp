@@ -1,10 +1,12 @@
 ﻿namespace AAA_TEST_Console
 {
-    internal class xxxxx
+    internal class PROGRAM
     {
+        readonly string DownloadsFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Downloads\\";
+
         static void Main(string[] args)
         {
-            // Shift.Test();
+            ShiftCharsInString.Test();
 
             // Delegates.TestDelegates();           
 
@@ -13,6 +15,7 @@
             // var drives = DriveInfo.GetDrives();
 
             // ChromiumUpdate.GetApiData();
+
 
             Console.WriteLine("\r\n Done.");
         }
