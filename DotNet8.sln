@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.10.35013.160
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11312.151
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendarium", "DotNet8\Calendarium.csproj", "{193F3294-84EE-4118-8C07-787704203649}"
 EndProject
@@ -17,6 +17,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AAA_TEST_Console", "Xtra_TEST_Console\AAA_TEST_Console.csproj", "{71FBC14F-0FD7-4417-BE53-6C64860E4C26}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsFreeSpacer", "WinFormApp\WinFormsApp1\WinFormsApp1\WinFormsFreeSpacer.csproj", "{01A8E73E-345C-418F-92B7-DDF8E65F9902}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test_Async", "Test_Async\Test_Async.csproj", "{812F63CE-A77E-4230-A7B4-8C219BA91CD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sortings", "Sortings\Sortings.csproj", "{527653A5-F452-4BA8-ADEF-D974122B5E79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +40,14 @@ Global
 		{01A8E73E-345C-418F-92B7-DDF8E65F9902}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01A8E73E-345C-418F-92B7-DDF8E65F9902}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01A8E73E-345C-418F-92B7-DDF8E65F9902}.Release|Any CPU.Build.0 = Release|Any CPU
+		{812F63CE-A77E-4230-A7B4-8C219BA91CD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{812F63CE-A77E-4230-A7B4-8C219BA91CD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{812F63CE-A77E-4230-A7B4-8C219BA91CD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{812F63CE-A77E-4230-A7B4-8C219BA91CD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{527653A5-F452-4BA8-ADEF-D974122B5E79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{527653A5-F452-4BA8-ADEF-D974122B5E79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{527653A5-F452-4BA8-ADEF-D974122B5E79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{527653A5-F452-4BA8-ADEF-D974122B5E79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
