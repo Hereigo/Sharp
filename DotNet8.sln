@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sortings", "Sortings\Sortin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntiDup", "AntiDup\AntiDup.csproj", "{02AEAAEF-1C68-47AD-B53B-E5895D13B309}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebView2Starter", "WebView2Starter\WebView2Starter.csproj", "{CCD77C8F-515E-46A0-ADDE-B6BC241B4192}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{02AEAAEF-1C68-47AD-B53B-E5895D13B309}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02AEAAEF-1C68-47AD-B53B-E5895D13B309}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02AEAAEF-1C68-47AD-B53B-E5895D13B309}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCD77C8F-515E-46A0-ADDE-B6BC241B4192}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCD77C8F-515E-46A0-ADDE-B6BC241B4192}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCD77C8F-515E-46A0-ADDE-B6BC241B4192}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCD77C8F-515E-46A0-ADDE-B6BC241B4192}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

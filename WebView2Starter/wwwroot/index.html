@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>WebView2 Starter</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+
+        <h1>✅ WebView2 is working</h1>
+
+        <p>This is a native .NET + WebView2 app.</p>
+
+        <button onclick="sendMessage()">Send message to C#</button>
+
+
+        <button class="btn btn-primary" id="toggleButton">Toggle Content</button>
+
+        <div id="collapsibleDiv" class="collapse mt-3">
+            <div class="p-3 border bg-light">
+                This content is collapsible.
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function sendMessage() {
+            chrome.webview.postMessage("Hello from Web UI!");
+        }
+
+        $(document).ready(function () {
+
+            function toggleCollapseBasedOnWidth() {
+                const $collapsibleDiv = $('#collapsibleDiv');
+                const screenWidth = $(window).width();
+
+                if (screenWidth < 768) {
+                    $collapsibleDiv.collapse('hide');
+                    $collapsibleDiv.addClass('collapse');
+                } else {
+                    $collapsibleDiv.collapse('show');
+                    $collapsibleDiv.removeClass('collapse');
+                }
+            }
+
+            toggleCollapseBasedOnWidth();
+
+            $(window).resize(function () {
+                toggleCollapseBasedOnWidth();
+            });
+
+            $('#toggleButton').click(function () {
+                const $collapsibleDiv = $('#collapsibleDiv');
+                $collapsibleDiv.collapse('toggle');
+            });
+        });
+    </script>
+</body>
+</html>
