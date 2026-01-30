@@ -21,29 +21,6 @@ namespace WebView2Starter
         {
             await WebView.EnsureCoreWebView2Async();
 
-            string UserProfileFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\";
-            string path = Path.Combine(UserProfileFolder, "aaa\\tax");
-            string[] files = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
-
-            foreach (string file in files)
-            {
-                FileInfo fi = new FileInfo(file);
-                Console.WriteLine($"{fi.Length} - {fi.FullName}");
-            }
-
-            var payload = new List<MyFileInfo>();
-
-            for (int i = 0; i < 15; i++)
-            {
-                payload.Add(new MyFileInfo
-                {
-                    fileSize = new FileInfo(files[i]).Length,
-                    fileName = new FileInfo(files[i]).FullName
-                });
-            }
-
-            string json = System.Text.Json.JsonSerializer.Serialize(payload);
-
             string htmlPath = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
                 "wwwroot",
@@ -55,7 +32,7 @@ namespace WebView2Starter
             // Handle messages from the web content
             WebView.CoreWebView2.WebMessageReceived += (s, e) =>
             {
-                // string message = e.TryGetWebMessageAsString();
+                string message = e.TryGetWebMessageAsString();
                 // MessageBox.Show($"From Web: {message}");
 
                 // Send a message back to the web content
@@ -63,10 +40,38 @@ namespace WebView2Starter
                 //     "alert('Hello from C#!')"
                 // );
 
+                string json = GetData(message);
+
                 WebView.CoreWebView2.ExecuteScriptAsync(
                     $"window.receiveData({json});"
                 );
             };
+        }
+
+        private string GetData(string folderName)
+        {
+            string UserProfileFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\";
+            string path = Path.Combine(UserProfileFolder, "Downloads", folderName);
+
+            if (!Directory.Exists(path))
+            {
+                return "[]";
+            }
+
+            string[] files = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
+
+            var payload = new List<MyFileInfo>();
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                payload.Add(new MyFileInfo
+                {
+                    fileSize = new FileInfo(files[i]).Length,
+                    fileName = new FileInfo(files[i]).FullName
+                });
+            }
+
+            return System.Text.Json.JsonSerializer.Serialize(payload);
         }
     }
 }
