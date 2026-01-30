@@ -10,10 +10,14 @@
             font-family: system-ui, sans-serif;
             padding: 40px;
         }
+
+        td {
+            padding: .5rem;
+        }
     </style>
 </head>
 <body>
-    <div class="container mt-5">
+    <div class="container mt-2">
 
         <h1>✅ WebView2 is working</h1>
 
@@ -21,29 +25,91 @@
 
         <button onclick="sendMessage()">Send message to C#</button>
 
-        <p>
-            <textarea id="messageBox" rows="4" cols="50" placeholder="Type your message here..."></textarea>
-        </p>
-
         <button class="btn btn-primary" id="toggleButton">Toggle Content</button>
 
         <div id="collapsibleDiv" class="collapse mt-3">
             <div class="p-3 border bg-light">
-                This content is collapsible.
+                <p>
+                    <table id="dataTable" class="border">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Size</th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </p>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.onerror = function (message, source, lineno, colno, error) {
+            console.error("JS Error:", message);
+
+            // Notify WPF
+            if (window.chrome?.webview) {
+                window.chrome.webview.postMessage({
+                    type: "js-error",
+                    message,
+                    source,
+                    lineno,
+                    colno
+                });
+            }
+
+            alert(message);
+        };
+
+        function createTableFromJSON(data) {
+            const table = document.getElementById("dataTable");
+            const thead = table.querySelector("thead");
+            const tbody = table.querySelector("tbody");
+
+            // Clear previous content
+            //thead.innerHTML = "";
+            tbody.innerHTML = "";
+
+            if (!data || data.length === 0) return;
+
+            // const headerRow = document.createElement("tr");
+            // Object.keys(data[0]).forEach(key => {
+            //     const th = document.createElement("th");
+            //     th.textContent = key;
+            //     headerRow.appendChild(th);
+            // });
+            // thead.appendChild(headerRow);
+
+            // var ERR = data[100].value; ???????????????????
+
+            // Create data rows
+            data.forEach(record => {
+                const row = document.createElement("tr");
+                const td0 = document.createElement("td");
+                td0.innerHTML = '<input type="checkbox"/>';
+                row.appendChild(td0);
+                Object.values(record).forEach(value => {
+                    const td = document.createElement("td");
+                    td.classList.add('border');
+                    td.textContent = value;
+                    row.appendChild(td);
+                });
+                tbody.appendChild(row);
+            });
+        }
+
+        // fetch("data.json") // or your API URL
+        //     .then(res => res.json())
+        //     .then(json => createTableFromJSON(json));
+    </script>
 
     <script>
-        window.receiveData = function (obj) {
-
-            var txtArea = document.getElementById('messageBox');
-
-            txtArea.value = obj[0].fileName;
-
-            console.log(obj.name, obj.age);
+        window.receiveData = function (json) {
+            // console.log(obj[0].fileName);
+            createTableFromJSON(json);
         };
 
         function sendMessage() {

@@ -33,7 +33,7 @@ namespace WebView2Starter
 
             var payload = new List<MyFileInfo>();
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 15; i++)
             {
                 payload.Add(new MyFileInfo
                 {
