@@ -90,18 +90,18 @@ $(document).ready(function () {
     // call WPF
     //chrome.webview.postMessage("Hello from Web UI!");
 
-    document.getElementById("folderInput").addEventListener("change", (e) => {
-        if (e.target.files.length < 1) {
-            alert('No files.');
-        } else {
-            let dirName = e.target.files[0].webkitRelativePath.split('/')[0];
-
-            chrome.webview.postMessage(dirName);
-
-            // for (const file of e.target.files) {
-            //     console.log('1 -', file.webkitRelativePath.split('/')[0]);
-            // }
-        }
-    });
+    // document.getElementById("folderInput").addEventListener("change", (e) => {
+    //     if (e.target.files.length < 1) {
+    //         alert('No files.');
+    //     } else {
+    //         let dirName = e.target.files[0].webkitRelativePath.split('/')[0];
+    // 
+    //         chrome.webview.postMessage(dirName);
+    // 
+    //         // for (const file of e.target.files) {
+    //         //     console.log('1 -', file.webkitRelativePath.split('/')[0]);
+    //         // }
+    //     }
+    // });
 
 });

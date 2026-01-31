@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <title>WebView2 Starter</title>
@@ -8,47 +9,47 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./js/index.js"></script>
     <style>
-        body {
-            font-family: system-ui, sans-serif;
-            padding: 40px;
-        }
-
         td {
             padding: .5rem;
         }
     </style>
 </head>
+
 <body>
-    <div class="container mt-2">
+    <div class="container mt-3 bg-light w-100">
 
-        <h1>✅ WebView2 is working</h1>
+        <h1>✅ WebView2 application</h1>
 
-        <p>This is a native .NET + WebView2 app.</p>
+        <div class="row my-3">
+            <div class="col-9">
+                <input type="text" id="userPath" class="form-control w-100"
+                    placeholder="Input path to preffered directory.">
+            </div>
+            <div class="col-3">
+                <button class="btn btn-primary form-control" onclick="sendMessage()">Send to C#</button>
+            </div>
+        </div>
 
-        <label for="folderInput">Choose dir in Downloads:</label>
-        <input type="file" id="folderInput" webkitdirectory multiple>
+        <button class="btn btn-secondary form-control" id="toggleButton">Toggle Content</button>
 
-        <button onclick="sendMessage()">Send message to C#</button>
-
-        <button class="btn btn-primary" id="toggleButton">Toggle Content</button>
-
-        <div id="collapsibleDiv" class="collapse mt-3">
+        <div id="collapsibleDiv" class="collapse form mt-3">
             <div class="p-3 border bg-light">
                 <p>
-                    <table id="dataTable" class="border" style="max-height:50%;">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th>Size</th>
-                                <th>Name</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                <table id="dataTable" class="border" style="max-height:50%;">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th>Size</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
                 </p>
             </div>
         </div>
     </div>
 </body>
+
 </html>

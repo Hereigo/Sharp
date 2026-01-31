@@ -75,3 +75,5 @@ namespace WebView2Starter
         }
     }
 }
+
+// https://learn.microsoft.com/en-us/microsoft-edge/webview2/get-started/wpf
