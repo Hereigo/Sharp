@@ -6,12 +6,12 @@
         xmlns:local="clr-namespace:AntiDupApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid Margin="0,0,0,-6">
+    <Grid Margin="0,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ListBox Height="381" VerticalAlignment="Top" HorizontalAlignment="Center" Width="780" Margin="0,44,0,0"
+        <ListBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,44,5,5"
                  ItemsSource="{Binding WorkFiles}" MouseDoubleClick="ListBox_MouseDoubleClick" d:ItemsSource="{d:SampleData ItemCount=5}" >
 
             <ListBox.ItemTemplate>

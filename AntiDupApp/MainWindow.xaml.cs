@@ -19,10 +19,16 @@ namespace AntiDupApp
 
         private void ListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if (((ListBox)sender).SelectedItem == null)
+                return;
+
             var path1 = ((WorkFile)((ListBox)sender).SelectedItem).FileName;
 
             if (((WorkFile)((ListBox)sender).SelectedItem).FileName is string filePath)
             {
+                if (!File.Exists(filePath))
+                    return;
+
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = filePath,
