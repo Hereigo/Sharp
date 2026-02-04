@@ -17,6 +17,9 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
+                        <Button Content="[x]" />
+                        <TextBlock Text=" - " />
+
                         <TextBlock Text="{Binding FileDateString}" />
                         <TextBlock Text=" | " />
                         <TextBlock Text="{Binding FileSize}" />
