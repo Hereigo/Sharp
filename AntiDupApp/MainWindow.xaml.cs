@@ -42,7 +42,12 @@ namespace AntiDupApp
             {
                 string? SelectedDirectory = dialog.FileName;
 
-                ((MainViewModel)DataContext).LoadFiles(SelectedDirectory);
+                if (Directory.Exists(SelectedDirectory))
+                {
+                    var duplicates = DuplicateFinder.GetDuplicateFilesByGroups(SelectedDirectory);
+
+                    ((MainViewModel)DataContext).DisplayFiles(duplicates);
+                }
             }
         }
     }
@@ -63,13 +68,22 @@ namespace AntiDupApp
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public void LoadFiles(string directory)
+        internal void DisplayFiles(IEnumerable<List<(DateTime, int, string)>> duplicateGroups)
         {
             WorkFiles.Clear();
 
-            foreach (var file in Directory.EnumerateFiles(directory))
+            foreach (var group in duplicateGroups)
             {
-                WorkFiles.Add(new WorkFile { FileName = file });
+                // Console.WriteLine("===========================================================================================");
+
+                var duplicaGroup = group.OrderBy(t => t.Item1).ToList();
+                foreach (var file in duplicaGroup)
+
+                    // Console.WriteLine("  " + file.Item1.ToString("yyMMdd.HHmmss") + " - " + file.Item2 + " - " + file.Item3);
+
+                    WorkFiles.Add(new WorkFile { FileName = file.Item3 });
+
+
             }
         }
     }
