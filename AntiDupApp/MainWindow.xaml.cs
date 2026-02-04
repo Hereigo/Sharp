@@ -61,6 +61,9 @@ namespace AntiDupApp
     public class WorkFile
     {
         public required string FileName { get; set; }
+        public DateTime FileDate { get; internal set; }
+        public string FileDateString => FileDate.ToString("yyMMdd.HHmmss");
+        public int FileSize { get; internal set; }
     }
 
     public class MainViewModel : INotifyPropertyChanged
@@ -84,11 +87,14 @@ namespace AntiDupApp
 
                 var duplicaGroup = group.OrderBy(t => t.Item1).ToList();
                 foreach (var file in duplicaGroup)
-
-                    // Console.WriteLine("  " + file.Item1.ToString("yyMMdd.HHmmss") + " - " + file.Item2 + " - " + file.Item3);
-
-                    WorkFiles.Add(new WorkFile { FileName = file.Item3 });
-
+                {
+                    WorkFiles.Add(new WorkFile
+                    {
+                        FileDate = file.Item1,
+                        FileSize = file.Item2,
+                        FileName = file.Item3
+                    });
+                }
 
             }
         }

@@ -17,6 +17,10 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding FileDateString}" />
+                        <TextBlock Text=" | " />
+                        <TextBlock Text="{Binding FileSize}" />
+                        <TextBlock Text=" | " />
                         <TextBlock Text="{Binding FileName}" />
                     </StackPanel>
                 </DataTemplate>
