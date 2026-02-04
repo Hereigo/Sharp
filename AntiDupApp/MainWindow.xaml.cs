@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -8,9 +9,6 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace AntiDupApp
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -33,7 +31,7 @@ namespace AntiDupApp
             }
         }
 
-        public ICommand BrowseDirectoryCommand => new RelayCommand(() =>
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new CommonOpenFileDialog
             {
@@ -44,28 +42,7 @@ namespace AntiDupApp
             {
                 string? SelectedDirectory = dialog.FileName;
 
-                LoadFiles(SelectedDirectory);
-            }
-        });
-
-        private void LoadFiles(string selectedDirectory)
-        {
-            var dialog = new CommonOpenFileDialog
-            {
-                IsFolderPicker = true,
-                Title = "Select a folder"
-            };
-
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                string selectedPath = dialog.FileName;
-
-                var files = Directory.GetFiles(selectedPath);
-
-                // FilePaths.Clear();
-                // 
-                // foreach (var file in files)
-                //     FilePaths.Add(file);
+                ((MainViewModel)DataContext).LoadFiles(SelectedDirectory);
             }
         }
     }
@@ -75,17 +52,25 @@ namespace AntiDupApp
         public required string FileName { get; set; }
     }
 
-    public class MainViewModel
+    public class MainViewModel : INotifyPropertyChanged
     {
         public ObservableCollection<WorkFile> WorkFiles { get; set; }
 
         public MainViewModel()
         {
-            WorkFiles = new ObservableCollection<WorkFile>
+            WorkFiles = new ObservableCollection<WorkFile>();
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public void LoadFiles(string directory)
+        {
+            WorkFiles.Clear();
+
+            foreach (var file in Directory.EnumerateFiles(directory))
             {
-                new WorkFile { FileName = @"C:\temp\2652.pdf" },
-                new WorkFile { FileName = @"C:\temp\2652.xml" }
-            };
+                WorkFiles.Add(new WorkFile { FileName = file });
+            }
         }
     }
 }
