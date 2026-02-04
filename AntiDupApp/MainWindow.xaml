@@ -13,6 +13,7 @@
 
         <ListBox Height="386" VerticalAlignment="Top" HorizontalAlignment="Center" Width="780" Margin="0,44,0,0"
                  ItemsSource="{Binding WorkFiles}" MouseDoubleClick="ListBox_MouseDoubleClick" d:ItemsSource="{d:SampleData ItemCount=5}" >
+
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -20,6 +21,7 @@
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+
         </ListBox>
 
         <Button Click="Button_Click" Content="Browse..." HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="65" />
