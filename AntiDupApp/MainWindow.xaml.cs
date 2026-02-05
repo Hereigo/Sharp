@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,8 +19,6 @@ namespace AntiDupApp
         {
             if (((ListBox)sender).SelectedItem == null)
                 return;
-
-            var path1 = ((WorkFile)((ListBox)sender).SelectedItem).FileName;
 
             if (((WorkFile)((ListBox)sender).SelectedItem).FileName is string filePath)
             {
@@ -57,48 +53,13 @@ namespace AntiDupApp
             }
         }
     }
-
-    public class WorkFile
-    {
-        public required string FileName { get; set; }
-        public DateTime? FileDate { get; internal set; }
-        public string FileDateString => FileDate?.ToString("yyMMdd.HHmmss");
-        public int FileSize { get; internal set; }
-    }
-
-    public class MainViewModel : INotifyPropertyChanged
-    {
-        public ObservableCollection<WorkFile> WorkFiles { get; set; }
-
-        public MainViewModel()
-        {
-            WorkFiles = new ObservableCollection<WorkFile>();
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        internal void DisplayFiles(IEnumerable<List<(DateTime, int, string)>> duplicateGroups)
-        {
-            WorkFiles.Clear();
-
-            foreach (var group in duplicateGroups)
-            {
-                WorkFiles.Add(new WorkFile
-                {
-                    FileDate = null,
-                    FileName = "==========================================================================================="
-                });
-                var duplicaGroup = group.OrderBy(t => t.Item1).ToList();
-                foreach (var file in duplicaGroup)
-                {
-                    WorkFiles.Add(new WorkFile
-                    {
-                        FileDate = file.Item1,
-                        FileSize = file.Item2,
-                        FileName = file.Item3
-                    });
-                }
-            }
-        }
-    }
 }
+
+// using Microsoft.VisualBasic.FileIO;
+//
+// FileSystem.DeleteFile(
+//     filePath,
+//     UIOption.OnlyErrorDialogs,
+//     RecycleOption.SendToRecycleBin,
+//     UICancelOption.DoNothing
+// );

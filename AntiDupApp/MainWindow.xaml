@@ -6,6 +6,11 @@
         xmlns:local="clr-namespace:AntiDupApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+
+    <Window.Resources>
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Window.Resources>
+
     <Grid Margin="0,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -17,9 +22,10 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="[x]" />
+                        <Button Content=" [ x ] " Command="{Binding ListItemButtonCommand}" 
+                                Visibility="{Binding IsButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        
                         <TextBlock Text=" - " />
-
                         <TextBlock Text="{Binding FileDateString}" />
                         <TextBlock Text=" | " />
                         <TextBlock Text="{Binding FileSize}" />
