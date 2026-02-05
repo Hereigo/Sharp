@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Microsoft.VisualBasic.FileIO;
 
 namespace AntiDupApp;
 
@@ -51,16 +52,14 @@ public class WorkFile : INotifyPropertyChanged
     {
         IsButtonVisible = false;
         IsTextDimmed = true;
-        // FileSystem.DeleteFile(
-        //     FileName,
-        //     UIOption.OnlyErrorDialogs,
-        //     RecycleOption.SendToRecycleBin,
-        //     UICancelOption.DoNothing // If need to hide a handle cancellation 
-        // );
+        FileSystem.DeleteFile(
+            FileName,
+            UIOption.OnlyErrorDialogs,
+            RecycleOption.SendToRecycleBin,
+            UICancelOption.DoNothing
+        );
     }
 }
-
-
 
 public class MainViewModel : INotifyPropertyChanged
 {
