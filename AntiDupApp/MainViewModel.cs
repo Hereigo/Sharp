@@ -9,8 +9,8 @@ public class WorkFile : INotifyPropertyChanged
 {
     public required string FileName { get; set; }
     public DateTime? FileDate { get; internal set; }
+    public int? FileSize { get; internal set; }
     public string? FileDateString => FileDate?.ToString("yyMMdd.HHmmss");
-    public int FileSize { get; internal set; }
 
     private bool _isButtonVisible;
     private bool _isTextDimmed;
@@ -83,6 +83,7 @@ public class MainViewModel : INotifyPropertyChanged
             {
                 // TODO: Consider a better way to represent group headers
                 FileDate = null,
+                FileSize = null,
                 FileName = "==========================================================================================="
             });
             var duplicaGroup = group.OrderBy(t => t.Item1).ToList();

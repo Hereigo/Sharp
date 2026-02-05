@@ -34,11 +34,11 @@
                     <StackPanel Orientation="Horizontal">
                         <Button Content=" [ x ] " Command="{Binding ListItemButtonCommand}" 
                                     Visibility="{Binding IsButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                        <TextBlock Text=" - " />
+                        <TextBlock Text=" -- " />
                         <TextBlock Text="{Binding FileDateString}" />
-                        <TextBlock Text=" | " />
+                        <TextBlock Text=" -- " />
                         <TextBlock Text="{Binding FileSize}" />
-                        <TextBlock Text=" | " />
+                        <TextBlock Text=" -- " />
                         <TextBlock Text="{Binding FileName}" />
                     </StackPanel>
                 </DataTemplate>
