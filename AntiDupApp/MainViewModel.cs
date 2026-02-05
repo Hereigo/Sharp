@@ -13,6 +13,17 @@ public class WorkFile : INotifyPropertyChanged
     public int FileSize { get; internal set; }
 
     private bool _isButtonVisible;
+    private bool _isTextDimmed;
+
+    public bool IsTextDimmed
+    {
+        get => _isTextDimmed;
+        set
+        {
+            _isTextDimmed = value;
+            OnPropertyChanged();
+        }
+    }
 
     public bool IsButtonVisible
     {
@@ -39,6 +50,7 @@ public class WorkFile : INotifyPropertyChanged
     private void OnAction()
     {
         IsButtonVisible = false;
+        IsTextDimmed = true;
         // FileSystem.DeleteFile(
         //     FileName,
         //     UIOption.OnlyErrorDialogs,
@@ -79,6 +91,7 @@ public class MainViewModel : INotifyPropertyChanged
                 WorkFiles.Add(new WorkFile
                 {
                     IsButtonVisible = true,
+                    IsTextDimmed = false,
                     FileDate = file.Item1,
                     FileSize = file.Item2,
                     FileName = file.Item3

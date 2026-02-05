@@ -19,12 +19,22 @@
         <ListBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,44,5,5"
                  ItemsSource="{Binding WorkFiles}" MouseDoubleClick="ListBox_MouseDoubleClick" d:ItemsSource="{d:SampleData ItemCount=5}" >
 
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Background" Value="LightGray"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsTextDimmed}" Value="False">
+                            <Setter Property="Background" Value="Transparent"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <Button Content=" [ x ] " Command="{Binding ListItemButtonCommand}" 
                                 Visibility="{Binding IsButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                        
                         <TextBlock Text=" - " />
                         <TextBlock Text="{Binding FileDateString}" />
                         <TextBlock Text=" | " />
