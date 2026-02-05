@@ -20,7 +20,7 @@ public partial class MainWindow : Window
         if (((ListBox)sender).SelectedItem == null)
             return;
 
-        if (((WorkFile)((ListBox)sender).SelectedItem).FileName is string filePath)
+        if (((WorkFileModel)((ListBox)sender).SelectedItem).FileName is string filePath)
         {
             if (!File.Exists(filePath))
                 return;
