@@ -5,18 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AntiDupApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="606" Width="985">
+        Title="Duplicate Files Finder" Height="606" Width="985" Icon="/icon.ico">
 
     <Window.Resources>
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Window.Resources>
 
     <Grid Margin="0,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="149*"/>
+            <ColumnDefinition Width="836*"/>
+        </Grid.ColumnDefinitions>
 
-        <Button Click="Button_Click" Content="Browse..." HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="85" />
+        <Button Click="Button_Click" Content="🔍 Select Directory " HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="118" Height="29" />
 
-        <ListBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,44,5,5"
-                 ItemsSource="{Binding WorkFiles}" MouseDoubleClick="ListBox_MouseDoubleClick" d:ItemsSource="{d:SampleData ItemCount=5}" >
+        <ListBox Margin="5,44,5,5"
+                 ItemsSource="{Binding WorkFiles}" MouseDoubleClick="ListBox_MouseDoubleClick" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="2" >
 
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
