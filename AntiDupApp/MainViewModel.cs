@@ -3,87 +3,86 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
-namespace AntiDupApp
+namespace AntiDupApp;
+
+public class WorkFile : INotifyPropertyChanged
 {
-    public class WorkFile : INotifyPropertyChanged
+    public required string FileName { get; set; }
+    public DateTime? FileDate { get; internal set; }
+    public string? FileDateString => FileDate?.ToString("yyMMdd.HHmmss");
+    public int FileSize { get; internal set; }
+
+    private bool _isButtonVisible;
+
+    public bool IsButtonVisible
     {
-        public required string FileName { get; set; }
-        public DateTime? FileDate { get; internal set; }
-        public string? FileDateString => FileDate?.ToString("yyMMdd.HHmmss");
-        public int FileSize { get; internal set; }
-
-        private bool _isButtonVisible;
-
-        public bool IsButtonVisible
+        get => _isButtonVisible;
+        set
         {
-            get => _isButtonVisible;
-            set
-            {
-                _isButtonVisible = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ICommand ListItemButtonCommand { get; }
-
-        public WorkFile()
-        {
-            ListItemButtonCommand = new RelayCommand(OnAction);
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string prop = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-
-        private void OnAction()
-        {
-            IsButtonVisible = false;
-            // FileSystem.DeleteFile(
-            //     FileName,
-            //     UIOption.OnlyErrorDialogs,
-            //     RecycleOption.SendToRecycleBin,
-            //     UICancelOption.DoNothing // If need to hide a handle cancellation 
-            // );
+            _isButtonVisible = value;
+            OnPropertyChanged();
         }
     }
 
+    public ICommand ListItemButtonCommand { get; }
 
-
-    public class MainViewModel : INotifyPropertyChanged
+    public WorkFile()
     {
-        public ObservableCollection<WorkFile> WorkFiles { get; set; }
+        ListItemButtonCommand = new RelayCommand(OnAction);
+    }
 
-        public MainViewModel()
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    protected void OnPropertyChanged([CallerMemberName] string prop = null)
+        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+
+    private void OnAction()
+    {
+        IsButtonVisible = false;
+        // FileSystem.DeleteFile(
+        //     FileName,
+        //     UIOption.OnlyErrorDialogs,
+        //     RecycleOption.SendToRecycleBin,
+        //     UICancelOption.DoNothing // If need to hide a handle cancellation 
+        // );
+    }
+}
+
+
+
+public class MainViewModel : INotifyPropertyChanged
+{
+    public ObservableCollection<WorkFile> WorkFiles { get; set; }
+
+    public MainViewModel()
+    {
+        WorkFiles = new ObservableCollection<WorkFile>();
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    internal void DisplayFiles(IEnumerable<List<(DateTime, int, string)>> duplicateGroups)
+    {
+        WorkFiles.Clear();
+
+        foreach (var group in duplicateGroups)
         {
-            WorkFiles = new ObservableCollection<WorkFile>();
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        internal void DisplayFiles(IEnumerable<List<(DateTime, int, string)>> duplicateGroups)
-        {
-            WorkFiles.Clear();
-
-            foreach (var group in duplicateGroups)
+            WorkFiles.Add(new WorkFile
+            {
+                // TODO: Consider a better way to represent group headers
+                FileDate = null,
+                FileName = "==========================================================================================="
+            });
+            var duplicaGroup = group.OrderBy(t => t.Item1).ToList();
+            foreach (var file in duplicaGroup)
             {
                 WorkFiles.Add(new WorkFile
                 {
-                    // TODO: Consider a better way to represent group headers
-                    FileDate = null,
-                    FileName = "==========================================================================================="
+                    IsButtonVisible = true,
+                    FileDate = file.Item1,
+                    FileSize = file.Item2,
+                    FileName = file.Item3
                 });
-                var duplicaGroup = group.OrderBy(t => t.Item1).ToList();
-                foreach (var file in duplicaGroup)
-                {
-                    WorkFiles.Add(new WorkFile
-                    {
-                        IsButtonVisible = true,
-                        FileDate = file.Item1,
-                        FileSize = file.Item2,
-                        FileName = file.Item3
-                    });
-                }
             }
         }
     }
