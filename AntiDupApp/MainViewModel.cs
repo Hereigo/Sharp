@@ -1,9 +1,8 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace AntiDupApp;
 
-public class MainViewModel : INotifyPropertyChanged
+public class MainViewModel
 {
     public ObservableCollection<WorkFileModel> WorkFiles { get; set; }
 
@@ -11,8 +10,6 @@ public class MainViewModel : INotifyPropertyChanged
     {
         WorkFiles = new ObservableCollection<WorkFileModel>();
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
 
     internal void DisplayFiles(IEnumerable<List<(DateTime, int, string)>> duplicateGroups)
     {
