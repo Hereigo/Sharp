@@ -5,23 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AntiDupApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="606" Width="985">
 
     <Window.Resources>
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Window.Resources>
 
     <Grid Margin="0,0,0,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+
+        <Button Click="Button_Click" Content="Browse..." HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="65" />
 
         <ListBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,44,5,5"
                  ItemsSource="{Binding WorkFiles}" MouseDoubleClick="ListBox_MouseDoubleClick" d:ItemsSource="{d:SampleData ItemCount=5}" >
 
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
-                    <Setter Property="Background" Value="LightGray"/>
+                    <Setter Property="Background" Value="#ebebeb"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsTextDimmed}" Value="False">
                             <Setter Property="Background" Value="Transparent"/>
@@ -34,7 +33,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <Button Content=" [ x ] " Command="{Binding ListItemButtonCommand}" 
-                                Visibility="{Binding IsButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    Visibility="{Binding IsButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
                         <TextBlock Text=" - " />
                         <TextBlock Text="{Binding FileDateString}" />
                         <TextBlock Text=" | " />
@@ -46,8 +45,5 @@
             </ListBox.ItemTemplate>
 
         </ListBox>
-
-        <Button Click="Button_Click" Content="Browse..." HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="65" />
-
     </Grid>
 </Window>
