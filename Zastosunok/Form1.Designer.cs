@@ -23,84 +23,85 @@
         #region Windows Form Designer generated code
 
         /// <summary>
-        ///  Required method for Designer support - do not modify
+        ///  Required method for Designer support - DO NOT MODIFY !!!
         ///  the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
-            button1 = new Button();
-            button2 = new Button();
+            labelHrs = new Label();
+            labelMin = new Label();
+            labelSec = new Label();
+            buttonStart = new Button();
+            buttonReset = new Button();
             SuspendLayout();
             // 
             // label1
             // 
-            label1.AutoSize = true;
-            label1.FlatStyle = FlatStyle.System;
-            label1.Font = new Font("Verdana", 18.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(9, 9);
-            label1.Margin = new Padding(0);
-            label1.Name = "label1";
-            label1.Size = new Size(50, 31);
-            label1.TabIndex = 0;
-            label1.Text = "00";
+            labelHrs.AutoSize = true;
+            labelHrs.FlatStyle = FlatStyle.System;
+            labelHrs.Font = new Font("Verdana", 18.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelHrs.Location = new Point(9, 9);
+            labelHrs.Margin = new Padding(0);
+            labelHrs.Name = "label1";
+            labelHrs.Size = new Size(50, 31);
+            labelHrs.TabIndex = 0;
+            labelHrs.Text = "00";
             // 
             // label2
             // 
-            label2.AutoSize = true;
-            label2.FlatStyle = FlatStyle.System;
-            label2.Font = new Font("Verdana", 18.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(59, 9);
-            label2.Margin = new Padding(0);
-            label2.Name = "label2";
-            label2.Size = new Size(50, 31);
-            label2.TabIndex = 1;
-            label2.Text = "00";
+            labelMin.AutoSize = true;
+            labelMin.FlatStyle = FlatStyle.System;
+            labelMin.Font = new Font("Verdana", 18.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelMin.Location = new Point(59, 9);
+            labelMin.Margin = new Padding(0);
+            labelMin.Name = "label2";
+            labelMin.Size = new Size(50, 31);
+            labelMin.TabIndex = 1;
+            labelMin.Text = "00";
             // 
             // label3
             // 
-            label3.AutoSize = true;
-            label3.FlatStyle = FlatStyle.System;
-            label3.Font = new Font("Verdana", 18.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(109, 9);
-            label3.Margin = new Padding(0);
-            label3.Name = "label3";
-            label3.Size = new Size(50, 31);
-            label3.TabIndex = 2;
-            label3.Text = "00";
+            labelSec.AutoSize = true;
+            labelSec.FlatStyle = FlatStyle.System;
+            labelSec.Font = new Font("Verdana", 18.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelSec.Location = new Point(109, 9);
+            labelSec.Margin = new Padding(0);
+            labelSec.Name = "label3";
+            labelSec.Size = new Size(50, 31);
+            labelSec.TabIndex = 2;
+            labelSec.Text = "00";
             // 
             // button1
             // 
-            button1.Location = new Point(9, 45);
-            button1.Name = "button1";
-            button1.Size = new Size(66, 44);
-            button1.TabIndex = 3;
-            button1.Text = "Start";
-            button1.UseVisualStyleBackColor = true;
+            buttonStart.Location = new Point(9, 45);
+            buttonStart.Name = "button1";
+            buttonStart.Size = new Size(66, 44);
+            buttonStart.TabIndex = 3;
+            buttonStart.Text = "Start";
+            buttonStart.UseVisualStyleBackColor = true;
+            buttonStart.Click += buttonStart_Click;
             // 
             // button2
             // 
-            button2.Location = new Point(80, 45);
-            button2.Name = "button2";
-            button2.Size = new Size(66, 44);
-            button2.TabIndex = 4;
-            button2.Text = "Reset";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            buttonReset.Location = new Point(80, 45);
+            buttonReset.Name = "button2";
+            buttonReset.Size = new Size(66, 44);
+            buttonReset.TabIndex = 4;
+            buttonReset.Text = "Reset";
+            buttonReset.UseVisualStyleBackColor = true;
+            buttonReset.Click += buttonReset_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(158, 99);
-            Controls.Add(button2);
-            Controls.Add(button1);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(label1);
+            Controls.Add(buttonReset);
+            Controls.Add(buttonStart);
+            Controls.Add(labelSec);
+            Controls.Add(labelMin);
+            Controls.Add(labelHrs);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
@@ -114,10 +115,10 @@
 
         #endregion
 
-        private Label label1;
-        private Label label2;
-        private Label label3;
-        private Button button1;
-        private Button button2;
+        private Label labelHrs;
+        private Label labelMin;
+        private Label labelSec;
+        private Button buttonStart;
+        private Button buttonReset;
     }
 }
