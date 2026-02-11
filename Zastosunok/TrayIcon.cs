@@ -14,8 +14,10 @@ public partial class Form1
 
         trayIcon.DoubleClick += TrayIcon_DoubleClick;
 
-        ContextMenuStrip menu = new ContextMenuStrip();
-        menu.Items.Add("Show", null, (s, e) => ShowForm());
+        ContextMenuStrip menu = new();
+
+        // menu.Items.Add("Show", null, (s, e) => ShowForm());
+
         menu.Items.Add("Exit", null, (s, e) => ExitApplication());
         trayIcon.ContextMenuStrip = menu;
 

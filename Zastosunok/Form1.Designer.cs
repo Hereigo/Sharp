@@ -36,73 +36,77 @@
             buttonReset = new Button();
             SuspendLayout();
             // 
-            // label1
+            // labelHrs
             // 
             labelHrs.AutoSize = true;
             labelHrs.FlatStyle = FlatStyle.System;
-            labelHrs.Font = new Font("Verdana", 18.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            labelHrs.Location = new Point(9, 9);
+            labelHrs.Font = new Font("Verdana", 18F);
+            labelHrs.Location = new Point(1, 1);
             labelHrs.Margin = new Padding(0);
-            labelHrs.Name = "label1";
-            labelHrs.Size = new Size(50, 31);
+            labelHrs.Name = "labelHrs";
+            labelHrs.Size = new Size(43, 29);
             labelHrs.TabIndex = 0;
             labelHrs.Text = "00";
+            labelHrs.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // label2
+            // labelMin
             // 
             labelMin.AutoSize = true;
             labelMin.FlatStyle = FlatStyle.System;
-            labelMin.Font = new Font("Verdana", 18.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            labelMin.Location = new Point(59, 9);
+            labelMin.Font = new Font("Verdana", 18F);
+            labelMin.Location = new Point(43, 1);
             labelMin.Margin = new Padding(0);
-            labelMin.Name = "label2";
-            labelMin.Size = new Size(50, 31);
+            labelMin.Name = "labelMin";
+            labelMin.Size = new Size(43, 29);
             labelMin.TabIndex = 1;
             labelMin.Text = "00";
+            labelMin.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // label3
+            // labelSec
             // 
             labelSec.AutoSize = true;
             labelSec.FlatStyle = FlatStyle.System;
-            labelSec.Font = new Font("Verdana", 18.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            labelSec.Location = new Point(109, 9);
+            labelSec.Font = new Font("Verdana", 18F);
+            labelSec.Location = new Point(84, 1);
             labelSec.Margin = new Padding(0);
-            labelSec.Name = "label3";
-            labelSec.Size = new Size(50, 31);
+            labelSec.Name = "labelSec";
+            labelSec.Size = new Size(43, 29);
             labelSec.TabIndex = 2;
             labelSec.Text = "00";
+            labelSec.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // button1
+            // buttonStart
             // 
-            buttonStart.Location = new Point(9, 45);
-            buttonStart.Name = "button1";
-            buttonStart.Size = new Size(66, 44);
+            buttonStart.Location = new Point(5, 33);
+            buttonStart.Name = "buttonStart";
+            buttonStart.Size = new Size(60, 34);
             buttonStart.TabIndex = 3;
             buttonStart.Text = "Start";
             buttonStart.UseVisualStyleBackColor = true;
-            buttonStart.Click += buttonStart_Click;
+            buttonStart.Click += ButtonStart_Click;
             // 
-            // button2
+            // buttonReset
             // 
-            buttonReset.Location = new Point(80, 45);
-            buttonReset.Name = "button2";
-            buttonReset.Size = new Size(66, 44);
+            buttonReset.BackColor = SystemColors.ButtonHighlight;
+            buttonReset.Location = new Point(65, 33);
+            buttonReset.Name = "buttonReset";
+            buttonReset.Size = new Size(60, 34);
             buttonReset.TabIndex = 4;
             buttonReset.Text = "Reset";
-            buttonReset.UseVisualStyleBackColor = true;
-            buttonReset.Click += buttonReset_Click;
+            buttonReset.UseVisualStyleBackColor = false;
+            buttonReset.Click += ButtonReset_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(158, 99);
+            ClientSize = new Size(129, 71);
             Controls.Add(buttonReset);
             Controls.Add(buttonStart);
             Controls.Add(labelSec);
             Controls.Add(labelMin);
             Controls.Add(labelHrs);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "Form1";
