@@ -1,11 +1,8 @@
-﻿using System.Diagnostics;
-
-namespace Zastosunok;
+﻿namespace Zastosunok;
 
 public partial class Form1
 {
     private static string freeGb = "?";
-    private static bool switcher = true;
 
     private NotifyIcon TrayIconCreate()
     {
@@ -50,25 +47,33 @@ public partial class Form1
     {
         freeGb = GetFreeSpaceInGb("C:\\").ToString();
 
-        if (freeGb.Length == 2) freeGb = "." + freeGb;
-        else if (freeGb.Length == 1) freeGb = ".  " + freeGb;
+        if (freeGb != "?" && freeGb != "-1")
+        {
 
-        Font fontToUse = new("Arial", 12, FontStyle.Bold, GraphicsUnit.Pixel);
-        Brush brushToUse = new SolidBrush(switcher ? Color.Red : Color.HotPink);
 
-        // switcher = !switcher;
+            trayIcon.Icon = CreateBorderedTextIcon(freeGb);
 
-        Bitmap bitmapText = new(18, 12);
-        Graphics g = Graphics.FromImage(bitmapText);
 
-        IntPtr hIcon;
 
-        g.Clear(Color.Transparent);
-        g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-        g.DrawString(freeGb.ToString(), fontToUse, brushToUse, -4, -2);
-        hIcon = (bitmapText.GetHicon());
-        trayIcon.Icon = Icon.FromHandle(hIcon);
+            //if (freeGb.Length == 2) freeGb = "." + freeGb;
+            //else if (freeGb.Length == 1) freeGb = ".  " + freeGb;
 
-        //DestroyIcon(hIcon.ToInt32);
+            //Font fontToUse = new("Arial", 12, FontStyle.Bold, GraphicsUnit.Pixel);
+            //Brush brushToUse = new SolidBrush(switcher ? Color.Red : Color.HotPink);
+
+            //// switcher = !switcher;
+
+            //IntPtr hIcon;
+            //Bitmap bitmapImageText = new(18, 12); // width, height
+
+            //using Graphics g = Graphics.FromImage(bitmapImageText);
+            //g.Clear(Color.Transparent);
+            //g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
+            //g.DrawString(freeGb.ToString(), fontToUse, brushToUse, -4, -2);
+            //hIcon = (bitmapImageText.GetHicon());
+            //trayIcon.Icon = Icon.FromHandle(hIcon);
+
+            ////DestroyIcon(hIcon.ToInt32);
+        }
     }
 }

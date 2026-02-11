@@ -5,6 +5,8 @@ public partial class Form1 : Form
     private readonly NotifyIcon trayIcon;
     private readonly System.Windows.Forms.Timer timer;
 
+    bool _TEST = true;
+
     public Form1()
     {
         InitializeComponent();
@@ -21,7 +23,8 @@ public partial class Form1 : Form
 
     protected override void OnFormClosing(FormClosingEventArgs e)
     {
-        if (e.CloseReason == CloseReason.UserClosing)
+        
+        if (!_TEST && e.CloseReason == CloseReason.UserClosing)
         {
             e.Cancel = true;  // Cancel closing
             this.Hide();
