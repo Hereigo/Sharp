@@ -25,10 +25,20 @@ public partial class Form1 : Form
         {
             e.Cancel = true;  // Cancel closing
             this.Hide();
+            trayIcon.ShowBalloonTip(1000, "Important notice", "App is working in background.", ToolTipIcon.Info);
         }
         else
         {
             base.OnFormClosing(e);
+        }
+    }
+
+    // Minimize to tray
+    private void Form1_Move(object sender, EventArgs e)
+    {
+        if (this.WindowState == FormWindowState.Minimized)
+        {
+            this.Hide();
         }
     }
 
