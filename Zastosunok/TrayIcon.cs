@@ -24,19 +24,6 @@ public partial class Form1
         return trayIcon;
     }
 
-    protected override void OnFormClosing(FormClosingEventArgs e)
-    {
-        if (e.CloseReason == CloseReason.UserClosing)
-        {
-            e.Cancel = true;  // Cancel closing
-            this.Hide();
-        }
-        else
-        {
-            base.OnFormClosing(e);
-        }
-    }
-
     private void TrayIcon_DoubleClick(object? sender, EventArgs e)
     {
         ShowForm();

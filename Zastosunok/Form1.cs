@@ -19,6 +19,19 @@ public partial class Form1 : Form
         timer.Start();
     }
 
+    protected override void OnFormClosing(FormClosingEventArgs e)
+    {
+        if (e.CloseReason == CloseReason.UserClosing)
+        {
+            e.Cancel = true;  // Cancel closing
+            this.Hide();
+        }
+        else
+        {
+            base.OnFormClosing(e);
+        }
+    }
+
     private void ButtonStart_Click(object sender, EventArgs e)
     {
         if (!timer.Enabled)
@@ -64,4 +77,3 @@ public partial class Form1 : Form
         labelHrs.Text = hour.ToString("D2");
     }
 }
-
