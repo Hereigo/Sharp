@@ -49,31 +49,7 @@ public partial class Form1
 
         if (freeGb != "?" && freeGb != "-1")
         {
-
-
-            trayIcon.Icon = CreateBorderedTextIcon(freeGb);
-
-
-
-            //if (freeGb.Length == 2) freeGb = "." + freeGb;
-            //else if (freeGb.Length == 1) freeGb = ".  " + freeGb;
-
-            //Font fontToUse = new("Arial", 12, FontStyle.Bold, GraphicsUnit.Pixel);
-            //Brush brushToUse = new SolidBrush(switcher ? Color.Red : Color.HotPink);
-
-            //// switcher = !switcher;
-
-            //IntPtr hIcon;
-            //Bitmap bitmapImageText = new(18, 12); // width, height
-
-            //using Graphics g = Graphics.FromImage(bitmapImageText);
-            //g.Clear(Color.Transparent);
-            //g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-            //g.DrawString(freeGb.ToString(), fontToUse, brushToUse, -4, -2);
-            //hIcon = (bitmapImageText.GetHicon());
-            //trayIcon.Icon = Icon.FromHandle(hIcon);
-
-            ////DestroyIcon(hIcon.ToInt32);
+            trayIcon.Icon = CreateIconFromText(freeGb);
         }
     }
 }
