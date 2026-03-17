@@ -32,6 +32,11 @@ namespace WebView2Starter
             // Handle messages from the web content
             WebView.CoreWebView2.WebMessageReceived += (s, e) =>
             {
+
+                // TODO:
+                // Get the message sent from the web content
+                // Check if the message is a request for data (e.g., a specific command or folder name)
+
                 string message = e.TryGetWebMessageAsString();
                 // MessageBox.Show($"From Web: {message}");
 

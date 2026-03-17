@@ -58,7 +58,11 @@ window.receiveData = function (json) {
 };
 
 function sendMessage() {
-    chrome.webview.postMessage("Hello from Web UI!");
+
+    var mainInput = document.getElementById("userPath");
+    var folderName = mainInput.value;
+
+    chrome.webview.postMessage(folderName);
 }
 
 function toggleCollapseBasedOnWidth() {
