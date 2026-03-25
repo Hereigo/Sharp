@@ -30,6 +30,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntiDupApp", "AntiDupApp\An
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zastosunok", "Zastosunok\Zastosunok.csproj", "{E3EA1625-8DCF-4BD4-AB84-4B0B6F664BEC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConsoleChunks", "ConsoleChunks", "{DE50D9F2-7342-432A-B977-45F66E07992A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CalendariumApp", "CalendariumApp", "{F915CF5E-7D33-48BD-AE4E-191963684B68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +79,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{193F3294-84EE-4118-8C07-787704203649} = {F915CF5E-7D33-48BD-AE4E-191963684B68}
+		{71FBC14F-0FD7-4417-BE53-6C64860E4C26} = {DE50D9F2-7342-432A-B977-45F66E07992A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E95980D4-8CA0-45BC-B7EF-FEFC97C4B059}

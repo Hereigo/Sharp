@@ -64,20 +64,20 @@
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <script>
-                        let jsonLoad = document.querySelector("#jsonLoad");
-                        document.querySelector("#jsonMake").addEventListener("click", function () {
-                            let xhr = new XMLHttpRequest();
-                            let url = '/Home/GetJson/';
-                            xhr.open("GET", url, true);
-                            xhr.onreadystatechange = function () {
-                                if (this.readyState == 4 && this.status == 200) {
-                                    let file = new Blob([this.responseText], { type: 'text/plain' });
-                                    jsonLoad.href = URL.createObjectURL(file);
-                                    jsonLoad.download = "calendBkp.json";
-                                }
-                            }
-                            xhr.send();
-                        });
+                                        let jsonLoad = document.querySelector("#jsonLoad");
+                                        document.querySelector("#jsonMake").addEventListener("click", function () {
+                                            let xhr = new XMLHttpRequest();
+                                            let url = '/Home/GetJson/';
+                                            xhr.open("GET", url, true);
+                                            xhr.onreadystatechange = function () {
+                                                if (this.readyState == 4 && this.status == 200) {
+                                                    let file = new Blob([this.responseText], { type: 'text/plain' });
+                                                    jsonLoad.href = URL.createObjectURL(file);
+                                                    jsonLoad.download = "calendBkp.json";
+                                                }
+                                            }
+                                            xhr.send();
+                                        });
                     </script>
                 }
             </div>
@@ -92,10 +92,17 @@
             </ul>
             <br />
             <p>
-                https://dictionary.cambridge.org/dictionary/english/insist
-                <br/>
-                <br/>
-                https://www.merriam-webster.com/dictionary/exaggerated
+                <ul>
+                    <li>
+                        https://www.wordnik.com/words/sophisticated
+                    </li>
+                    <li>
+                        https://dictionary.cambridge.org/dictionary/english/insist
+                    </li>
+                    <li>
+                        https://www.merriam-webster.com/dictionary/exaggerated
+                    </li>
+                </ul>
             </p>
 
             @if (ViewBag.IsDevEnv)
