@@ -23,7 +23,7 @@ namespace WinFormsFreeSpacer
 
         private void RunTimer()
         {
-            aTimer = new System.Timers.Timer(60 * 1000 * 5); // 5 minutes
+            aTimer = new System.Timers.Timer(60 * 1000 * 0.5); // every 0.5 minutes
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             aTimer.Enabled = true;
         }

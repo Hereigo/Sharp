@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AAA_TEST_Console
+﻿namespace AAA_TEST_Console
 {
     internal class PROGRAM
     {
@@ -9,7 +7,7 @@ namespace AAA_TEST_Console
 
         static void Main(string[] args)
         {
-            ShiftCharsInString.Test();
+            // ShiftCharsInString.Test();
 
             // Delegates.TestDelegates();           
 
@@ -18,6 +16,9 @@ namespace AAA_TEST_Console
             // var drives = DriveInfo.GetDrives();
 
             // ChromiumUpdate.GetApiData();
+
+            // HtmlAgilityPack.Test();
+
 
             Console.WriteLine("\r\n Done.");
         }
