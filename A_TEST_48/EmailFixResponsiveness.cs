@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 
@@ -14,8 +12,6 @@ namespace A_TEST_48
     /// </summary>
     public class EmailFixResponsiveness
     {
-        // TEST !!!!!!!!
-        // TEST !!!!!!!!
         internal static void ProcessHtmlFilesInFolder(string filesFolder)
         {
             foreach (var file in Directory.GetFiles(filesFolder, "*.html"))
@@ -25,166 +21,160 @@ namespace A_TEST_48
                 if (File.Exists(outputFile)) File.Delete(outputFile);
                 var htmlContent = File.ReadAllText(file);
                 var fixer = new EmailFixResponsiveness();
-                var fixedHtml = fixer.MakeResponsive(htmlContent);
+                var fixedHtml = fixer.MakeEmailResponsive(htmlContent);
                 File.WriteAllText(outputFile, fixedHtml);
             }
         }
-        // TEST !!!!!!!!
-        // TEST !!!!!!!!
-
-
-        // private readonly ILogger _requestLogger;
-        // 
-        // public EmailFixResponsiveness(ILogger requestLogger)
-        // {
-        //     _requestLogger = requestLogger;
-        // }
 
         // Force styles for the standard safe email width ~184–200mm (600px).
         private const string ResponsiveStyles = @"
-            * { box-sizing: border-box; }
-            body { margin: 0; padding: 0; background-color: #ffffff; }
-            .ssrs-email {
-                max-width: 600px;
-                width: 100%;
-                margin: 0 auto;
-                padding: 20px 16px;
-                direction: ltr;
+        body { margin: 0; padding: 0; }
+        #oReportDiv { max-width: 800px; margin: 0 auto; }
+        #oReportDiv img { max-width: 100%; height: auto; }
+        
+        @media only screen and (max-width: 600px) {
+            html, body { margin: 0 !important; padding: 0 !important; width: 100% !important; }
+            #oReportDiv,
+            #oReportDiv * {
+                max-width: 100% !important;
+                min-width: 0 !important;
+                box-sizing: border-box;
             }
-            .ssrs-email div { max-width: 100%; }
-            @media screen and (max-width: 600px) {
-                .ssrs-email { padding: 12px 8px; }
-                span { white-space: normal !important; }
-            }
+            #oReportDiv,
+            #oReportDiv div { overflow: visible !important; overflow-x: visible !important; width: auto !important; height: auto !important; }
+            #oReportDiv table { width: 100% !important; table-layout: auto !important; }
+            #oReportDiv td, #oReportDiv th { width: auto !important; height: auto !important; word-break: break-word; }
+            #oReportDiv span, #oReportDiv p, #oReportDiv div { white-space: normal !important; }
+        }
         ";
 
-        public string MakeResponsive(string html)
+
+        // Matches an inline 'min-width: <value>;' declaration (terminated by ; or end of style).
+        private static readonly Regex MinWidthDeclarationRegex = new Regex(
+            @"min-width\s*:\s*[^;""']+\s*;?",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        // Matches 'overflow: auto;' (any whitespace).
+        private static readonly Regex OverflowAutoRegex = new Regex(
+            @"overflow\s*:\s*auto\s*;?",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        // Matches 'overflow-x: hidden;' / 'overflow-y: hidden;'.
+        private static readonly Regex OverflowAxisHiddenRegex = new Regex(
+            @"overflow-(?:x|y)\s*:\s*hidden\s*;?",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        public string MakeEmailResponsive(string emailHtmlBodyContent)
         {
-            // _requestLogger.Write(LogLevel.Debug, LogKind.Etc, "[RenderEmailBody.MakeResponsive] Starting ...");
+            if (string.IsNullOrWhiteSpace(emailHtmlBodyContent))
+            {
+                return emailHtmlBodyContent;
+            }
 
-            var doc = new HtmlDocument();
-            doc.LoadHtml(html);
+            var doc = new HtmlDocument
+            {
+                OptionWriteEmptyNodes = true,
+                OptionAutoCloseOnEnd = true,
+                OptionDefaultStreamEncoding = System.Text.Encoding.UTF8
+            };
+            doc.LoadHtml(emailHtmlBodyContent);
 
-            PrepareHead(doc);
-
-            // Essensial SSRS reports element.
-            var reportDiv = doc.GetElementbyId("oReportDiv");
-            if (reportDiv == null)
-                return doc.DocumentNode.OuterHtml;
-
-            var contentNodes = ExtractContent(doc, reportDiv);
-
-            // _requestLogger.Write(LogLevel.Debug, LogKind.Etc, $"[RenderEmailBody.MakeResponsive] {contentNodes.Count} Content Nodes will be processed.");
-
-            reportDiv.RemoveAllChildren();
-            reportDiv.Attributes.Remove("style");
-            reportDiv.Attributes.Remove("dir");
-
-            var emailBodyContainer = doc.CreateElement("div");
-            emailBodyContainer.SetAttributeValue("class", "ssrs-email");
-
-            foreach (var node in contentNodes)
-                emailBodyContainer.AppendChild(node);
-
-            reportDiv.AppendChild(emailBodyContainer);
-
-            // _requestLogger.Write(LogLevel.Debug, LogKind.Etc, $"[RenderEmailBody.MakeResponsive] Successfully finished.");
+            EnsureViewportAndStyle(doc);
+            StripInlineMinWidth(doc);
+            RelaxReportContainerOverflow(doc);
 
             return doc.DocumentNode.OuterHtml;
         }
 
-        private void PrepareHead(HtmlDocument doc)
+        private static void EnsureViewportAndStyle(HtmlDocument doc)
         {
             var head = doc.DocumentNode.SelectSingleNode("//head");
             if (head == null)
-                return;
+            {
+                head = doc.CreateElement("head");
+                var html = doc.DocumentNode.SelectSingleNode("//html");
+                if (html != null)
+                {
+                    html.PrependChild(head);
+                }
+                else
+                {
+                    doc.DocumentNode.PrependChild(head);
+                }
+            }
 
-            if (head.SelectSingleNode("meta[@name='viewport']") == null)
+            if (!HasViewportMeta(head))
             {
                 var viewport = doc.CreateElement("meta");
                 viewport.SetAttributeValue("name", "viewport");
                 viewport.SetAttributeValue("content", "width=device-width, initial-scale=1.0");
-                head.PrependChild(viewport);
+                head.AppendChild(viewport);
             }
 
-            var style = doc.CreateElement("style");
-            style.InnerHtml = ResponsiveStyles;
-            head.AppendChild(style);
-
-            // _requestLogger.Write(LogLevel.Debug, LogKind.Etc, "[RenderEmailBody.MakeResponsive] Email body header styled.");
+            var styleNode = doc.CreateElement("style");
+            styleNode.SetAttributeValue("type", "text/css");
+            styleNode.AppendChild(doc.CreateTextNode(ResponsiveStyles));
+            head.AppendChild(styleNode);
         }
 
-        private List<HtmlNode> ExtractContent(HtmlDocument doc, HtmlNode reportDiv)
+        private static bool HasViewportMeta(HtmlNode head)
         {
-            // SSRS nests all email text 5 levels deep inside layout-only tables by default.
-            // The innermost content container is always a DIV with overflow-x:hidden,
-            // which holds the actual paragraph DIVs with text, spans, and links.
-            // Hyperlink cells skip the overflow-x:hidden wrapper and place <a> directly in the TD.
-            var contentContainers = reportDiv.SelectNodes(
-                ".//div[contains(@style,'overflow-x:hidden')] | .//td[a]");
-
-            if (contentContainers == null)
-                return new List<HtmlNode> { reportDiv.CloneNode(true) };
-
-            var resultHtmlNodes = new List<HtmlNode>();
-
-            foreach (var container in contentContainers)
+            foreach (var child in head.ChildNodes)
             {
-                foreach (var child in container.ChildNodes.ToList())
-                {
-                    if (child.NodeType == HtmlNodeType.Text)
-                        continue;
+                if (child.NodeType != HtmlNodeType.Element)
+                    continue;
 
-                    resultHtmlNodes.Add(ConvertNode(doc, child));
+                if (!string.Equals(child.Name, "meta", StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                var name = child.GetAttributeValue("name", string.Empty);
+                if (string.Equals(name, "viewport", StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
                 }
             }
-
-            return resultHtmlNodes;
+            return false;
         }
 
-        private HtmlNode ConvertNode(HtmlDocument doc, HtmlNode node)
+        private static void StripInlineMinWidth(HtmlDocument doc)
         {
-            var style = node.GetAttributeValue("style", "");
+            var styledNodes = doc.DocumentNode.SelectNodes("//*[@style]");
+            if (styledNodes == null)
+                return;
 
-            // Handle SSRS rendered visual line separators as ~0.26mm-tall divs with overflow:hidden.
-            if (IsThinSpacer(style))
+            foreach (var node in styledNodes)
             {
-                var spacer = doc.CreateElement("div");
-                spacer.SetAttributeValue("style", "height:1px;margin:4px 0;");
-                return spacer;
+                var style = node.GetAttributeValue("style", string.Empty);
+                if (string.IsNullOrEmpty(style))
+                    continue;
+
+                var updated = MinWidthDeclarationRegex.Replace(style, string.Empty);
+                if (!string.Equals(updated, style, StringComparison.Ordinal))
+                {
+                    node.SetAttributeValue("style", updated.Trim());
+                }
             }
-
-            var div = node.CloneNode(true);
-            var cleanStyle = StripFixedDimensions(style);
-
-            if (string.IsNullOrWhiteSpace(cleanStyle))
-                div.Attributes.Remove("style");
-            else
-                div.SetAttributeValue("style", cleanStyle);
-
-            return div;
         }
 
-        private bool IsThinSpacer(string style)
+        private static void RelaxReportContainerOverflow(HtmlDocument doc)
         {
-            var match = Regex.Match(style, @"HEIGHT\s*:\s*([\d.]+)\s*mm", RegexOptions.IgnoreCase);
-            return match.Success
-                && double.TryParse(
-                    match.Groups[1].Value,
-                    System.Globalization.NumberStyles.Float,
-                    System.Globalization.CultureInfo.InvariantCulture,
-                    out var height)
-                && height < 2.0;
-        }
+            var roots = doc.DocumentNode.SelectNodes("//*[@id='oReportDiv']");
+            if (roots == null)
+                return;
 
-        private string StripFixedDimensions(string style)
-        {
-            // Strip mm-based widths/heights that SSRS emits for print layout —
-            // these prevent fluid reflow on narrow mobile screens.
-            style = Regex.Replace(style, @"(?:min-width|WIDTH)\s*:\s*[\d.]+mm\s*;?\s*", "", RegexOptions.IgnoreCase);
-            style = Regex.Replace(style, @"overflow-x\s*:\s*hidden\s*;?\s*", "", RegexOptions.IgnoreCase);
-            style = Regex.Replace(style, @"HEIGHT\s*:\s*[\d.]+mm\s*;?\s*", "", RegexOptions.IgnoreCase);
-            return style.Trim().TrimEnd(';');
+            foreach (var node in roots)
+            {
+                var style = node.GetAttributeValue("style", string.Empty);
+                if (string.IsNullOrEmpty(style))
+                    continue;
+
+                var updated = OverflowAutoRegex.Replace(style, "overflow:visible;");
+                updated = OverflowAxisHiddenRegex.Replace(updated, string.Empty);
+                if (!string.Equals(updated, style, StringComparison.Ordinal))
+                {
+                    node.SetAttributeValue("style", updated.Trim());
+                }
+            }
         }
     }
 }

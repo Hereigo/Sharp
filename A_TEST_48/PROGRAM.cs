@@ -17,7 +17,6 @@ namespace A_TEST_48
             EmailFixResponsiveness.ProcessHtmlFilesInFolder(TEST_DIR);
 
 
-
             Console.WriteLine(" Done.");
         }
     }
