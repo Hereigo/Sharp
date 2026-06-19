@@ -20,7 +20,17 @@
             // HtmlAgilityPack.Test();
 
 
-            Console.WriteLine("\r\n Done.");
+
+            string TEST_DIR = Path.Combine(UserProfileFolder, "EMAILS");
+
+            Extract_Html_FromBase64_EML.ProcessEmlFilesInFolder(TEST_DIR);
+
+            EmailFixResponsiveness.ProcessHtmlFilesInFolder(TEST_DIR);
+
+
+
+
+            Console.WriteLine(" Done.");
         }
 
     }
