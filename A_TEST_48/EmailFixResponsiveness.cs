@@ -1,7 +1,11 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 
-namespace AAA_TEST_Console
+namespace A_TEST_48
 {
     /// <summary>
     /// Minimally modifies SSRS-generated email HTML to make it responsive on mobile email clients

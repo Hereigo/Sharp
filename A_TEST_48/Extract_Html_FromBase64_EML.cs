@@ -1,4 +1,8 @@
-﻿namespace AAA_TEST_Console
+﻿using System;
+using System.IO;
+using System.Linq;
+
+namespace A_TEST_48
 {
     internal class Extract_Html_FromBase64_EML
     {
