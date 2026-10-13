@@ -228,9 +228,10 @@ namespace Calendarium.Controllers
             new JsonSerializerOptions { PropertyNamingPolicy = null });
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> UploadFile(IFormFile uploadingFile)
         {
-            if (uploadingFile != null)
+            if (_hostEnvironment.IsDevelopment() && uploadingFile != null)
             {
                 if (uploadingFile.Length < 2097152) // 2 MB
                 {
@@ -242,11 +243,32 @@ namespace Calendarium.Controllers
                             while (reader.Peek() >= 0)
                                 result.AppendLine(reader.ReadLine());
                         }
-                        var CalEventsList = JsonSerializer.Deserialize<List<CalEvent>>(result.ToString());
+                        List<CalEvent>? CalEventsList = JsonSerializer.Deserialize<List<CalEvent>>(result.ToString());
 
-                        _context.AddRangeAsync(CalEventsList);
-
-                        await _context.SaveChangesAsync();
+                        if (CalEventsList != null)
+                        {
+                            foreach (var evt in CalEventsList)
+                            {
+                                if (evt != null)
+                                {
+                                    _context.CalEvents.Add(new CalEvent()
+                                    {
+                                        Created = DateTime.Now,
+                                        Day = evt.Started.Day,
+                                        Description = evt.Description,
+                                        EveryXDays = evt.EveryXDays,
+                                        Modified = DateTime.Now,
+                                        Month = (evt.Repeat == CalEventRepeat.Monthly) ? 0 : evt.Started.Month,
+                                        Repeat = evt.Repeat,
+                                        Started = evt.Started,
+                                        Status = CalEventStatus.Active,
+                                        Time = evt.Time,
+                                        Year = (evt.Repeat == CalEventRepeat.Yearly) ? 0 : evt.Started.Year,
+                                    });
+                                }
+                            }
+                            await _context.SaveChangesAsync();
+                        }
                     }
                     catch (Exception ex)
                     {
