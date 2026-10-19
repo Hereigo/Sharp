@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using Calendarium.Data;
 using Calendarium.Models;
+using Calendarium.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,14 +16,19 @@ namespace Calendarium.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IHostEnvironment _hostEnvironment;
         private readonly ILogger<HomeController> _logger;
+        private readonly CalendarService _calendar;
+        private readonly RequestHeaderLogger _headerLogger;
 
         private const int _historyLines = 40;
 
-        public HomeController(ApplicationDbContext context, ILogger<HomeController> logger, IHostEnvironment hostEnvironment)
+        public HomeController(ApplicationDbContext context, ILogger<HomeController> logger, IHostEnvironment hostEnvironment,
+            CalendarService calendar, RequestHeaderLogger headerLogger)
         {
             _context = context;
             _hostEnvironment = hostEnvironment;
             _logger = logger;
+            _calendar = calendar;
+            _headerLogger = headerLogger;
 
             ViewBag.CssChanged =
                 new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), "/wwwroot/css/site.min.css")).LastWriteTime.ToString("yyMMddHHmm");
@@ -40,55 +46,33 @@ namespace Calendarium.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index(string pMonth = "")
         {
-            await ProcessRequestHeaders(Request.Headers);
+            await _headerLogger.LogAsync(Request.Headers);
 
-            TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time");
-            DateTime today = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, tz);
+            DateTime today = _calendar.Today();
+            var viewMonth = pMonth switch
+            {
+                "next" => today.AddMonths(1),
+                "prev" => today.AddMonths(-1),
+                _ => today,
+            };
 
-            var todayForCurrentView = today;
-
-            if (pMonth == "next") todayForCurrentView = today.AddMonths(1);
-            else if (pMonth == "prev") todayForCurrentView = today.AddMonths(-1);
-
-            DateTime currMonStart = new DateTime(todayForCurrentView.Year, todayForCurrentView.Month, 1);
-
-            int monBeginDayOfWeek = (int)currMonStart.DayOfWeek; // Mon = 1 \ .. \ Sat = 6 \ Sun = 0
-
-            int sheetSize = 7 * 6;
-            int prevMonDaysOnSheet = monBeginDayOfWeek == 0 ? 6 : monBeginDayOfWeek - 1;
-            int currMonDays = new DateTime(todayForCurrentView.Year, todayForCurrentView.Month, 1).AddMonths(1).AddDays(-1).Day;
-            int nextMonDaysOnSheet = sheetSize - (currMonDays + prevMonDaysOnSheet);
-
-            DateTime sheetFirstDay = monBeginDayOfWeek == 1 ? currMonStart : currMonStart.AddDays(-prevMonDaysOnSheet);
-            DateTime sheetLastDay = new DateTime(todayForCurrentView.Year, todayForCurrentView.Month, nextMonDaysOnSheet).AddMonths(1);
-
-            // Gat All already started Events with applicable non-repeating:
-            var events = await _context.CalEvents
-                .Where(e => e.Started <= sheetLastDay && (e.Repeat != CalEventRepeat.Once || e.Repeat == CalEventRepeat.Once && e.Started >= sheetFirstDay))
-                .ToListAsync();
-
-            var allEventsCount = await _context.CalEvents.CountAsync();
-
-            var eventsModel = GenerateRepeatingEvents(events, sheetFirstDay, sheetLastDay, todayForCurrentView);
+            var sheet = await _calendar.BuildSheetAsync(viewMonth.Year, viewMonth.Month);
+            var eventsModel = sheet.Occurrences;
 
             ViewBag.EnvtsCount = eventsModel.Count;
 
             // Fill empty days:
-            for (var i = 0; i < sheetSize; i++) { eventsModel.Add(new CalEvent(sheetFirstDay.AddDays(i))); }
+            for (var i = 0; i < CalendarService.SheetDays; i++) { eventsModel.Add(new CalEvent(sheet.FirstDay.AddDays(i))); }
 
-            ViewBag.EnvtsFullCount = allEventsCount;
+            ViewBag.EnvtsFullCount = sheet.TotalCount;
             ViewBag.IsDevEnv = _hostEnvironment.IsDevelopment();
-            ViewBag.TodayCurrent = todayForCurrentView;
+            ViewBag.TodayCurrent = viewMonth;
             ViewBag.TodayReal = today;
-            ViewBag.SheetFirstDay = sheetFirstDay;
+            ViewBag.SheetFirstDay = sheet.FirstDay;
 
             ViewBag.IsCalendarPage = true;
 
-            var sortedByTimeModel = eventsModel.Where(x => x.Time != default).OrderBy(x => x.Time).ToList();
-
-            sortedByTimeModel.AddRange(eventsModel.Where(x => x.Time == default));
-
-            return View(sortedByTimeModel);
+            return View(eventsModel);
         }
 
         // TODO:
@@ -122,20 +106,16 @@ namespace Calendarium.Controllers
         {
             if (evnt != null && ModelState.IsValid)
             {
-                _context.Add(new CalEvent()
+                var newEvent = new CalEvent()
                 {
                     Created = DateTime.Now,
-                    Day = evnt.Started.Day,
                     Description = evnt.Description,
-                    EveryXDays = evnt.EveryXDays,
                     Modified = DateTime.Now,
-                    Month = (evnt.Repeat == CalEventRepeat.Monthly) ? 0 : evnt.Started.Month,
-                    Repeat = evnt.Repeat,
-                    Started = evnt.Started,
                     Status = CalEventStatus.Active,
                     Time = evnt.Time,
-                    Year = (evnt.Repeat == CalEventRepeat.Yearly) ? 0 : evnt.Started.Year,
-                });
+                };
+                CalendarService.ApplySchedule(newEvent, evnt.Started, evnt.Repeat, evnt.EveryXDays);
+                _context.Add(newEvent);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -173,16 +153,11 @@ namespace Calendarium.Controllers
                     {
                         return NotFound();
                     }
-                    calEvent.Day = evnt.Started.Day;
                     calEvent.Description = evnt.Description;
-                    calEvent.EveryXDays = evnt.EveryXDays;
                     calEvent.Modified = DateTime.Now;
-                    calEvent.Month = (evnt.Repeat == CalEventRepeat.Monthly) ? 0 : evnt.Started.Month;
-                    calEvent.Repeat = evnt.Repeat;
-                    calEvent.Started = evnt.Started;
                     calEvent.Status = evnt.Status;
                     calEvent.Time = evnt.Time;
-                    calEvent.Year = (evnt.Repeat == CalEventRepeat.Yearly) ? 0 : evnt.Started.Year;
+                    CalendarService.ApplySchedule(calEvent, evnt.Started, evnt.Repeat, evnt.EveryXDays);
                     _context.Update(calEvent);
                     await _context.SaveChangesAsync();
                 }
@@ -251,20 +226,16 @@ namespace Calendarium.Controllers
                             {
                                 if (evt != null)
                                 {
-                                    _context.CalEvents.Add(new CalEvent()
+                                    var imported = new CalEvent()
                                     {
                                         Created = DateTime.Now,
-                                        Day = evt.Started.Day,
                                         Description = evt.Description,
-                                        EveryXDays = evt.EveryXDays,
                                         Modified = DateTime.Now,
-                                        Month = (evt.Repeat == CalEventRepeat.Monthly) ? 0 : evt.Started.Month,
-                                        Repeat = evt.Repeat,
-                                        Started = evt.Started,
                                         Status = CalEventStatus.Active,
                                         Time = evt.Time,
-                                        Year = (evt.Repeat == CalEventRepeat.Yearly) ? 0 : evt.Started.Year,
-                                    });
+                                    };
+                                    CalendarService.ApplySchedule(imported, evt.Started, evt.Repeat, evt.EveryXDays);
+                                    _context.CalEvents.Add(imported);
                                 }
                             }
                             await _context.SaveChangesAsync();
@@ -283,125 +254,6 @@ namespace Calendarium.Controllers
         private bool CalEventExists(int id)
         {
             return _context.CalEvents.Any(e => e.Id == id);
-        }
-
-        private async Task ProcessRequestHeaders(IHeaderDictionary headers)
-        {
-            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Accept, headers["Accept"]));
-            // await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Encode, headers["Accept-Encoding"]));
-            // await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Language, headers["Accept-Language"]));
-            // await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.Referer, headers["Referer"]));
-            await ProcessHeader(new RequestHeaderField(ReqHeadFieldType.UsrAgent, headers["User-Agent"]));
-        }
-
-        private async Task ProcessHeader(RequestHeaderField reqHead)
-        {
-            if (!string.IsNullOrWhiteSpace(reqHead.Text))
-            {
-                if (!_context.RequestsHeaders.Any(old =>
-                    old.Field == reqHead.Field && old.Text == reqHead.Text && old.Created.AddHours(1) > reqHead.Created))
-                {
-                    _context.RequestsHeaders.Add(reqHead);
-                    _context.SaveChanges();
-                }
-            }
-        }
-
-        private List<CalEvent> GenerateRepeatingEvents(List<CalEvent> events, DateTime sheetFirstDay, DateTime sheetLastDay, DateTime today)
-        {
-            var eventsModel = new List<CalEvent>();
-            int currMonMaxDay = Utils.Utils.GetMaxDayOfTheMonth(today);
-
-            foreach (var evt in events)
-            {
-                if (evt.Repeat == CalEventRepeat.Monthly)
-                {
-                    int betweenStartedAndSheet = today.Month - evt.Started.Month;
-
-                    for (int i = -1; i <= 1; i++) // Add for 3 month (Prev, Current, Next and Prev.):
-                    {
-                        //var startedDateForMonthlyOLD = new DateTime(today.Year, today.Month, evt.Day).AddMonths(i);
-
-                        // TODO:
-
-                        // Handle 29 of February!!!!!!!!!!!!!
-                        // Handle 29 of February!!!!!!!!!!!!!
-                        var startedDateForMonthly = new DateTime(today.Year, evt.Started.Month, evt.Day).AddMonths(betweenStartedAndSheet + i);
-
-                        if (startedDateForMonthly >= sheetFirstDay && startedDateForMonthly <= sheetLastDay)
-                        {
-                            eventsModel.Add(new CalEvent()
-                            {
-                                Id = evt.Id,
-                                Day = evt.Started.Day,
-                                Description = evt.Description,
-                                EveryXDays = evt.EveryXDays,
-                                Modified = evt.Modified,
-                                Month = startedDateForMonthly.Month,
-                                Repeat = evt.Repeat,
-                                Started = startedDateForMonthly,
-                                Status = evt.Status,
-                                Time = evt.Time,
-                                Year = startedDateForMonthly.Year
-                            });
-                        }
-                    }
-                }
-                else if (evt.Repeat == CalEventRepeat.Yearly)
-                {
-                    var startedDateForYearly = new DateTime(today.Year, evt.Month, evt.Day);
-
-                    if (startedDateForYearly >= sheetFirstDay && startedDateForYearly <= sheetLastDay)
-                    {
-                        eventsModel.Add(new CalEvent()
-                        {
-                            Id = evt.Id,
-                            Day = evt.Started.Day,
-                            Description = evt.Description,
-                            EveryXDays = evt.EveryXDays,
-                            Modified = evt.Modified,
-                            Month = startedDateForYearly.Month,
-                            Repeat = evt.Repeat,
-                            Started = startedDateForYearly,
-                            Status = evt.Status,
-                            Time = evt.Time,
-                            Year = startedDateForYearly.Year
-                        });
-                    }
-                }
-                else if (evt.Repeat == CalEventRepeat.EveryXdays)
-                {
-                    var startedDateForCurrent = evt.Started;
-
-                    while (startedDateForCurrent <= sheetLastDay)
-                    {
-                        if (startedDateForCurrent >= sheetFirstDay)
-                        {
-                            eventsModel.Add(new CalEvent()
-                            {
-                                Id = evt.Id,
-                                Day = evt.Started.Day,
-                                Description = evt.Description,
-                                EveryXDays = evt.EveryXDays,
-                                Modified = evt.Modified,
-                                Month = (evt.Repeat == CalEventRepeat.Monthly) ? 0 : evt.Started.Month,
-                                Repeat = evt.Repeat,
-                                Started = startedDateForCurrent.Date,
-                                Status = evt.Status,
-                                Time = evt.Time,
-                                Year = (evt.Repeat == CalEventRepeat.Yearly) ? 0 : evt.Started.Year
-                            });
-                        }
-                        // date increment.
-                        startedDateForCurrent = startedDateForCurrent.AddDays(evt.EveryXDays.Value);
-                    }
-                }
-                else
-                {
-                    eventsModel.Add(evt);
-                }
-            }
-            return eventsModel;
         }
     }
 }

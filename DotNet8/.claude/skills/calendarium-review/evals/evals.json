@@ -1,0 +1,8 @@
+{
+  "skill_name": "calendarium-review",
+  "evals": [
+    {"id": 0, "name": "home-controller", "prompt": "can you review Controllers/HomeController.cs? want to know if there's anything broken before I add more features", "expected_output": "Prioritized review of HomeController with file:line refs, covering date/time zone handling, repeating events edge cases, auth attributes, ViewBag usage", "files": ["Controllers/HomeController.cs"]},
+    {"id": 1, "name": "bacs-callbacks", "prompt": "review the two bacs callback controllers, anything wrong there?", "expected_output": "Security-focused review of BacsCallbackController and AaaBacsCallbackController: input validation, auth, logging of payloads", "files": ["Controllers/BacsCallbackController.cs", "Controllers/AaaBacsCallbackController.cs"]},
+    {"id": 2, "name": "notes-crud", "prompt": "Please check NotesController and the Note model for bugs and security issues", "expected_output": "Review of Notes CRUD: antiforgery, over-posting/Bind, authorization, null handling, EF usage", "files": ["Controllers/NotesController.cs", "Models/Note.cs"]}
+  ]
+}

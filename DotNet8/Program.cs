@@ -1,4 +1,7 @@
+using System.Text.Json.Serialization;
 using Calendarium.Data;
+using Calendarium.Endpoints;
+using Calendarium.Services;
 using Calendarium.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +23,16 @@ namespace Calendarium
                     options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
             builder.Services.AddSingleton<IContentManager, ContentManager>();
+            builder.Services.AddSingleton(TimeProvider.System);
+            builder.Services.AddScoped<CalendarService>();
+            builder.Services.AddScoped<RequestHeaderLogger>();
+
+            // Minimal API:
+            builder.Services.AddProblemDetails();
+            builder.Services.AddValidation();
+            builder.Services.ConfigureHttpJsonOptions(options =>
+                options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+            builder.Services.AddOpenApi();
 
             var app = builder.Build();
 
@@ -30,9 +43,10 @@ namespace Calendarium
             }
             else
             {
-                app.UseExceptionHandler("/Home/LogItem");
+                app.UseExceptionHandler();
                 app.UseHsts();  //  The default HSTS value is 30 days, see https://aka.ms/aspnetcore-hsts.
             }
+            app.UseStatusCodePages();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
@@ -44,6 +58,14 @@ namespace Calendarium
                 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=StartPage}/{id?}");
 
             app.MapRazorPages();
+
+            var api = app.MapGroup("/api").RequireAuthorization();
+            api.MapCalendarEndpoints();
+            api.MapEventEndpoints();
+            api.MapNoteEndpoints();
+
+            if (app.Environment.IsDevelopment())
+                app.MapOpenApi();
 
             Database.CreateDbIfNotExists(app);
 
