@@ -36,6 +36,10 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
+
+                        <Button Content=" Open Dir " Command="{Binding OpenDirCommand}"
+                                    Visibility="{Binding IsButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+
                         <Button Content=" To trash " Command="{Binding ListItemButtonCommand}" 
                                     Visibility="{Binding IsButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
                         <TextBlock Text=" -- " />
@@ -44,7 +48,8 @@
                         <!--
                         <TextBlock Text="{Binding FileSize}" />
                         -->
-                        <TextBlock Text="{Binding FileName}" />
+                        <TextBlock Text="{Binding FileShortName}" />
+                        
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

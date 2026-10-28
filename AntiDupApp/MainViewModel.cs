@@ -22,7 +22,8 @@ public class MainViewModel
                 // TODO: Consider a better way to represent group headers
                 FileDate = null,
                 //FileSize = null,
-                FileName = "==========================================================================================="
+                FileShortName = "===========================================================================================",
+                FileName = ""
             });
             var duplicaGroup = group.OrderBy(t => t.Item1).ToList();
             foreach (var file in duplicaGroup)
@@ -33,7 +34,8 @@ public class MainViewModel
                     IsTextDimmed = false,
                     FileDate = file.Item1,
                     //FileSize = file.Item2,
-                    FileName = file.Item3.ToString().Replace(selectedDirectory, "").TrimStart('\\')
+                    FileShortName = file.Item3.ToString().Replace(selectedDirectory, "").TrimStart('\\'),
+                    FileName = file.Item3
                 });
             }
         }
