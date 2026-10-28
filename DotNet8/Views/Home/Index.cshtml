@@ -1,52 +1,32 @@
-﻿@using Calendarium.Utils
-@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
-@model IEnumerable<Calendarium.Models.CalEvent>
+@model CalendarViewModel
 @{
     ViewData["Title"] = "Calendarium";
 
-    DateTime nowReal = ViewBag.TodayReal;
-    DateTime now4page = ViewBag.TodayCurrent;
-    DateTime sheetFirstDay = ViewBag.SheetFirstDay;
-    var sheetDaysCount = 0;
-    var nowDayOfWeek = nowReal.Month != now4page.Month ? 0 : (int)(now4page.DayOfWeek);
-    var months = new string[13] { "ERR!", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-    var monthCurr = months[nowReal.Month];
-    var monthNext = nowReal.Month == 12 ? "Jan" : months[nowReal.Month + 1];
-    var monthPrev = nowReal.Month == 1 ? "Dec" : months[nowReal.Month - 1];
-    var monCurrColor = now4page.Month == (nowReal.AddMonths(0).Month) ? "rgb(255, 240, 155)" : "";
-    var monNextColor = now4page.Month == (nowReal.AddMonths(1).Month) ? "rgb(255, 240, 155)" : "";
-    var monPrevColor = now4page.Month == (nowReal.AddMonths(-1).Month) ? "rgb(255, 240, 155)" : "";
+    var isSignedIn = SignInManager.IsSignedIn(User);
+    var isTodayOnSheet = Model.Today.Month == Model.DisplayedMonth.Month;
+    var weekDays = new[] { DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday };
 }
 
 <div class="container-fluid">
     <div class="row row-calend">
         <main class="col-md-10">
             <div class="grid calendar">
-                <div class='cell cell-head @(nowDayOfWeek == 1 ? "today" : "")'> Mon </div>
-                <div class='cell cell-head @(nowDayOfWeek == 2 ? "today" : "")'> Tue </div>
-                <div class='cell cell-head @(nowDayOfWeek == 3 ? "today" : "")'> Wed </div>
-                <div class='cell cell-head @(nowDayOfWeek == 4 ? "today" : "")'> Thu </div>
-                <div class='cell cell-head @(nowDayOfWeek == 5 ? "today" : "")'> Fri </div>
-                <div class='cell cell-head @(nowDayOfWeek == 6 ? "today" : "")'> Sat </div>
-                <div class='cell cell-head @(nowDayOfWeek == 7 ? "today" : "")'> Sun </div>
-
-                @for (int r = 0; r < 6; r++)
+                @foreach (var weekDay in weekDays)
                 {
-                    @for (int d = 0; d < 7; d++)
-                    {
-                        var processingDate = sheetFirstDay.AddDays(sheetDaysCount);
-                        var isCurrentMonth = processingDate.Month == now4page.Month;
-                        var todayCss = (nowReal.Date == processingDate.Date) ? "today" : "";
-                        var otherMonCss = isCurrentMonth ? "" : "nextMon";
-                        var dayItemsList = Model.Where(m => m.Started.Date == processingDate.Date).ToList();
-                        sheetDaysCount++;
-                        <div class="cell day @otherMonCss @todayCss">
+                    <div class='cell cell-head @(isTodayOnSheet && Model.Today.DayOfWeek == weekDay ? "today" : "")'> @weekDay.ToString()[..3] </div>
+                }
 
-                            @await Html.PartialAsync("~/Views/Home/EventCalendView.cshtml", dayItemsList)
+                @foreach (var day in Model.Days)
+                {
+                    var todayCss = Model.Today.Date == day.Date ? "today" : "";
+                    var otherMonCss = day.Date.Month == Model.DisplayedMonth.Month ? "" : "nextMon";
+                    <div class="cell day @otherMonCss @todayCss">
 
-                        </div>
-                    }
+                        <partial name="EventCalendView" model="day" />
+
+                    </div>
                 }
             </div>
 
@@ -57,29 +37,16 @@
         <aside class="col-md-2 sidebar">
             <div>
                 <span class="evnts-cntr">
-                    <span id="jsonMake">[ @ViewBag.EnvtsCount ]</span>
-                    <a id="jsonLoad" href="">[ @ViewBag.EnvtsFullCount ]</a>
+                    <span>[ @Model.SheetEventsCount ]</span>
+                    @if (isSignedIn)
+                    {
+                        <a asp-action="GetJson" download="calendBkp.json" title="Download all events">[ @Model.TotalEventsCount ]</a>
+                    }
+                    else
+                    {
+                        <span>[ @Model.TotalEventsCount ]</span>
+                    }
                 </span>
-
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <script>
-                                        let jsonLoad = document.querySelector("#jsonLoad");
-                                        document.querySelector("#jsonMake").addEventListener("click", function () {
-                                            let xhr = new XMLHttpRequest();
-                                            let url = '/Home/GetJson/';
-                                            xhr.open("GET", url, true);
-                                            xhr.onreadystatechange = function () {
-                                                if (this.readyState == 4 && this.status == 200) {
-                                                    let file = new Blob([this.responseText], { type: 'text/plain' });
-                                                    jsonLoad.href = URL.createObjectURL(file);
-                                                    jsonLoad.download = "calendBkp.json";
-                                                }
-                                            }
-                                            xhr.send();
-                                        });
-                    </script>
-                }
             </div>
             <br />
             <ul>
@@ -91,28 +58,26 @@
                 <li>...</li>
             </ul>
             <br />
-            <p>
-                <ul>
-                    <li>
-                        https://www.wordnik.com/words/sophisticated
-                    </li>
-                    <li>
-                        https://dictionary.cambridge.org/dictionary/english/insist
-                    </li>
-                    <li>
-                        https://www.merriam-webster.com/dictionary/exaggerated
-                    </li>
-                    <li>
-                        https://www.definitions.net/definition/merit
-                    </li>
-                </ul>
-            </p>
+            <ul>
+                <li>
+                    https://www.wordnik.com/words/sophisticated
+                </li>
+                <li>
+                    https://dictionary.cambridge.org/dictionary/english/insist
+                </li>
+                <li>
+                    https://www.merriam-webster.com/dictionary/exaggerated
+                </li>
+                <li>
+                    https://www.definitions.net/definition/merit
+                </li>
+            </ul>
 
-            @if (ViewBag.IsDevEnv)
+            @if (Model.IsDevelopment && isSignedIn)
             {
                 <br />
                 <hr />
-                <form enctype="multipart/form-data" method="post" action="/Home/UploadFile">
+                <form asp-action="UploadFile" enctype="multipart/form-data" method="post">
                     <input type="file" class="form-control" name="uploadingFile" />
                     <br />
                     <input class="btn btn-info" type="submit" value="Upload" />

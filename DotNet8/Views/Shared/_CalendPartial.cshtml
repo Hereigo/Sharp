@@ -1,21 +1,14 @@
-﻿@{
-    DateTime nowReal = ViewBag.TodayReal;
-    DateTime now4page = ViewBag.TodayCurrent;
-    var currentMonthBgColor = "rgb(255, 240, 155)";
-    var nowDayOfWeek = nowReal.Month != now4page.Month ? 0 : (int)(now4page.DayOfWeek);
-    var months = new string[13] {
-        "ERR!", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
-    var monthCurr = months[nowReal.Month];
-    var monthNext = nowReal.Month == 12 ? months[1] : months[nowReal.Month + 1];
-    var monthPrev = nowReal.Month == 1 ? months[12] : months[nowReal.Month - 1];
-    var monCurrColor = now4page.Month == (nowReal.AddMonths(0).Month) ? currentMonthBgColor : "";
-    var monNextColor = now4page.Month == (nowReal.AddMonths(1).Month) ? currentMonthBgColor : "";
-    var monPrevColor = now4page.Month == (nowReal.AddMonths(-1).Month) ? currentMonthBgColor : "";
+﻿@using System.Globalization
+@model CalendarViewModel
+@{
+    const string displayedMonthBgColor = "rgb(255, 240, 155)";
+    var monthLinks = new[] { (Offset: -1, Route: "prev"), (Offset: 0, Route: ""), (Offset: 1, Route: "next") };
 }
 
-<a asp-action="Index" asp-route-pMonth="prev" class="btn btn-sm btn-light" style="background-color:@monPrevColor"> @monthPrev </a>
-&nbsp;
-<a asp-action="Index" asp-route-pMonth="" class="btn btn-sm btn-light" style="background-color:@monCurrColor"> @monthCurr </a>
-&nbsp;
-<a asp-action="Index" asp-route-pMonth="next" class="btn btn-sm btn-light" style="background-color:@monNextColor"> @monthNext </a>
-&nbsp;
+@foreach (var (offset, route) in monthLinks)
+{
+    var month = Model.Today.AddMonths(offset);
+    var bgColor = month.Month == Model.DisplayedMonth.Month ? displayedMonthBgColor : "";
+    <a asp-controller="Home" asp-action="Index" asp-route-pMonth="@route" class="btn btn-sm btn-light" style="background-color:@bgColor"> @month.ToString("MMMM", CultureInfo.InvariantCulture) </a>
+    @:&nbsp;
+}

@@ -19,6 +19,8 @@ public enum CalEventRepeat
 
 public class CalEvent : IValidatableObject
 {
+    public const int MaxEveryXDays = 777;
+
     public int Id { get; set; }
 
     public int Day { get; set; }
@@ -34,7 +36,7 @@ public class CalEvent : IValidatableObject
     public DateTime? Created { get; set; }
 
     [DataType(DataType.DateTime)]
-    [DisplayFormat(DataFormatString = @"{0:dd.MM.yy _ hh:mm}")]
+    [DisplayFormat(DataFormatString = @"{0:dd.MM.yy _ HH:mm}")]
     public DateTime Modified { get; set; }
 
     [DataType(DataType.Date)]
@@ -63,9 +65,45 @@ public class CalEvent : IValidatableObject
         Year = date.Year;
     }
 
+    /// <summary>
+    /// Copies the user-editable fields from <paramref name="source"/> and derives Day/Month/Year from its start date
+    /// (Month is 0 for monthly events, Year is 0 for yearly events).
+    /// </summary>
+    public void CopyEditableFieldsFrom(CalEvent source)
+    {
+        Description = source.Description;
+        EveryXDays = source.EveryXDays;
+        Repeat = source.Repeat;
+        Started = source.Started;
+        Status = source.Status;
+        Time = source.Time;
+        Day = source.Started.Day;
+        Month = source.Repeat == CalEventRepeat.Monthly ? 0 : source.Started.Month;
+        Year = source.Repeat == CalEventRepeat.Yearly ? 0 : source.Started.Year;
+        Modified = DateTime.Now;
+    }
+
+    /// <summary>
+    /// Creates a display-only copy of a repeating event that occurs on <paramref name="date"/>.
+    /// </summary>
+    public CalEvent CreateOccurrence(DateTime date) => new()
+    {
+        Id = Id,
+        Day = date.Day,
+        Description = Description,
+        EveryXDays = EveryXDays,
+        Modified = Modified,
+        Month = date.Month,
+        Repeat = Repeat,
+        Started = date,
+        Status = Status,
+        Time = Time,
+        Year = date.Year
+    };
+
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        if (Repeat == CalEventRepeat.EveryXdays && (EveryXDays == null || EveryXDays < 1 || EveryXDays > 777))
+        if (Repeat == CalEventRepeat.EveryXdays && (EveryXDays == null || EveryXDays < 1 || EveryXDays > MaxEveryXDays))
         {
             yield return new ValidationResult("Every X days - must be setup for the repeating.", new[] { nameof(Repeat) });
         }

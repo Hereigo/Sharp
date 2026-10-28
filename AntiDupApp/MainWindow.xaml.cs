@@ -46,9 +46,9 @@ public partial class MainWindow : Window
 
             if (Directory.Exists(SelectedDirectory))
             {
-                var duplicates = DuplicateFinder.GetDuplicateFilesByGroups(SelectedDirectory);
+                IEnumerable<List<(DateTime, int, string)>> duplicates = DuplicateFinder.GetDuplicateFilesByGroups(SelectedDirectory);
 
-                ((MainViewModel)DataContext).DisplayFiles(duplicates);
+                ((MainViewModel)DataContext).DisplayFiles(duplicates, SelectedDirectory);
             }
         }
     }

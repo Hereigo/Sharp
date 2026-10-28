@@ -36,13 +36,14 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Button Content=" Move to trash " Command="{Binding ListItemButtonCommand}" 
+                        <Button Content=" To trash " Command="{Binding ListItemButtonCommand}" 
                                     Visibility="{Binding IsButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
                         <TextBlock Text=" -- " />
                         <TextBlock Text="{Binding FileDateString}" />
                         <TextBlock Text=" -- " />
+                        <!--
                         <TextBlock Text="{Binding FileSize}" />
-                        <TextBlock Text=" -- " />
+                        -->
                         <TextBlock Text="{Binding FileName}" />
                     </StackPanel>
                 </DataTemplate>

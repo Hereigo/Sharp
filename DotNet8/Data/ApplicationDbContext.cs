@@ -17,7 +17,7 @@ namespace Calendarium.Data
 
         public DbSet<RequestHeaderField> RequestsHeaders { get; set; } = null!;
 
-        public DbSet<Note> Notes { get; set; }
+        public DbSet<Note> Notes { get; set; } = null!;
     }
 }
  

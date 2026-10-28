@@ -17,10 +17,7 @@ namespace Calendarium.Data
 
                     if (!context.CalEvents.Any())
                     {
-                        foreach (CalEvent evt in new CalEvent[] { new(DateTime.Now, "Initial Demo.") { } })
-                        {
-                            context.CalEvents.Add(evt);
-                        }
+                        context.CalEvents.Add(new CalEvent(DateTime.Now, "Initial Demo."));
                         context.SaveChanges();
                     }
 

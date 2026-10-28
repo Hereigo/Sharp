@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Calendarium.Controllers
 {
@@ -7,61 +7,28 @@ namespace Calendarium.Controllers
     [Route("api/bacs")]
     public class BacsCallbackController : ControllerBase
     {
-        // private readonly CommonLib.Logging.Core.ILogger _logger;
-        // private readonly IBacsCallbackService _bacsCallbackService;
+        private const string _apiKeyHeader = "X-API-Key";
 
-        public BacsCallbackController
-        (
-            // CommonLib.Logging.Core.ILogger logger,
-            // IBacsCallbackService bacsCallbackService
-        )
-        {
-            // _logger = logger;
-            // _bacsCallbackService = bacsCallbackService;
-        }
+        private readonly ILogger<BacsCallbackController> _logger;
 
-        private IActionResult ReturnBadRequestAndLog(string message)
+        public BacsCallbackController(ILogger<BacsCallbackController> logger)
         {
-            // _logger.Log("Bad Request: {0}", message);
-            return BadRequest(message);
+            _logger = logger;
         }
 
         [HttpPost("callback")]
-        public IActionResult ProcessCallback([FromBody] dynamic content)
+        public IActionResult ProcessCallback([FromBody] JsonElement content)
         {
-            string apiKey = string.Empty;
-            try
+            string? apiKey = Request.Headers[_apiKeyHeader];
+            if (string.IsNullOrWhiteSpace(apiKey))
             {
-                apiKey = GetApiKey();
-                // _bacsCallbackService.Process(apiKey, string.Empty);
+                _logger.LogWarning("BACS callback rejected: missing {Header} header.", _apiKeyHeader);
+                return Unauthorized();
             }
-            catch (Exception)  // AccessDeniedException) // TEST !!!!!!!!!!!!!!!!
-            {
-                //_logger.Log($"Access denied for apiKey {apiKey}");
-                return Challenge();
-            }
-            // catch (Exception e) // TEST !!!!!!!!!!!!!!!!
-            // {
-            //     _logger.Log(e.ToString());
-            //     return ReturnBadRequestAndLog("Error during execution");
-            // }
 
-            //_logger.Log($"Processing OK");
-
+            // TODO: validate the API key and process the callback.
+            _logger.LogInformation("BACS callback processed.");
             return Ok();
         }
-
-        #region Helpers
-        private string GetApiKey()
-        {
-            StringValues headerValue;            
-            if (!Request.Headers.TryGetValue("X-API-Key", out headerValue))
-            {
-                //throw new AccessDeniedException();
-            }
-
-            return headerValue.FirstOrDefault();
-        }
-        #endregion
     }
 }

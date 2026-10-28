@@ -1,8 +1,4 @@
 ﻿@model Calendarium.Models.CalEvent
-@{
-    var timeWithNoSeconds = Model.Time.ToString(@"hh\:mm");
-    var everyXdaysFieldDisplay = Model.Repeat == CalEventRepeat.EveryXdays ? "block" : "none";
-}
 
 <div class="row-crud-page">
     <h4>Edit</h4>
@@ -10,102 +6,8 @@
     <div class="row">
         <div class="col-md-4">
             <form asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
-
-                <div class="form-group">
-                    <label asp-for="Description" class="control-label"></label>
-                    <input asp-for="Description" class="form-control" />
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-
-                <div class="row">
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label asp-for="Time" class="control-label"></label>
-                            <input type="time" asp-for="Time" class="form-control" value="@timeWithNoSeconds" />
-                            <span asp-validation-for="Time" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-8">
-                        <div class="form-group">
-                            <label asp-for="Started" class="control-label"></label>
-                            <input asp-for="Started" class="form-control" />
-                            <span asp-validation-for="Started" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-8">
-                        <div class="form-group">
-                            <label asp-for="Repeat"></label>
-                            <select asp-for="Repeat" asp-items="Html.GetEnumSelectList<CalEventRepeat>()" class="form-control">
-                            </select>
-                            <span asp-validation-for="Repeat" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div id="everyXdaysField" style="display:@everyXdaysFieldDisplay" class="form-group">
-                            <label asp-for="EveryXDays" class="control-label"></label>
-                            <input type="number" asp-for="EveryXDays" class="form-control" />
-                            <span asp-validation-for="EveryXDays" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <br />
-                <div class="row">
-                    <div class="col-4">
-                        <div class="form-group">
-                            <input readonly asp-for="Day" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="form-group">
-                            <input readonly asp-for="Month" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="form-group">
-                            <input readonly asp-for="Year" class="form-control" />
-                        </div>
-                    </div>
-                </div>
-
-                @*
-                <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" asp-items="Html.GetEnumSelectList<CalEventStatus>()" class="form-control">
-                </select>
-                <span asp-validation-for="Status" class="text-danger"></span>
-                </div>
-                *@
-
-                <div class="form-group">
-                    <hr />
-                    <div class="row">
-                        @foreach (var item in System.Enum.GetValues(typeof(CalEventStatus)))
-                        {
-                            var statusNum = @Convert.ToInt32(item);
-                            var isChecked = @Convert.ToInt32(Model?.Status) == statusNum;
-
-                                <div class="col-4">
-                                    <label>
-                                        <input type="radio" asp-for="Status" value="@statusNum" checked="@isChecked" />
-                                    @item
-                                    </label>
-                                </div>
-                        }
-                    </div>
-                    <hr />
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Modified" class="control-label"></label>
-                    <input readonly asp-for="Modified" class="form-control" />
-                    <span asp-validation-for="Modified" class="text-danger"></span>
-                </div>
+                <partial name="_CalEventFormFields" />
 
                 <div class="form-group">
                     <br />
@@ -116,6 +18,7 @@
     </div>
     <hr />
     <div>
+        @* Confirmation prompt is handled by wwwroot/js/site.js. *@
         <form asp-action="Delete" id="deleteForm">
             <input type="hidden" asp-for="Id" />
             <input id="deleteInput" type="submit" value="Delete" class="btn btn-danger" />
@@ -124,22 +27,5 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-    <script>
-        $(document).ready(function(){
-            let xDaysElement = $('#everyXdaysField');
-            let repeatElement = $('#Repeat');
-            function switchXdaysEl(){
-                if(repeatElement.val() === "3"){ // Every X days
-                    xDaysElement.css('display', 'block');
-                }else{
-                    xDaysElement.css('display', 'none');
-                }
-            }
-        });
-        $('#Repeat').change(switchXdaysEl);
-    </script>
+    <partial name="_ValidationScriptsPartial" />
 }
-

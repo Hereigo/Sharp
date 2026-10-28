@@ -13,7 +13,7 @@ namespace Calendarium.Models
 
         public int SortNum { get; set; }
 
-        public string Text { get; set; }
+        public string Text { get; set; } = string.Empty;
 
         public NoteStatus Status { get; set; } = NoteStatus.Active;
     }

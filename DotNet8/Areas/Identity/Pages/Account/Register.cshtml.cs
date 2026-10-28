@@ -76,7 +76,14 @@ namespace Calendarium.Areas.Identity.Pages.Account
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-            if (_userManager.Users.Count() == 0 && ModelState.IsValid)
+            // Single-user app: registration is only open until the first account exists.
+            if (_userManager.Users.Any())
+            {
+                ModelState.AddModelError(string.Empty, "Registration is closed.");
+                return Page();
+            }
+
+            if (ModelState.IsValid)
             {
                 var user = CreateUser();
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);

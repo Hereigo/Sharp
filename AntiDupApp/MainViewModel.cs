@@ -11,7 +11,7 @@ public class MainViewModel
         WorkFiles = new ObservableCollection<WorkFileModel>();
     }
 
-    internal void DisplayFiles(IEnumerable<List<(DateTime, int, string)>> duplicateGroups)
+    internal void DisplayFiles(IEnumerable<List<(DateTime, int, string)>> duplicateGroups, string selectedDirectory)
     {
         WorkFiles.Clear();
 
@@ -21,7 +21,7 @@ public class MainViewModel
             {
                 // TODO: Consider a better way to represent group headers
                 FileDate = null,
-                FileSize = null,
+                //FileSize = null,
                 FileName = "==========================================================================================="
             });
             var duplicaGroup = group.OrderBy(t => t.Item1).ToList();
@@ -32,8 +32,8 @@ public class MainViewModel
                     IsButtonVisible = true,
                     IsTextDimmed = false,
                     FileDate = file.Item1,
-                    FileSize = file.Item2,
-                    FileName = file.Item3
+                    //FileSize = file.Item2,
+                    FileName = file.Item3.ToString().Replace(selectedDirectory, "").TrimStart('\\')
                 });
             }
         }

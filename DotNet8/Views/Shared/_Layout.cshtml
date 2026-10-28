@@ -1,7 +1,8 @@
-﻿@using Calendarium.Utils
-@using Microsoft.AspNetCore.Identity
-@inject IContentManager contentManager
+﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
+@{
+    var calendar = ViewData.Model as CalendarViewModel;
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +12,7 @@
     <title>@ViewData["Title"]</title>
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Ubuntu:400,500,700' type='text/css'>
     <link rel="stylesheet" href="~/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="@contentManager.GetVersionedContentFileLink(Url.Content("/css/site.min.css"))" />
+    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -45,10 +46,10 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                             </li>
                         }
-                        @if (ViewBag.IsCalendarPage == true)
+                        @if (calendar != null)
                         {
                             <li class="nav-item nav-item-calend">
-                                <partial name="_CalendPartial" />
+                                <partial name="_CalendPartial" model="calendar" />
                             </li>
                         }
                     </ul>

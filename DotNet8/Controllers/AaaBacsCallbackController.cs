@@ -1,12 +1,17 @@
-﻿using Calendarium.Data;
+﻿using System.Text.Json;
+using Calendarium.Data;
 using Calendarium.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace Calendarium.Controllers;
 
+/// <summary>
+/// Test sink for callbacks: stores every received payload as a <see cref="Note"/>.
+/// </summary>
 public class AaaBacsCallbackController : ControllerBase
 {
+    private static readonly JsonSerializerOptions _payloadJsonOptions = new(JsonSerializerDefaults.Web);
+
     private readonly ApplicationDbContext _context;
 
     public AaaBacsCallbackController(ApplicationDbContext context)
@@ -15,33 +20,31 @@ public class AaaBacsCallbackController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Index([FromBody] dynamic content)
+    public async Task<IActionResult> Index([FromBody] JsonElement content)
     {
-        string unknownJsonString = content.ToString();
+        string json = content.GetRawText();
 
-        LOG_THIS(_context, unknownJsonString);
+        await SaveAsNoteAsync(json);
 
         try
         {
-            MODEL aaaa = JsonConvert.DeserializeObject<MODEL>(unknownJsonString);
+            JsonSerializer.Deserialize<BacsCallbackPayload>(json, _payloadJsonOptions);
         }
-        catch (Exception)
+        catch (JsonException)
         {
-            LOG_THIS(_context, "CANNOT PARSE: " + unknownJsonString);
+            await SaveAsNoteAsync("CANNOT PARSE: " + json);
         }
 
         return Ok();
     }
 
-    private static void LOG_THIS(ApplicationDbContext context, string message)
+    private async Task SaveAsNoteAsync(string message)
     {
-        var note = new Note
+        _context.Notes.Add(new Note
         {
             SortNum = 0,
             Text = $"{DateTime.Now:MM.dd HH:mm} - {message}"
-        };
-
-        context.Add(note);
-        context.SaveChanges();
+        });
+        await _context.SaveChangesAsync();
     }
 }
